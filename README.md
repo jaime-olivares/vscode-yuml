@@ -1,5 +1,5 @@
 # yUML extension
-yUML extension for Visual Studio Code. Enables the use of (yUML.me)[http://yuml.me/] tools.
+yUML extension for Visual Studio Code. Enables the use of [yUML.me](http://yuml.me/) tools.
 
 ## Features
 The unique feature in the first release enables syntax highlightning of .yuml 
