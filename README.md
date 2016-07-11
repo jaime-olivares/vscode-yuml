@@ -2,13 +2,15 @@
 yUML extension for Visual Studio Code. Enables the use of (yUML.me)[http://yuml.me/] tools.
 
 ## Features
-The unique feature in the first release enables syntax highlightning of .yuml 
+The unique feature in version 1.0.0 enables syntax highlightning of *.yuml* files, as shown:
+
+![Use-case example screenshot](./images/usecase_example.png) 
 
 ## Extension Settings
 No settings yet
 
 ## Roadmap
-* Preview window (very soon)
+* **Preview window** (very soon)
 * Intellisense for language syntax
 * Intellisense for colors
 * Settings for diagram size, orientation and style
