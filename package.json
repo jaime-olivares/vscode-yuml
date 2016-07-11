@@ -1,0 +1,35 @@
+{
+    "name": "yuml",
+    "displayName": "yUML extension for Visual Studio Code",
+    "description": "Integration tools for supporting yUML in VSCode",
+    "version": "1.0.0",
+    "publisher": "JaimeOlivares",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jaime-olivares/vscode-yuml"
+    },
+    "bugs": {
+        "url": "https://github.com/jaime-olivares/vscode-yuml/issues",
+        "email": "jaime_olivares@hotmail.com"
+    },    
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "yuml",
+            "aliases": ["yUML", "yuml"],
+            "extensions": [".yuml"],
+            "configuration": "./yuml.configuration.json"
+        }],
+        "grammars": [{
+            "language": "yuml",
+            "scopeName": "source.yuml",
+            "path": "./syntaxes/yuml.tmLanguage"
+        }]
+    }
+}
