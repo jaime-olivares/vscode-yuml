@@ -6,7 +6,7 @@ yUML extension for Visual Studio Code. Enables the use of [yuml.me](http://yuml.
 * Viewing of yUML diagrams after each file save
 * Viewing directives for altering diagram type, size and orientation
 
-![](./images/vscode-yuml.gif)
+![yUML extension screenshots](images/vscode-yuml.gif)
 
 ## Directives
 Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering service.
