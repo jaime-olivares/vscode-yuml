@@ -6,7 +6,7 @@ yUML extension for Visual Studio Code. Enables the use of [yuml.me](http://yuml.
 * Viewing of yUML diagrams after each file save
 * Viewing directives for altering diagram type, size and orientation
 
-<img src="./images/vscode-yuml.gif" height=480 />
+![](./images/vscode-yuml.gif)
 
 ## Directives
 Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering service.
@@ -42,7 +42,7 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 No settings yet
 
 ## Dependencies
-This extension doesn't have any dependency. However, it invokes the diagraming service at [yuml.me](http://yuml.me/)
+This extension doesn't have any dependency, despite of *lodash*. However, it invokes the diagraming service at [yuml.me](http://yuml.me/)
 
 ## Issue reporting
 This extension is only a wrapper for the rendering service provided by [yuml.me](http://yuml.me/).
