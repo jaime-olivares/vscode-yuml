@@ -1,12 +1,13 @@
 // Example taken from: http://yuml.me/diagram/scruffy/class/samples
 // {type:class}
-// {style:plain}
+// {style:boring}
 // {size:normal}
+// {generate:true}
 [note: You can stick notes on diagrams too!{bg:cornsilk}]
 [Customer]<>1-orders 0..*>[Order]
-[Order]++*-*>[LineItem] 
-[Order]-1>[DeliveryMethod] 
-[Order]*-*>[Product] 
-[Category]<->[Product] 
+[Order]++*-*>[LineItem]
+[Order]-1>[DeliveryMethod]  
+[Order]*-*>[Product]  
+[Category]<->[Product]     
 [DeliveryMethod]^[National] 
-[DeliveryMethod]^[International]
+[DeliveryMethod]^[International]  

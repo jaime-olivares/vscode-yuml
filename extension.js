@@ -1,14 +1,13 @@
 const vscode = require('vscode');
-const _ = require('lodash');
+require('./yuml-utils.js')();
 
-function activate(context) 
+exports.activate = function(context) 
 {
     class yUMLDocumentContentProvider 
     {
         constructor () {
-            this._onDidChange =  new vscode.EventEmitter();
+            this._onDidChange = new vscode.EventEmitter();
             this.diagram = '';
-            this.update = _.throttle(this.unthrottledUpdate, 250);
         }
 
         provideTextDocumentContent (uri, token) {
@@ -24,124 +23,53 @@ function activate(context)
         get onDidChange () {
             return this._onDidChange.event;
         }
-        
-        unthrottledUpdate (uri) 
-        {
+
+        load(uri) {
             const editor = vscode.window.activeTextEditor;
-            if (!editor || !editor.document)  // Just in case
+            if (!editor || !editor.document)
+                return;
+
+            const text = editor.document.getText();
+            const filename = editor.document.fileName;
+
+            var generate = determineHasGenerate(text)
+
+            if (generate && !imageFileIsDirty(filename)) {
+                this.diagram = processPngResponse(null, filename);
+                this._onDidChange.fire(uri); 
+            } else {
+                this.doCreateYumlElement(text, uri, filename);
+            }
+        }
+
+        update(uri) {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor || !editor.document)  
                 return;
 
             const text = editor.document.getText();            
-            const diagram = this.createYumlElement(text);
+            const filename = editor.document.fileName;
+            const diagram = this.doCreateYumlElement(text, uri, filename);
             
-            if (diagram == "") {
+            if (diagram == "") 
                 this.diagram = "";
-            } else if (!diagram) {
+            else if (!diagram)
                 this.diagram = "Error composing the yuml invocation";
-            } else {
+            else
                 this.diagram = diagram;
-            }
             
             this._onDidChange.fire(uri);
         }
 
-        createYumlElement(text) {
-            var lines = text.split(/\r|\n/);
-            var newlines = [];
-            var options = { style: "plain", dir: "LR", scale: "100" };
-
-            for (var i=0; i<lines.length; i++)
-            {
-                var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
-                if (line.startsWith("//"))
-                {
-                    this.processDirectives(line, options);
-                }
-                else if (line.length > 0) 
-                {
-                    newlines.push(line);
-                }
-            }
-            if (newlines.length == 0)  
-                return "";
-
-            if (!options.hasOwnProperty("type"))
-            {
-                options.error = "Error: Missing mandatory 'type' directive";
-            }
-
-            if (options.hasOwnProperty("error"))
-            {
-                return options.error;
-            }
-
-            return this.composeYuml(newlines.join(), options);
-        }
-
-        processDirectives(line, options) {
-            const sizes = {
-                huge: "140",
-                big: "120",
-                normal: "100",
-                small: "80",
-                tiny: "60"
-            };
-            const directions = {
-                leftToRight: "LR",
-                rightToLeft: "RL",
-                topDown: "TB"
-            }
-
-            var keyvalue = /^\/\/\s+\{([\w]+)\s*:\s*([\w]+)\}$/.exec(line);  // extracts directives as:  // {key:value}
-            if (keyvalue != null && keyvalue.length == 3)
-            {
-                var key = keyvalue[1];
-                var value = keyvalue[2];
-
-                switch (key)
-                {
-                    case "type":
-                        if (value=="class" || value=="usecase" || value=="activity")
-                            options.type = value;
-                        else {
-                            options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity.";
-                            return options;
-                        } 
-                        break;
-                    case "style":
-                        if (value=="boring" || value=="plain" || value=="scruffy")
-                            options.style = value;
-                        else {
-                            options.error = "Error: invalid value for 'style'. Allowed values are: boring, plain <i>(default)</i>, scruffy.";
-                            return options;
-                        } 
-                        break;
-                    case "size":
-                        if (value=="huge" || value=="big" || value=="normal" || value=="small" || value=="tiny")
-                            options.scale = sizes[value];
-                        else {
-                            options.error = "Error: invalid value for 'size'. Allowed values are: huge, big, normal <i>(default)</i>, small, tiny.";
-                            return options;
-                        } 
-                        break;
-                    case "direction":
-                        if (value=="leftToRight" || value=="rightToLeft" || value=="topDown")
-                            options.dir = directions[value];
-                        else {
-                            options.error = "Error: invalid value for 'style'. Allowed values are: leftToRight <i>(default)</i>, rightToLeft, topDown.";
-                            return options;
-                        }
-                }
-            }
-
-            return options;            
-        }
-
-        composeYuml(diagram, options) {
-            var uri = "<img src='http://yuml.me/diagram/" + options.style;
-            uri += ";dir:" + options.dir + ";scale:" + options.scale;  
-            uri += "/" + options.type + "/" + encodeURI(diagram) + "'/>";
-            return uri;            
+        doCreateYumlElement(text, uri, filename) {
+            var that = this;
+            return createYumlElement(text, uri, filename, (data) => {
+                if (typeof data === "string")   // error
+                    that.diagram = data; 
+                else 
+                    that.diagram = processPngResponse(data, filename); 
+                that._onDidChange.fire(uri);                     
+            }); 
         }
     }
     
@@ -163,10 +91,16 @@ function activate(context)
     vscode.workspace.onDidSaveTextDocument((e) => {
         provider.update(previewUri);
     });
+
+    vscode.workspace.onDidOpenTextDocument((e) => {
+        provider.load(previewUri);
+    });
+
+    vscode.window.onDidChangeActiveTextEditor((e) => {
+        provider.update(previewUri);
+    });
     
     context.subscriptions.push(disposable, registration);
 }
-function deactivate() { }
 
-exports.activate = activate;
-exports.deactivate = deactivate;
+exports.deactivate = function() {};

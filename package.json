@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML extension for Visual Studio Code",
   "description": "Integration tools for supporting yUML in VSCode",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "MIT",
@@ -72,7 +72,6 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
-    "lodash": "^4.13.1"
   },
   "devDependencies": {
     "vscode": "^1.0.0"

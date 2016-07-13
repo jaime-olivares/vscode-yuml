@@ -14,28 +14,34 @@ yUML extension for Visual Studio Code. Enables the use of [yuml.me](http://yuml.
 
 ## Directives
 Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering service.
+The directives shall be placed at the beginning of the file, before any yuml statement.
 The *type* directive is the unique mandatory one.
 
-All comment or directive lines are not posted to the rendering service. This is the list of valid directives
+All comment and directive lines are not posted to the rendering service. This is the list of valid directives
 
-+ **type**: <u>Mandatory</u>, specifies the diagram type  
-Valid values: class, activity, usecase  
-Example: `// {type:class}`
++ **type**: <u>Mandatory</u>, specifies the diagram type. Currently, *yuml.me* supports 3 diagram types but more are expected in a near time.  
+  Valid values: *class, activity, usecase*  
+  Example: `// {type:class}`
 
-+ **style**: Optional, specifies the diagram style  
-Valid values: boring, plain, scruffy  
-Default: `plain`  
-Example: `// {style:scruffy}` 
++ **style**: Optional, specifies the diagram style. The 'boring' style produces smaller image files.  
+  Valid values: *boring, plain, scruffy*  
+  Default: `plain`  
+  Example: `// {style:scruffy}`
 
-+ **size**: Optional, specifies the size of the diagram elements  
-Valid values: huge, big, normal, small, tiny  
-Default: `normal`  
-Example: `// {size:big}` 
++ **size**: Optional, specifies the size of the diagram elements. Notice that the diagram viewer will scale the image to fit the window.  
+  Valid values: *huge, big, normal, small, tiny*  
+  Default: `normal`  
+  Example: `// {size:big}` 
 
-+ **direction**: Optional, specifies the drawing direction for certain diagram  
-Valid values: leftToRight, rightToLeft, topDown  
-Default: `leftToRight`  
-Example: `// {direction:topDown}`
++ **direction**: Optional, specifies the drawing direction for certain diagram types.  
+  Valid values: *leftToRight, rightToLeft, topDown*  
+  Default: `leftToRight`  
+  Example: `// {direction:topDown}`
+
++ **generate**: Optional, indicates if a *.png* file shall be generated on each save, sparing some calls to the *yuml.me* web service when reopening. The image file is saved in the same folder as the .yuml file.  
+  Valid values: *true, false*  
+  Default: `false`  
+  Example: `// {generate:true}`
 
 ## Invocation methods
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
@@ -46,13 +52,11 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 No settings yet
 
 ## Dependencies
-This extension doesn't have any dependency, despite of *lodash*. However, it invokes the diagraming service at [yuml.me](http://yuml.me/)
+This extension doesn't have any dependency. However, it invokes the diagraming service at [yuml.me](http://yuml.me/)
 
 ## Issue reporting
 This extension is only a wrapper for the rendering service provided by [yuml.me](http://yuml.me/).
-You can find many examples at their [site](http://yuml.me/diagram/scruffy/class/samples).
-
-Please do not create issues related to diagram types, elements, styles or lack of syntax documentation. 
+You can find many examples at their [site](http://yuml.me/diagram/scruffy/class/samples). Please do not create issues related to diagram types, elements, styles or lack of syntax documentation. 
 Rather go directly to their [Forum](https://groups.google.com/forum/#!forum/yuml) page.
 
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
