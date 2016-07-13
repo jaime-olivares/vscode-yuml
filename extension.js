@@ -34,12 +34,12 @@ exports.activate = function(context)
 
             var generate = determineHasGenerate(text)
 
-            if (generate && !imageFileIsDirty(filename)) {
+            if (generate && !imageFileIsDirty(filename)) // Retrieve previously generated image file
                 this.diagram = processPngResponse(null, filename);
-                this._onDidChange.fire(uri); 
-            } else {
-                this.doCreateYumlElement(text, uri, filename);
-            }
+            else  // Invoke yuml.me for retrieving the image
+                this.diagram = createYumlElement(text, uri, filename, (data) => {}); 
+            
+            this._onDidChange.fire(uri); 
         }
 
         update(uri) {
@@ -63,13 +63,14 @@ exports.activate = function(context)
 
         doCreateYumlElement(text, uri, filename) {
             var that = this;
-            return createYumlElement(text, uri, filename, (data) => {
+            var element = createYumlElement(text, uri, filename, (data) => {
                 if (typeof data === "string")   // error
                     that.diagram = data; 
                 else 
                     that.diagram = processPngResponse(data, filename); 
                 that._onDidChange.fire(uri);                     
             }); 
+            return element;
         }
     }
     
@@ -96,9 +97,9 @@ exports.activate = function(context)
         provider.load(previewUri);
     });
 
-    vscode.window.onDidChangeActiveTextEditor((e) => {
-        provider.update(previewUri);
-    });
+//    vscode.window.onDidChangeActiveTextEditor((e) => {
+//        provider.load(previewUri);
+//    });
     
     context.subscriptions.push(disposable, registration);
 }

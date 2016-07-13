@@ -131,12 +131,13 @@ module.exports = function()
                     if (value=="leftToRight" || value=="rightToLeft" || value=="topDown")
                         options.dir = directions[value];
                     else {
-                        options.error = "Error: invalid value for 'style'. Allowed values are: leftToRight <i>(default)</i>, rightToLeft, topDown.";
+                        options.error = "Error: invalid value for 'direction'. Allowed values are: leftToRight <i>(default)</i>, rightToLeft, topDown.";
                         return;
                     }
+                    break;
                 case "generate":
                     if (value=="true" || value=="false")
-                        options.generate = value === "true";
+                        options.generate = (value === "true");
                     else {
                         options.error = "Error: invalid value for 'generate'. Allowed values are: true, false <i>(default)</i>.";
                         return;
@@ -178,6 +179,7 @@ module.exports = function()
     this.processPngResponse = function(pngData, filename)
     {
         var imagename = filename.replace(/\.[^.$]+$/, '.png');
+        var action = "retrieved from";
 
         if (pngData != null)
         {
@@ -185,11 +187,12 @@ module.exports = function()
             {
                 var buffer = Buffer.concat(pngData);
                 fs.writeFileSync(imagename, buffer);
+                action = "stored at";
             }
             catch (error) { return "Error generating the image file"; }
         }
 
-        var element = "<span>Image stored at " + imagename + "</span><p/>";
+        var element = "<span>Image " + action + " " + imagename + "</span><p/>";
         element += "<img src=file://" + imagename + " />"; 
 
         return element;
