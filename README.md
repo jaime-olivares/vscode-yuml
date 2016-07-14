@@ -62,6 +62,8 @@ Rather go directly to their [Forum](https://groups.google.com/forum/#!forum/yuml
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
+* Use POST and body for invoking yuml.me, for allowing very large diagrams (soon)
+* Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
 
