@@ -66,6 +66,7 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
+* Version 2.0: Eliminate dependency on yuml.me, by using [scruffy](https://github.com/aivarsk/scruffy) and [viz.js](https://github.com/mdaines/viz.js) (contributors welcomed)
 
 ## Credits
 * The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther
