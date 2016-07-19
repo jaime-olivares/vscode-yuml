@@ -54,11 +54,7 @@ module.exports = function()
             return options.error;
         }
 
-        if (!options.generate)
-            return this.composeYumlImg(newlines.join(), options);
-
-        this.getYumlPngAsync(newlines.join(), options, callback);
-        return "Loading...";
+        return this.composeYumlImg(newlines.join(), options);
     }
 
     this.traverseLines = function(text, funcProcess)
@@ -75,12 +71,6 @@ module.exports = function()
 
     this.processDirectives = function(line, options) 
     {
-        const styles = {
-            boring: "nofunky",
-            plain: "plain",
-            scruffy: "scruffy"
-        }
-
         const sizes = {
             huge: "140",
             big: "120",
@@ -93,7 +83,7 @@ module.exports = function()
             leftToRight: "LR",
             rightToLeft: "RL",
             topDown: "TB"
-        }
+        };
 
         var keyvalue = /^\/\/\s+\{\s*([\w]+)\s*:\s*([\w]+)\s*\}$/.exec(line);  // extracts directives as:  // {key:value}
         if (keyvalue != null && keyvalue.length == 3)
@@ -108,14 +98,6 @@ module.exports = function()
                         options.type = value;
                     else {
                         options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity.";
-                        return;
-                    } 
-                    break;
-                case "style":
-                    if (value=="boring" || value=="plain" || value=="scruffy")
-                        options.style = styles[value];
-                    else {
-                        options.error = "Error: invalid value for 'style'. Allowed values are: boring, plain <i>(default)</i>, scruffy.";
                         return;
                     } 
                     break;
@@ -148,54 +130,13 @@ module.exports = function()
 
     this.composeYumlImg = function(diagram, options) 
     {
-        var element = "<img src='http://yuml.me/diagram/" + options.style;
-        element += ";dir:" + options.dir + ";scale:" + options.scale;  
-        element += "/" + options.type + "/" + encodeURI(diagram) + "'/>";
-
-        return element;            
-    }
-
-    this.getYumlPngAsync = function(diagram, options, callback) 
-    {
-        var path = "/diagram/" + options.style;
-        path += ";dir:" + options.dir + ";scale:" + options.scale;  
-        path += "/" + options.type + "/" + encodeURI(diagram);
-
-        var request = {
-            hostname: "yuml.me",
-            port: 80,
-            path: path,
-            agent: false
-        }
-
-        var data = [];
-
-        http.get(request, (response) => {
-            response.on("data", function(body) { data.push(body); });
-            response.on("end", function() { callback(data); });
-        }).on("error", function(e) { callback(e.message) });
-    }
-
-    this.processPngResponse = function(pngData, filename)
-    {
-        var imagename = filename.replace(/\.[^.$]+$/, '.png');
-        var action = "retrieved from";
-
-        if (pngData != null)
+        switch (options.type)
         {
-            try
-            {
-                var buffer = Buffer.concat(pngData);
-                fs.writeFileSync(imagename, buffer);
-                action = "stored at";
-            }
-            catch (error) { return "Error generating the image file"; }
+            case "class":
+                var dot = new classDiagram();
+                return "<PRE>" + dot.yuml2dot(diagram, options) + "</PRE>";
         }
-
-        var element = "<span>Image " + action + " " + imagename + "</span><p/>";
-        element += "<img src=file://" + imagename + " />"; 
-
-        return element;
+        return null;            
     }
 
     this.imageFileIsDirty = function(filename)

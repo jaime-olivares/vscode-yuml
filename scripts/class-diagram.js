@@ -1,3 +1,5 @@
+require('./scripts/yuml2dot-utils.js')();
+
 /*
 Class         [Customer]
 Directional   [Customer]->[Order]
@@ -23,7 +25,8 @@ Comment       // Comments
 */
 
 module.exports = function() 
-{ 
+{
+/*
     var last_id = 0;
 
     function Box (name, spec) {
@@ -55,70 +58,7 @@ module.exports = function()
             return this.boxes;  // must be sorted and possibly an array
         }
     }
-
-    function escape_label(label)
-    {
-        label = label.replace('{', '\\{').replace('}', '\\}');
-        label = label.replace(';', '\\n');
-        label = label.replace(' ', '\\ ');
-        label = label.replace('<', '\\<').replace('>', '\\>');
-        label = label.replace('\\n\\n', '\\n');
-        return label;
-    }    
-
-    function splitYumlExpr(spec)
-    {
-        var word = "";
-        var depth = 0;
-        var parts = [];
-
-        for (var i=0; i<spec.length; i++)
-        {
-            c = spec[i];
-
-            if (c == '[')
-                depth += 1
-            else if (c == ']')
-                depth -= 1
-
-            if (depth == 1 && c == '[') {
-                parts.push(word.trim());
-                word = c;
-                continue;
-            }
-
-            word += c;
-            if (depth == 0 && c == ']') {
-                parts.push(word.trim());
-                word = "";
-            }
-        }
-
-        if (word.length > 0)
-            parts.push(word.trim());
-
-        return parts;
-    }
-
-    /* function crop(fin, fout) {
-        img = Image.open(fin)
-        if img.mode != 'RGB':
-            img = img.convert('RGB')
-        bg = Image.new('RGB', img.size, (255, 255, 255))
-        diff = ImageChops.difference(img, bg)
-        area = img.crop(diff.getbbox())
-        area.save(fout, 'png')
-    } */
-
-    function escape_token_escapes(spec)
-    {
-        return spec.replace('\\[', '\\u005b').replace('\\]', '\\u005d');
-    }
-
-    function unescape_token_escapes(spec)
-    {
-        return spec.replace('\\u005b', '[').replace('\\u005d', ']');
-    }
+*/
 
     function parseYumlExpr(spec)
     {
@@ -226,23 +166,8 @@ module.exports = function()
             }
         }
     }
-    
-    function recordName(label)
-    {
-        return label.split("|")[0].trim();
-    }
 
-    function wordwrap(str, width, newline) 
-    {
-        if (!str) 
-            return str; 
-    
-        var regex = '.{1,' + width + '}(\s|$)' + '|\S+?(\s|$)';
-    
-        return str.match(RegExp(regex, 'g')).join(newline);
-    }    
-
-    function yuml2dot(spec, options)
+    this.yuml2dot = function(spec, options)
     {
         var uids = {};
         var len = 0;
@@ -367,11 +292,5 @@ module.exports = function()
 
         dot += '}\r\n';
         return dot;
-    }
-
-    function transform(expr, fout, options) 
-    {
-        dot = yuml2dot(expr, options);
-        subprocess.Popen(['dot', '-Tpng'], stdin=subprocess.PIPE, stdout=fout).communicate(input=dot);
-    }
+    }     
 }

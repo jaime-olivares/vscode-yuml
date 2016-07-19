@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const classDiagram = require('./scripts/class-diagram.js');
 require('./scripts/yuml-utils.js')();
 
 exports.activate = function(context) 
@@ -36,7 +37,7 @@ exports.activate = function(context)
 
             if (generate && !imageFileIsDirty(filename)) // Retrieve previously generated image file
                 this.diagram = processPngResponse(null, filename);
-            else  // Invoke yuml.me for retrieving the image
+            else  // Regenerate the diagram
                 this.diagram = createYumlElement(text, uri, filename, (data) => {}); 
             
             this._onDidChange.fire(uri); 

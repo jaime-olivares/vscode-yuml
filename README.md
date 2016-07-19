@@ -23,11 +23,6 @@ This is the list of valid directives:
   Valid values: *class, activity, usecase*  
   Example: `// {type:class}`
 
-+ **style**: Optional, specifies the diagram style. The 'boring' style produces smaller image files.  
-  Valid values: *boring, plain, scruffy*  
-  Default: `plain`  
-  Example: `// {style:scruffy}`
-
 + **size**: Optional, specifies the size of the diagram elements. Notice that the diagram viewer will scale the image to fit the window.  
   Valid values: *huge, big, normal, small, tiny*  
   Default: `normal`  
@@ -38,7 +33,7 @@ This is the list of valid directives:
   Default: `leftToRight`  
   Example: `// {direction:topDown}`
 
-+ **generate**: Optional, indicates if a *.png* file shall be generated on each save, sparing some calls to the *yuml.me* web service when reopening. The image file is saved in the same folder as the .yuml file.  
++ **generate**: Optional, indicates if a *.png* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.  
   Valid values: *true, false*  
   Default: `false`  
   Example: `// {generate:true}`
@@ -66,4 +61,4 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * ~~The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther~~
 * ~~Examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)~~
 * This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
-* The yuml-to-dot translator is an internal port based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
+* The yuml-to-dot translator is partially based on a Python project called [scruffy](https://github.com/aivarsk/scruffy) (only class diagram)
