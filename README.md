@@ -1,5 +1,5 @@
 # yUML extension
-yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on [yUML Syntax](http://yuml.me/).
+yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on the [yUML Syntax](http://yuml.me/).
 
 [![](https://vsmarketplacebadge.apphb.com/version/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/installs/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
@@ -49,10 +49,10 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 * By right clicking on the document's title tab and selecting the option: *View yUML Diagram*
 
 ## Extension Settings
-No settings yet
+No settings yet.
 
 ## Dependencies
-This extension doesn't have any dependency. It is a pure javascript application.
+This extension doesn't have any dependency. It is a pure javascript application with everything needed already embedded. 
 
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
@@ -65,3 +65,5 @@ If you have experience developing Visual Studio Code extensions, please propose 
 ## Credits
 * ~~The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther~~
 * ~~Examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)~~
+* This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
+* The yuml-to-dot translator is an internal port based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
