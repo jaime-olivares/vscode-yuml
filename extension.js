@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-require('./yuml-utils.js')();
+require('./scripts/yuml-utils.js')();
 
 exports.activate = function(context) 
 {
