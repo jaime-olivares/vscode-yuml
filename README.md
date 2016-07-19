@@ -1,5 +1,5 @@
 # yUML extension
-yUML extension for Visual Studio Code. Enables the use of [yuml.me](http://yuml.me/) tools.
+yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on [yUML Syntax](http://yuml.me/).
 
 [![](https://vsmarketplacebadge.apphb.com/version/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/installs/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
@@ -8,18 +8,18 @@ yUML extension for Visual Studio Code. Enables the use of [yuml.me](http://yuml.
 ## Features
 * Syntax highlighting of *.yuml* files
 * Viewing of yUML diagrams after each file save
-* Viewing directives for altering diagram type, size and orientation
+* Additional directives for altering diagram type, size and orientation
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
 ## Directives
-Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering service.
+Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering.
 The directives shall be placed at the beginning of the file, before any yuml statement.
 The *type* directive is the unique mandatory one.
 
-All comment and directive lines are not posted to the rendering service. This is the list of valid directives
+This is the list of valid directives:
 
-+ **type**: <u>Mandatory</u>, specifies the diagram type. Currently, *yuml.me* supports 3 diagram types but more are expected in a near time.  
++ **type**: <u>Mandatory</u>, specifies the diagram type.  
   Valid values: *class, activity, usecase*  
   Example: `// {type:class}`
 
@@ -52,22 +52,16 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 No settings yet
 
 ## Dependencies
-This extension doesn't have any dependency. However, it invokes the diagraming service at [yuml.me](http://yuml.me/)
+This extension doesn't have any dependency. It is a pure javascript application.
 
 ## Issue reporting
-This extension is only a wrapper for the rendering service provided by [yuml.me](http://yuml.me/).
-You can find many examples at their [site](http://yuml.me/diagram/scruffy/class/samples). Please do not create issues related to diagram types, elements, styles or lack of syntax documentation. 
-Rather go directly to their [Forum](https://groups.google.com/forum/#!forum/yuml) page.
-
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
-* Use POST and body for invoking yuml.me, for allowing very large diagrams (soon)
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
-* [Version 2.0](VERSION2.md): Eliminate dependency on yuml.me
 
 ## Credits
-* The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther
-* Examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
+* ~~The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther~~
+* ~~Examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)~~
