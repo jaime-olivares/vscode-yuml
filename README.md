@@ -13,7 +13,7 @@ yUML extension for Visual Studio Code. Allows the creation of UML diagrams based
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
 ## Directives
-Directives are not part of the yUML syntax, but are required for modifying the drawing behavior of the rendering.
+Directives are not part of the yUML syntax, but are required for modifying the rendering behavior.
 The directives shall be placed at the beginning of the file, before any yuml statement.
 The *type* directive is the unique mandatory one.
 
@@ -53,6 +53,7 @@ This extension doesn't have any dependency. It is a pure javascript application 
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
+* Completion of diagram types: use-case, activity, etc.
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors

@@ -26,7 +26,7 @@ Comment       // Comments
 
 module.exports = function() 
 {
-/*
+    /* This code doesn't seem to be functional
     var last_id = 0;
 
     function Box (name, spec) {
@@ -58,7 +58,7 @@ module.exports = function()
             return this.boxes;  // must be sorted and possibly an array
         }
     }
-*/
+    */
 
     function parseYumlExpr(spec)
     {

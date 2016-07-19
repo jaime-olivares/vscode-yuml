@@ -1,5 +1,7 @@
 const vscode = require('vscode');
+const fs = require('fs');
 const classDiagram = require('./scripts/class-diagram.js');
+
 require('./scripts/yuml-utils.js')();
 
 exports.activate = function(context) 
@@ -8,7 +10,7 @@ exports.activate = function(context)
     {
         constructor () {
             this._onDidChange = new vscode.EventEmitter();
-            this.diagram = '';
+            this.diagram = "";
         }
 
         provideTextDocumentContent (uri, token) {
@@ -33,12 +35,7 @@ exports.activate = function(context)
             const text = editor.document.getText();
             const filename = editor.document.fileName;
 
-            var generate = determineHasGenerate(text)
-
-            if (generate && !imageFileIsDirty(filename)) // Retrieve previously generated image file
-                this.diagram = processPngResponse(null, filename);
-            else  // Regenerate the diagram
-                this.diagram = createYumlElement(text, uri, filename, (data) => {}); 
+            this.diagram = createYumlElement(text, uri, filename); 
             
             this._onDidChange.fire(uri); 
         }
@@ -50,7 +47,7 @@ exports.activate = function(context)
 
             const text = editor.document.getText();            
             const filename = editor.document.fileName;
-            const diagram = this.doCreateYumlElement(text, uri, filename);
+            const diagram = createYumlElement(text, uri, filename);
             
             if (diagram == "") 
                 this.diagram = "";
@@ -62,16 +59,20 @@ exports.activate = function(context)
             this._onDidChange.fire(uri);
         }
 
-        doCreateYumlElement(text, uri, filename) {
-            var that = this;
-            var element = createYumlElement(text, uri, filename, (data) => {
-                if (typeof data === "string")   // error
-                    that.diagram = data; 
-                else 
-                    that.diagram = processPngResponse(data, filename); 
-                that._onDidChange.fire(uri);                     
-            }); 
-            return element;
+        imageFileIsDirty(filename)   // Not being used yet
+        {
+            try 
+            {
+                var imagename = filename.replace(/\.[^.$]+$/, '.png');
+                dateYuml = fs.statSync(filename).mtime.getTime();
+                datePng = fs.statSync(imagename).mtime.getTime();
+
+                return datePng < dateYuml;
+            }
+            catch (err)
+            {
+                return true;
+            }
         }
     }
     
@@ -90,18 +91,10 @@ exports.activate = function(context)
         return disp;
     });
 
-    vscode.workspace.onDidSaveTextDocument((e) => {
-        provider.update(previewUri);
-    });
+    vscode.workspace.onDidSaveTextDocument((e) => { provider.update(previewUri); });
 
-    vscode.workspace.onDidOpenTextDocument((e) => {
-        provider.load(previewUri);
-    });
+    vscode.workspace.onDidOpenTextDocument((e) => { provider.load(previewUri); });
 
-//    vscode.window.onDidChangeActiveTextEditor((e) => {
-//        provider.load(previewUri);
-//    });
-    
     context.subscriptions.push(disposable, registration);
 }
 

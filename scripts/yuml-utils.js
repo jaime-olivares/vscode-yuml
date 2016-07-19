@@ -1,45 +1,22 @@
-const http = require('http');
-const fs = require('fs');
-
 module.exports = function() 
 { 
-    this.determineHasGenerate = function(text, options)
-    {
-        var options = {};
-        var hasGenerate = false;
-
-        this.traverseLines(text, (line) => {
-            if (line.startsWith("//"))
-            {
-                this.processDirectives(line, options);
-                if (options.hasOwnProperty("error"))
-                    return false;
-                if (options.hasOwnProperty("generate"))
-                {
-                    hasGenerate = options.generate;
-                    return false;
-                }                    
-                return true;
-            }
-            else if (line.length > 0)
-                return false;
-        });            
-
-        return hasGenerate;
-    }
-
-    this.createYumlElement = function(text, uri, filename, callback) 
+    this.createYumlElement = function(text, uri, filename) 
     {
         var newlines = [];
         var options = { style: "plain", dir: "LR", scale: "100", generate: false };
 
-        this.traverseLines(text, (line) => {
+        var lines = text.split(/\r|\n/);
+
+        for (var i=0; i<lines.length; i++)
+        {
+            var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
+            if (!funcProcess(line))
+                break;
             if (line.startsWith("//"))
                 this.processDirectives(line, options);
             else if (line.length > 0) 
                 newlines.push(line);
-            return true;
-        });
+        }            
 
         if (newlines.length == 0)  
             return "";
@@ -54,19 +31,18 @@ module.exports = function()
             return options.error;
         }
 
-        return this.composeYumlImg(newlines.join(), options);
-    }
-
-    this.traverseLines = function(text, funcProcess)
-    {
-        var lines = text.split(/\r|\n/);
-
-        for (var i=0; i<lines.length; i++)
+        var diagram = newlines.join();   // separator shall be newline?
+        switch (options.type)
         {
-            var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
-            if (!funcProcess(line))
+            case "class":
+                var dot = new classDiagram();
+                return "<PRE>" + dot.yuml2dot(diagram, options) + "</PRE>";   // Temporarily shown as <PRE>
+            case "usecase":
                 break;
-        }            
+            case "activity":
+                break;
+        }
+        return null;
     }
 
     this.processDirectives = function(line, options) 
@@ -125,33 +101,6 @@ module.exports = function()
                         return;
                     }                        
             }
-        }
-    }
-
-    this.composeYumlImg = function(diagram, options) 
-    {
-        switch (options.type)
-        {
-            case "class":
-                var dot = new classDiagram();
-                return "<PRE>" + dot.yuml2dot(diagram, options) + "</PRE>";
-        }
-        return null;            
-    }
-
-    this.imageFileIsDirty = function(filename)
-    {
-        try 
-        {
-            var imagename = filename.replace(/\.[^.$]+$/, '.png');
-            dateYuml = fs.statSync(filename).mtime.getTime();
-            datePng = fs.statSync(imagename).mtime.getTime();
-
-            return datePng < dateYuml;
-        }
-        catch (err)
-        {
-            return true;
         }
     }
 }
