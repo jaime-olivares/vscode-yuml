@@ -16,6 +16,7 @@ exports.activate = function(context)
             return `<!DOCTYPE html>
             <html>
             <head>
+                <script src='./scripts/graphviz.min.js'></script>
             </head>
             <body style="background:white;color:black;border:10px;">
                 ${this.diagram}

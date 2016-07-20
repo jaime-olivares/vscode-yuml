@@ -1,4 +1,5 @@
 const classDiagram = require('./class-diagram.js');
+var Viz = require("viz.js");
 
 module.exports = function() 
 { 
@@ -31,16 +32,21 @@ module.exports = function()
             return options.error;
         }
 
+        var output = null;
         switch (options.type)
         {
             case "class":
-                var dot = new classDiagram();
-                return "<PRE>" + dot.yuml2dot(newlines, options) + "</PRE>";   // Temporarily shown as <PRE>
+                output = classDiagram(newlines, options); 
+                break;
             case "usecase":
                 break;
             case "activity":
                 break;
         }
+
+        if (output != null) 
+            return Viz(output);
+
         return null;
     }
 

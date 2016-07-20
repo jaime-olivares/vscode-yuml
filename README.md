@@ -1,6 +1,8 @@
 # yUML extension
 yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on the [yUML Syntax](http://yuml.me/).
 
+**CURRENTLY PRODUCED OFFLINE CLASS DIAGRAMS WITH SUCCESS !!!**
+
 ## Features
 * Syntax highlighting of *.yuml* files
 * Viewing of yUML diagrams after each file save
@@ -53,6 +55,7 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
+* Dark theme
 
 ## Credits
 * ~~The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther~~
