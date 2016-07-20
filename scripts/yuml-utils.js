@@ -1,9 +1,9 @@
 const classDiagram = require('./class-diagram.js');
-var Viz = require("viz.js");
+const Viz = require("viz.js");
 
-module.exports = function() 
-{ 
-    this.createYumlElement = function(text, uri, filename) 
+module.exports = function()
+{
+    this.createYumlElement = function(text, uri, filename)
     {
         var newlines = [];
         var options = { style: "plain", dir: "LR", scale: "100", generate: false };
@@ -15,11 +15,11 @@ module.exports = function()
             var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
             if (line.startsWith("//"))
                 this.processDirectives(line, options);
-            else if (line.length > 0) 
+            else if (line.length > 0)
                 newlines.push(line);
-        }            
+        }
 
-        if (newlines.length == 0)  
+        if (newlines.length == 0)
             return "";
 
         if (!options.hasOwnProperty("type"))
@@ -36,7 +36,7 @@ module.exports = function()
         switch (options.type)
         {
             case "class":
-                output = classDiagram(newlines, options); 
+                output = classDiagram(newlines, options);
                 break;
             case "usecase":
                 break;
@@ -44,13 +44,13 @@ module.exports = function()
                 break;
         }
 
-        if (output != null) 
+        if (output != null)
             return Viz(output);
 
         return null;
     }
 
-    this.processDirectives = function(line, options) 
+    this.processDirectives = function(line, options)
     {
         const sizes = {
             huge: "140",
@@ -80,7 +80,7 @@ module.exports = function()
                     else {
                         options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity.";
                         return;
-                    } 
+                    }
                     break;
                 case "size":
                     if (value=="huge" || value=="big" || value=="normal" || value=="small" || value=="tiny")
@@ -88,7 +88,7 @@ module.exports = function()
                     else {
                         options.error = "Error: invalid value for 'size'. Allowed values are: huge, big, normal <i>(default)</i>, small, tiny.";
                         return;
-                    } 
+                    }
                     break;
                 case "direction":
                     if (value=="leftToRight" || value=="rightToLeft" || value=="topDown")
@@ -104,7 +104,7 @@ module.exports = function()
                     else {
                         options.error = "Error: invalid value for 'generate'. Allowed values are: true, false <i>(default)</i>.";
                         return;
-                    }                        
+                    }
             }
         }
     }

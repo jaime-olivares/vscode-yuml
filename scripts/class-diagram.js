@@ -39,7 +39,7 @@ module.exports = function(specLines, options)
 
             if (part=="^")
             {
-                exprs.push(["edge", "empty", "", "none", "", "solid"]);                
+                exprs.push(["edge", "empty", "", "none", "", "solid"]);
             }
             // [something like this]
             // [something like this {bg:color}]
@@ -61,7 +61,7 @@ module.exports = function(specLines, options)
                     exprs.push(["note", part.substring(5).trim(), bg]);
                 }
                 else
-                    exprs.push(["record", part, bg]); 
+                    exprs.push(["record", part, bg]);
             }
             else if (part.indexOf("-") >= 0)
             {
@@ -90,13 +90,13 @@ module.exports = function(specLines, options)
                 {
                     if (left.startsWith("<>"))
                         return [ "odiamond", left.substring(2)];
-                    else if (left.startsWith("++")) 
-                        return [ "diamond", left.substring(2)];                  
+                    else if (left.startsWith("++"))
+                        return [ "diamond", left.substring(2)];
                     else if (left.startsWith("+"))
                         return [ "odiamond", left.substring(1)];
                     else if (left.startsWith("<") || left.endsWith(">"))
                         return [ "vee", left.substring(1)];
-                    else if (left.startsWith("^")) 
+                    else if (left.startsWith("^"))
                         return [ "empty", left.substring(1)];
                     else
                         return [ "none", left ];
@@ -111,13 +111,13 @@ module.exports = function(specLines, options)
 
                     if (right.endsWith("<>"))
                         return [ "odiamond", right.substring(0, len-2)];
-                    else if (right.endsWith("++")) 
+                    else if (right.endsWith("++"))
                         return [ "diamond", right.substring(0, len-2)];
                     else if (right.endsWith("+"))
                         return [ "odiamond", right.substring(0, len-1)];
                     else if (right.endsWith(">"))
                         return [ "vee", right.substring(0, len-1)];
-                    else if (right.endsWith("^")) 
+                    else if (right.endsWith("^"))
                         return [ "empty", right.substring(0, len-1)];
                     else
                         return processLeft(right);
@@ -125,7 +125,7 @@ module.exports = function(specLines, options)
                 tokens = processRight(right);
                 rstyle = tokens[0];
                 rtext = tokens[1];
-                
+
                 exprs.push(['edge', lstyle, ltext, rstyle, rtext, style]);
             }
         }
@@ -135,11 +135,6 @@ module.exports = function(specLines, options)
 
     var uids = {};
     var len = 0;
-
-    var Foo = function(label)
-    {
-        this.uid = label;
-    };
 
     if (specLines.length > 5)
         options.rankdir = 'TD'
@@ -162,16 +157,16 @@ module.exports = function(specLines, options)
                 var label = elem[k][1];
                 if (uids.hasOwnProperty(recordName(label)))
                     continue;
-                
+
                 var uid = 'A' + (len++).toString();
-                uids[recordName(label)] = new Foo(uid);
+                uids[recordName(label)] = uid;
 
                 dot += '    ' + uid + ' [ ';
                 dot += 'shape = "' + elem[k][0] + '", ';
                 dot += 'height = 0.50, ';
                 dot += 'fontsize = 10, ';
                 dot += 'margin = "0.20,0.05", ';
-            
+
                 // Looks like table / class with attributes and methods
                 if (label.indexOf("|") >= 0)
                 {
@@ -187,9 +182,8 @@ module.exports = function(specLines, options)
                 }
 
                 label = escape_label(label);
-
-                //if (label.indexOf("|") >= 0 &&  options.rankdir == 'TD')
-                //    label = '{' + label + '}'
+                if (elem[k][0] == "record")
+                    label = "{" + label + "}";
 
                 dot += 'label = "' + label + '"';
 
@@ -206,7 +200,7 @@ module.exports = function(specLines, options)
             var edge = elem[1];
             var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : edge[5];
 
-            dot += '    ' + uids[recordName(elem[0][1])].uid + ' -> ' + uids[recordName(elem[2][1])].uid + ' ';
+            dot += '    ' + uids[recordName(elem[0][1])] + ' -> ' + uids[recordName(elem[2][1])] + ' ';
             dot += '[ shape = "' + edge[0] + '", ';
             dot += 'dir = "both", ';
             dot += 'style = "' + style + '", ';
