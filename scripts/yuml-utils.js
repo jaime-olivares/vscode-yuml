@@ -1,3 +1,5 @@
+const classDiagram = require('./class-diagram.js');
+
 module.exports = function() 
 { 
     this.createYumlElement = function(text, uri, filename) 
@@ -10,8 +12,6 @@ module.exports = function()
         for (var i=0; i<lines.length; i++)
         {
             var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
-            if (!funcProcess(line))
-                break;
             if (line.startsWith("//"))
                 this.processDirectives(line, options);
             else if (line.length > 0) 
@@ -31,12 +31,11 @@ module.exports = function()
             return options.error;
         }
 
-        var diagram = newlines.join();   // separator shall be newline?
         switch (options.type)
         {
             case "class":
                 var dot = new classDiagram();
-                return "<PRE>" + dot.yuml2dot(diagram, options) + "</PRE>";   // Temporarily shown as <PRE>
+                return "<PRE>" + dot.yuml2dot(newlines, options) + "</PRE>";   // Temporarily shown as <PRE>
             case "usecase":
                 break;
             case "activity":

@@ -12,6 +12,8 @@ module.exports = function()
 
     this.splitYumlExpr = function(spec)
     {
+//        return spec.split("\r\n");
+
         var word = "";
         var depth = 0;
         var parts = [];
@@ -41,7 +43,7 @@ module.exports = function()
         if (word.length > 0)
             parts.push(word.trim());
 
-        return parts;
+        return parts;        
     }
 
     this.escape_token_escapes = function(spec)

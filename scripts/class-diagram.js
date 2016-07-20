@@ -1,4 +1,4 @@
-require('./scripts/yuml2dot-utils.js')();
+require('./yuml2dot-utils.js')();
 
 /*
 Class         [Customer]
@@ -26,49 +26,16 @@ Comment       // Comments
 
 module.exports = function() 
 {
-    /* This code doesn't seem to be functional
-    var last_id = 0;
-
-    function Box (name, spec) {
-        this.name = name;
-        this.spec = spec;
-        this.uid = 'A' + (last_id++);
-        this.right_margin = 0
-        this.width = 0
-
-        this.update = function(spec)
-        {
-            if (this.spec.length < spec.length)
-                this.spec = spec
-            return this;
-        }
-    }
-
-    function Boxes() {
-        this.boxes = {};
-
-        this.addBox = function(spec) {
-            var name = spec.split('|')[0].trim();
-            if (!boxes.hasOwnProperty(name))
-                this.boxes[name] = new Box(name, spec);
-            return this.boxes[name].update(spec);
-        }
-
-        this.getBoxes = function() {
-            return this.boxes;  // must be sorted and possibly an array
-        }
-    }
-    */
-
-    function parseYumlExpr(spec)
+    function parseYumlExpr(specLine)
     {
-        var exprs = []
-        var parts = this.splitYumlExpr(escape_tokens);
+        var exprs = [];
+        var parts = this.splitYumlExpr(specLine);
 
         for (var i=0; i<parts.length; i++)
         {
             var part = parts[i].trim();
-            // control empty part
+            if (part.length == 0)
+                continue;
 
             if (part=="^")
             {
@@ -82,31 +49,31 @@ module.exports = function()
                 part = part.substr(1, part.length-2);
 
                 var bg = "";
-                var bgParts = /^\[(.*)\{bg:[\w]*\}\]$/.exec(part);
-                if (bgParts.length == 3)
+                var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
+                if (bgParts != null && bgParts.length == 3)
                 {
                     part = bgParts[1];
                     bg = bgParts[2];
                 }
 
-                if (part.startswith("note:"))
+                if (part.startsWith("note:"))
                 {
                     exprs.push(["note", part.substring(5).trim(), bg]);
                 }
-                else if (part.match(/\[|\]/))
-                {
-                    var tokens = part.match(/\[(.*?)\]/g);
-                    exprs.push(["cluster", tokens[0], bg, tokens.slice(1)]);
-                }
+//                else if (part.match(/\[|\]/))
+//                {
+//                    var tokens = part.match(/\[(.*?)\]/g);
+//                    exprs.push(["cluster", tokens[0], bg, tokens.slice(1)]);
+//                }
                 else
                     exprs.push(["record", part, bg]); 
             }
-            else if (part.index("-") >= 0)
+            else if (part.indexOf("-") >= 0)
             {
                 var style;
                 var tokens;
 
-                if (part.index("-.-") >= 0)
+                if (part.indexOf("-.-") >= 0)
                 {
                     style = "dashed";
                     tokens = part.split("-.-");
@@ -132,7 +99,7 @@ module.exports = function()
                         return [ "diamond", left.substring(2) ];                  
                     else if (left.startsWith("+"))
                         return [ "odiamond", ltext = left.substring(1) ];
-                    else if (left.startsWith("<") || left.endswith(">"))
+                    else if (left.startsWith("<") || left.endsWith(">"))
                         return [ "vee", left.substring(1) ];
                     else if (left.startsWith("^")) 
                         return [ "empty", left.substring(1) ];
@@ -165,9 +132,11 @@ module.exports = function()
                 exprs.push(['edge', lstyle, ltext, rstyle, rtext, style]);
             }
         }
+
+        return exprs;
     }
 
-    this.yuml2dot = function(spec, options)
+    this.yuml2dot = function(specLines, options)
     {
         var uids = {};
         var len = 0;
@@ -177,9 +146,7 @@ module.exports = function()
             this.uid = label;
         };
 
-        var exprs = yumlExpr(spec);
-
-        if (exprs.length > 5)
+        if (specLines.length > 5)
             options.rankdir = 'TD'
         else
             options.rankdir = 'LR'
@@ -189,105 +156,108 @@ module.exports = function()
         dot += '    ranksep = 1\r\n';
         dot += '    rankdir = ' + options.rankdir + '\r\n';
 
-        for (var i=0; i<exprs.length; i++)
+        for (var i=0; i<specLines.length; i++)
         {
-            var elem = exprs[i];
+            var elem = parseYumlExpr(specLines[i]);
 
-            if (elem[0] == "cluster")
+            for (var k=0; k<elem.length; k++)
             {
-                var label = elem[1]
-                if (uids.hasOwnProperty(recordName(label)))
-                    continue;
+/*                if (elem[k][0] == "cluster")
+                {
+                    var label = elem[k][1]
+                    if (uids.hasOwnProperty(recordName(label)))
+                        continue;
 
-                var uid = 'cluster_A' + (len++).toString();
-                uids[recordName(label)] = new Foo(uid);
+                    var uid = 'cluster_A' + (len++).toString();
+                    uids[recordName(label)] = new Foo(uid);
 
-                dot += '    subgraph ' + uid + ' {\r\n';
-                dot += '        label = \"' + label + '\"\r\n';
+                    dot += '    subgraph ' + uid + ' {\r\n';
+                    dot += '        label = \"' + label + '\"\r\n';
+                    dot += '        fontsize = 10\r\n';
+
+                    //if options.font:
+                    //    dot += '        fontname = "%s"' % (options.font))
+
+                    if (elem.length>3)
+                    {
+                        for (var j=0; j<elem.length; j++)
+                            dot += '        ' + uids[j].uid + '\r\n';
+                    }
+                    dot += '    }\r\n';
+                }
+                else*/ if (elem[k][0] == "note" || elem[k][0] == "record")
+                {
+                    var label = elem[k][1];
+                    if (uids.hasOwnProperty(recordName(label)))
+                        continue;
+                    
+                    var uid = 'A' + (len++).toString();
+                    uids[recordName(label)] = new Foo(uid);
+
+                    dot += '    node [\r\n';
+                    dot += '        shape = "' + elem[k][0] + '"\r\n';
+                    dot += '        height = 0.50\r\n';
+                    dot += '        fontsize = 10\r\n';
+
+                    // if options.font:
+                    //    dot += '        fontname = "%s"' % (options.font))
+
+                    dot += '        margin = "0.20,0.05"\r\n';
+                    dot += '    ]\r\n';
+                    dot += '    ' + uid + ' [\r\n';
+                
+                    // Looks like table / class with attributes and methods
+                    if (label.indexOf("|") >= 0)
+                    {
+                        label = label + '\\n';
+                        label = label.replace('|', '\\n|');
+                    }
+                    else
+                    {
+                        var lines = label.split(";");
+                        for (var j=0; j<lines.length; j++)
+                            lines[j] = wordwrap(lines[j], 20, "\\n");
+                        label = lines.join("\\n");
+                    }
+
+                    label = escape_label(label);
+
+                    //if (label.indexOf("|") >= 0 &&  options.rankdir == 'TD')
+                    //    label = '{' + label + '}'
+
+                    dot += '        label = "' + label + '"\r\n';
+
+                    if (elem[k][2]) {
+                        dot += '        style = "filled"\r\n';
+                        dot += '        fillcolor = "' + elem[k][2] + '"\r\n';
+                    }
+                    dot += '    ]\r\n';
+                }
+            }
+
+            if (elem.length == 3 && elem[1][0] == 'edge')
+            {
+                var edge = elem[1];
+                dot += '    edge [\r\n';
+                dot += '        shape = "' + edge[0] + '"\r\n';
+                dot += '        dir = "both"\r\n';
+                // Dashed style for notes
+                if (elem[0][0] == 'note' || elem[2][0] == 'note')
+                    dot += '        style = "dashed"\r\n';
+                else
+                    dot += '        style = "' + edge[5] + '"\r\n';
+                dot += '        arrowtail = "' + edge[1] + '"\r\n';
+                dot += '        taillabel = "' + edge[2] + '"\r\n';
+                dot += '        arrowhead = "' + edge[3] + '"\r\n';
+                dot += '        headlabel = "' + edge[4] + '"\r\n';
+                dot += '        labeldistance = 2\r\n';
                 dot += '        fontsize = 10\r\n';
 
                 //if options.font:
                 //    dot += '        fontname = "%s"' % (options.font))
-
-                if (elem.length>3)
-                {
-                    for (var j=0; j<elem.length; j++)
-                        dot += '        ' + uids[node].uid + '\r\n';
-                }
-                dot += '    }\r\n';
-            }
-            else if (elem[0] == "note" || elem[0] == "record")
-            {
-                var label = elem[1];
-                if (uids.hasOwnProperty(recordName(label)))
-                    continue;
-                
-                var uid = 'A' + (len++).toString();
-                uids[recordName(label)] = new Foo(uid);
-
-                dot += '    node [\r\n';
-                dot += '        shape = "' + elem[0] + '"\r\n';
-                dot += '        height = 0.50\r\n';
-                dot += '        fontsize = 10\r\n';
-
-                // if options.font:
-                //    dot += '        fontname = "%s"' % (options.font))
-
-                dot += '        margin = "0.20,0.05"\r\n';
                 dot += '    ]\r\n';
-                dot += '    ' + uid + ' [\r\n';
-            
-                // Looks like table / class with attributes and methods
-                if (label.indexOf("|") >= 0)
-                {
-                    label = label + '\\n';
-                    label = label.replace('|', '\\n|');
-                }
-                else
-                {
-                    var lines = label.split(";");
-                    for (var j=0; j<lines.length; j++)
-                        lines[j] = wordwrap(lines[j], 20, "\\n");
-                    label = lines.join("\\n");
-                }
-
-                label = escape_label(label);
-
-                if (label.indexOf("|") >= 0 &&  options.rankdir == 'TD')
-                    label = '{' + label + '}'
-
-                dot += '        label = "' + label + '"\r\n';
-
-                if (elem[2]) {
-                    dot += '        style = "filled"\r\n';
-                    dot += '        fillcolor = "' + elem[2] + '"\r\n';
-                }
-                dot += '    ]\r\n';
+                dot += '    ' + uids[recordName(elem[0][1])].uid + ' -> ' + uids[recordName(elem[2][1])].uid + '\r\n';
             }
-        }
-
-        if (expr.length == 3 && expr[1][0] == 'edge')
-        {
-            var elem = expr[1];
-            dot += '    edge [\r\n';
-            dot += '        shape = "' + elem[0] + '"\r\n';
-            dot += '        dir = "both"\r\n';
-            // Dashed style for notes
-            if (expr[0][0] == 'note' || expr[2][0] == 'note')
-                dot += '        style = "dashed"\r\n';
-            else
-                dot += '        style = "' + elem[5] + '"\r\n';
-            dot += '        arrowtail = "' + elem[1] + '"\r\n';
-            dot += '        taillabel = "' + elem[2] + '"\r\n';
-            dot += '        arrowhead = "' + elem[3] + '"\r\n';
-            dot += '        headlabel = "' + elem[4] + '"\r\n';
-            dot += '        labeldistance = 2\r\n';
-            dot += '        fontsize = 10\r\n';
-
-            //if options.font:
-            //    dot += '        fontname = "%s"' % (options.font))
-            dot += '    ]\r\n';
-            dot += '    ' + uids[recordName(expr[0][1])].uid + ' -> ' + uids[recordName(expr[2][1])].uid + '\r\n';
         }
 
         dot += '}\r\n';

@@ -1,6 +1,5 @@
 const vscode = require('vscode');
 const fs = require('fs');
-const classDiagram = require('./scripts/class-diagram.js');
 
 require('./scripts/yuml-utils.js')();
 
