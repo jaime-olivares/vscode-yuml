@@ -12,8 +12,6 @@ module.exports = function()
 
     this.splitYumlExpr = function(spec)
     {
-//        return spec.split("\r\n");
-
         var word = "";
         var depth = 0;
         var parts = [];

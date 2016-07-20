@@ -60,11 +60,6 @@ module.exports = function()
                 {
                     exprs.push(["note", part.substring(5).trim(), bg]);
                 }
-//                else if (part.match(/\[|\]/))
-//                {
-//                    var tokens = part.match(/\[(.*?)\]/g);
-//                    exprs.push(["cluster", tokens[0], bg, tokens.slice(1)]);
-//                }
                 else
                     exprs.push(["record", part, bg]); 
             }
@@ -94,15 +89,15 @@ module.exports = function()
                 var processLeft = function(left)
                 {
                     if (left.startsWith("<>"))
-                        return [ "odiamond", ltext = left.substring(2) ];
+                        return [ "odiamond", left.substring(2)];
                     else if (left.startsWith("++")) 
-                        return [ "diamond", left.substring(2) ];                  
+                        return [ "diamond", left.substring(2)];                  
                     else if (left.startsWith("+"))
-                        return [ "odiamond", ltext = left.substring(1) ];
+                        return [ "odiamond", left.substring(1)];
                     else if (left.startsWith("<") || left.endsWith(">"))
-                        return [ "vee", left.substring(1) ];
+                        return [ "vee", left.substring(1)];
                     else if (left.startsWith("^")) 
-                        return [ "empty", left.substring(1) ];
+                        return [ "empty", left.substring(1)];
                     else
                         return [ "none", left ];
                 }
@@ -112,16 +107,18 @@ module.exports = function()
 
                 var processRight = function(right)
                 {
-                    if (right.startsWith("<>"))
-                        return [ "odiamond", ltext = right.substring(2) ];
-                    else if (right.startsWith("++")) 
-                        return [ "diamond", right.substring(2) ];                  
-                    else if (right.startsWith("+"))
-                        return [ "odiamond", ltext = right.substring(1) ];
-                    else if (right.startsWith(">"))
-                        return [ "vee", right.substring(1) ];
-                    else if (right.startsWith("^")) 
-                        return [ "empty", right.substring(1) ];
+                    var len = right.length;
+
+                    if (right.endsWith("<>"))
+                        return [ "odiamond", right.substring(0, len-2)];
+                    else if (right.endsWith("++")) 
+                        return [ "diamond", right.substring(0, len-2)];
+                    else if (right.endsWith("+"))
+                        return [ "odiamond", right.substring(0, len-1)];
+                    else if (right.endsWith(">"))
+                        return [ "vee", right.substring(0, len-1)];
+                    else if (right.endsWith("^")) 
+                        return [ "empty", right.substring(0, len-1)];
                     else
                         return processLeft(right);
                 }
@@ -152,7 +149,7 @@ module.exports = function()
             options.rankdir = 'LR'
 
         var dot = "";
-        dot += 'digraph G {\r\n';
+        dot += 'digraph class_diagram {\r\n';
         dot += '    ranksep = 1\r\n';
         dot += '    rankdir = ' + options.rankdir + '\r\n';
 
@@ -162,30 +159,7 @@ module.exports = function()
 
             for (var k=0; k<elem.length; k++)
             {
-/*                if (elem[k][0] == "cluster")
-                {
-                    var label = elem[k][1]
-                    if (uids.hasOwnProperty(recordName(label)))
-                        continue;
-
-                    var uid = 'cluster_A' + (len++).toString();
-                    uids[recordName(label)] = new Foo(uid);
-
-                    dot += '    subgraph ' + uid + ' {\r\n';
-                    dot += '        label = \"' + label + '\"\r\n';
-                    dot += '        fontsize = 10\r\n';
-
-                    //if options.font:
-                    //    dot += '        fontname = "%s"' % (options.font))
-
-                    if (elem.length>3)
-                    {
-                        for (var j=0; j<elem.length; j++)
-                            dot += '        ' + uids[j].uid + '\r\n';
-                    }
-                    dot += '    }\r\n';
-                }
-                else*/ if (elem[k][0] == "note" || elem[k][0] == "record")
+                if (elem[k][0] == "note" || elem[k][0] == "record")
                 {
                     var label = elem[k][1];
                     if (uids.hasOwnProperty(recordName(label)))
@@ -194,17 +168,11 @@ module.exports = function()
                     var uid = 'A' + (len++).toString();
                     uids[recordName(label)] = new Foo(uid);
 
-                    dot += '    node [\r\n';
-                    dot += '        shape = "' + elem[k][0] + '"\r\n';
-                    dot += '        height = 0.50\r\n';
-                    dot += '        fontsize = 10\r\n';
-
-                    // if options.font:
-                    //    dot += '        fontname = "%s"' % (options.font))
-
-                    dot += '        margin = "0.20,0.05"\r\n';
-                    dot += '    ]\r\n';
-                    dot += '    ' + uid + ' [\r\n';
+                    dot += '    ' + uid + ' [ ';
+                    dot += 'shape = "' + elem[k][0] + '", ';
+                    dot += 'height = 0.50, ';
+                    dot += 'fontsize = 10, ';
+                    dot += 'margin = "0.20,0.05", ';
                 
                     // Looks like table / class with attributes and methods
                     if (label.indexOf("|") >= 0)
@@ -225,38 +193,31 @@ module.exports = function()
                     //if (label.indexOf("|") >= 0 &&  options.rankdir == 'TD')
                     //    label = '{' + label + '}'
 
-                    dot += '        label = "' + label + '"\r\n';
+                    dot += 'label = "' + label + '"';
 
                     if (elem[k][2]) {
-                        dot += '        style = "filled"\r\n';
-                        dot += '        fillcolor = "' + elem[k][2] + '"\r\n';
+                        dot += ', style = "filled"';
+                        dot += ', fillcolor = "' + elem[k][2] + '"';
                     }
-                    dot += '    ]\r\n';
+                    dot += ' ]\r\n';
                 }
             }
 
             if (elem.length == 3 && elem[1][0] == 'edge')
             {
                 var edge = elem[1];
-                dot += '    edge [\r\n';
-                dot += '        shape = "' + edge[0] + '"\r\n';
-                dot += '        dir = "both"\r\n';
-                // Dashed style for notes
-                if (elem[0][0] == 'note' || elem[2][0] == 'note')
-                    dot += '        style = "dashed"\r\n';
-                else
-                    dot += '        style = "' + edge[5] + '"\r\n';
-                dot += '        arrowtail = "' + edge[1] + '"\r\n';
-                dot += '        taillabel = "' + edge[2] + '"\r\n';
-                dot += '        arrowhead = "' + edge[3] + '"\r\n';
-                dot += '        headlabel = "' + edge[4] + '"\r\n';
-                dot += '        labeldistance = 2\r\n';
-                dot += '        fontsize = 10\r\n';
+                var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : edge[5];
 
-                //if options.font:
-                //    dot += '        fontname = "%s"' % (options.font))
-                dot += '    ]\r\n';
-                dot += '    ' + uids[recordName(elem[0][1])].uid + ' -> ' + uids[recordName(elem[2][1])].uid + '\r\n';
+                dot += '    ' + uids[recordName(elem[0][1])].uid + ' -> ' + uids[recordName(elem[2][1])].uid + ' ';
+                dot += '[ shape = "' + edge[0] + '", ';
+                dot += 'dir = "both", ';
+                dot += 'style = "' + style + '", ';
+                dot += 'arrowtail = "' + edge[1] + '", ';
+                dot += 'taillabel = "' + edge[2] + '", ';
+                dot += 'arrowhead = "' + edge[3] + '", ';
+                dot += 'headlabel = "' + edge[4] + '", ';
+                dot += 'labeldistance = 2, ';
+                dot += 'fontsize = 10 ]\r\n';
             }
         }
 
