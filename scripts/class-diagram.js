@@ -34,15 +34,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\[.*\]$/)) // class box
             {
                 part = part.substr(1, part.length-2);
-                var ret = extractBgColor(part);
-                part = ret.part;
-
-                if (part.startsWith("note:"))
-                {
-                    exprs.push(["note", part.substring(5).trim(), ret.bg]);
-                }
-                else
-                    exprs.push(["record", part, ret.bg]);
+                var ret = extractBgAndNote(part, true);
+                exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg]);
             }
             else if (part=="^")  // inheritance
             {
@@ -126,7 +119,7 @@ module.exports = function(specLines, options)
         var len = 0;
 
         var dot = 'digraph class_diagram {\r\n';
-        dot += '    ranksep = 0.5\r\n';
+        dot += '    ranksep = 0.7\r\n';
         dot += '    rankdir = ' + options.dir + '\r\n';
 
         for (var i=0; i<specLines.length; i++)
@@ -144,20 +137,7 @@ module.exports = function(specLines, options)
                     var uid = 'A' + (len++).toString();
                     uids[recordName(label)] = uid;
 
-                    if (label.indexOf("|") >= 0)
-                    {
-                        label = label + '\\n';
-                        label = label.replace('|', '\\n|');
-                    }
-                    else
-                    {
-                        var lines = label.split(";");
-                        for (var j=0; j<lines.length; j++)
-                            lines[j] = wordwrap(lines[j], 20, "\\n");
-                        label = lines.join("\\n");
-                    }
-
-                    label = escape_label(label);
+                    label = formatLabel(label, 20, true);
                     if (elem[k][0] == "record")
                         label = "{" + label + "}";
 
@@ -174,7 +154,7 @@ module.exports = function(specLines, options)
                         node.fillcolor = elem[k][2];
                     }
 
-                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
 
@@ -194,7 +174,7 @@ module.exports = function(specLines, options)
                     fontsize: 10
                 }
 
-                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
+                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + "\r\n";
             }
         }
 

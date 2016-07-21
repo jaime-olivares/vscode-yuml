@@ -6,5 +6,5 @@
         "**/.DS_Store": true,
         "node_modules": true
     },
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": false
 }

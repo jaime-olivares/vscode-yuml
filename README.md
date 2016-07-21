@@ -1,10 +1,9 @@
 # yUML extension
 yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on the [yUML Syntax](http://yuml.me/).
 
-**CURRENTLY PRODUCED OFFLINE CLASS AND USE-CASDE DIAGRAMS WITH SUCCESS !!!**
-
 ## Features
 * Syntax highlighting of *.yuml* files
+* Currently, the following diagram types are supported: **class, activity, usecase, state**
 * Viewing of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine. No need to call an external web service.
@@ -18,18 +17,18 @@ The *type* directive is the unique mandatory one.
 
 This is the list of valid directives:
 
-+ **type**: <u>Mandatory</u>, specifies the diagram type.
-  Valid values: *class, activity, usecase*
++ **type**: <u>Mandatory</u>, specifies the diagram type.    
+  Valid values: *class, activity, usecase, state*  
   Example: `// {type:class}`
 
-+ **direction**: Optional, specifies the drawing direction for certain diagram types.
-  Valid values: *leftToRight, rightToLeft, topDown*
-  Default: `topDown`
++ **direction**: Optional, specifies the drawing direction for certain diagram types.  
+  Valid values: *leftToRight, rightToLeft, topDown*  
+  Default: `topDown`  
   Example: `// {direction:topDown}`
 
-+ **generate**: Optional, indicates if a *.svg* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.
-  Valid values: *true, false*
-  Default: `false`
++ **generate**: Optional, indicates if a *.svg* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.  
+  Valid values: *true, false*  
+  Default: `false`  
   Example: `// {generate:true}`
 
 ## Invocation methods
@@ -48,7 +47,8 @@ No other product or library is needed and thus the installation process is quiet
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
-* Completion of other diagram types: activity, sequence, etc.
+* Completion of other diagram types: sequence, components, deployment, etc.
+* Diagram nesting
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors

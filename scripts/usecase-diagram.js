@@ -27,15 +27,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\(.*\)$/))  // use-case
             {
                 part = part.substr(1, part.length-2);
-                var ret = extractBgColor(part);
-                part = ret.part;
-
-                if (part.startsWith("note:"))
-                {
-                    exprs.push(["note", part.substring(5).trim(), ret.bg]);
-                }
-                else
-                    exprs.push(["ellipse", part, ret.bg]);
+                var ret = extractBgAndNote(part, true);
+                exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg]);
             }
             else if (part.match(/^\[.*\]$/))   // actor
             {
@@ -82,7 +75,7 @@ module.exports = function(specLines, options)
             {
                 var type = elem[k][0];
 
-                if (type == "note" || type == "ellipse" || type == "actor")
+                if (type == "note" || type == "record" || type == "actor")
                 {
                     var label = elem[k][1];
                     if (uids.hasOwnProperty(recordName(label)))
@@ -91,10 +84,7 @@ module.exports = function(specLines, options)
                     var uid = 'A' + (len++).toString();
                     uids[recordName(label)] = uid;
 
-                    var lines = label.split(";");
-                    for (var j=0; j<lines.length; j++)
-                        lines[j] = wordwrap(lines[j], 20, "\\n");
-                    label = escape_label(lines.join("\\n"));
+                    label = formatLabel(label, 20, false);
 
                     var node = {
                         fontsize: 10
@@ -108,7 +98,7 @@ module.exports = function(specLines, options)
                     }
                     else {
                         node.margin = "0.20,0.05";
-                        node.shape = type;
+                        node.shape = type == "record" ? "ellipse" : "note";
                         node.label = label;
                         node.height = 0.5;
 
@@ -118,7 +108,7 @@ module.exports = function(specLines, options)
                         }
                     }
 
-                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
 
@@ -138,7 +128,7 @@ module.exports = function(specLines, options)
                 if (elem[1][2].len > 0)
                     edge.label = elem[1][2];
 
-                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
+                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + "\r\n";
             }
         }
 

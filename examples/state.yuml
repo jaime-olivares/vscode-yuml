@@ -1,0 +1,9 @@
+// Example taken from wikipedia
+// {type:state}
+(start)[Start]->(Simulator running)
+(Simulator running)[Pause]->(Simulator paused|do / wait)
+(Simulator running)[Stop]->(end)
+(Log retrieval)[Continue]->(Simulator running)
+(Simulator paused)[Unpause]->(Simulator running)
+(Simulator paused)[Data requested]->(Log retrieval|do / output log)
+(Log retrieval)->(end) 

@@ -60,14 +60,25 @@ module.exports = function()
         return parts;
     }
 
-    this.extractBgColor = function(part)
+    this.extractBgAndNote = function(part, allowNote)
     {
+        var ret = { bg: "", isNote: false };
+
         var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
         if (bgParts != null && bgParts.length == 3)
         {
-            return { part: bgParts[1], bg: bgParts[2] }
+            ret.part = bgParts[1].trim();
+            ret.bg = bgParts[2].trim();
         }
-        return { part: part, bg: ""}
+        else
+            ret.part = part.trim();
+
+        if (allowNote && part.startsWith("note:"))
+        {
+            ret.part = ret.part.substring(5).trim();
+            ret.isNote = true;
+        }
+        return ret;
     }
 
     this.escape_token_escapes = function(spec)
@@ -85,6 +96,21 @@ module.exports = function()
         return label.split("|")[0].trim();
     }
 
+    this.formatLabel = function(label, wrap, allowDivisors)
+    {
+        var lines = [label];
+
+        if (allowDivisors && label.indexOf("|") >= 0)
+            lines = label.split('|');
+
+        for (var j=0; j<lines.length; j++)
+            lines[j] = wordwrap(lines[j], wrap, "\\n");
+
+        label = lines.join('|');
+
+        return escape_label(label);
+    }
+
     this.wordwrap = function(str, width, newline)
     {
         if (!str)
@@ -95,7 +121,7 @@ module.exports = function()
         return str.match(RegExp(regex, 'g')).join(newline);
     }
 
-    this.serialize = function(obj)
+    this.serializeDot = function(obj)
     {
         var text = "";
 
@@ -107,10 +133,10 @@ module.exports = function()
                 text += ", ";
 
             text += key + ' = ';
-            if (typeof obj[key] === "number")
-                text += obj[key];
-            else
+            if (typeof obj[key] === "string")
                 text += '"' + obj[key] + '"';
+            else
+                text += obj[key];
         }
 
         text += " ]";

@@ -29,15 +29,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\(.*\)$/)) // activity
             {
                 part = part.substr(1, part.length-2);
-                var ret = extractBgColor(part);
-                part = ret.part;
-
-                //if (part.startsWith("note:"))
-                //{
-                //    exprs.push(["note", part.substring(5).trim(), ret.bg]);
-                //}
-                //else
-                    exprs.push(["record", part, ret.bg]);
+                var ret = extractBgAndNote(part, true);
+                exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg]);
             }
             else if (part.match(/^<.*>$/))
             {
@@ -54,7 +47,7 @@ module.exports = function(specLines, options)
                 part = part.substr(0, part.length-2).trim();
                 exprs.push(["edge", "none", "vee", part, "solid"]);
             }
-            else if (part == '-')
+            else if (part == '-')  // connector for notes
             {
                 exprs.push(["edge", "none", "none", "", "solid"]);
             }
@@ -116,7 +109,7 @@ module.exports = function(specLines, options)
                         }
                     }
 
-                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
                 else if (elem[k][0] == "diamond")
                 {
@@ -135,7 +128,7 @@ module.exports = function(specLines, options)
                         label: ""
                     }
 
-                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
                 else if (elem[k][0] == "rectangle")
                 {
@@ -156,7 +149,7 @@ module.exports = function(specLines, options)
                         label: ""
                     }
 
-                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
 
@@ -179,7 +172,7 @@ module.exports = function(specLines, options)
                     if (elem[k][3].length > 0)
                         edge.label = elem[k][3];
 
-                    dot += '    ' + uids[recordName(elem[k-1][1])] + " -> " + uids[recordName(elem[k+1][1])] + ' ' + serialize(edge) + "\r\n";
+                    dot += '    ' + uids[recordName(elem[k-1][1])] + " -> " + uids[recordName(elem[k+1][1])] + ' ' + serializeDot(edge) + "\r\n";
                 }
             }
         }

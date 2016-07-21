@@ -1,6 +1,7 @@
 const classDiagram = require('./class-diagram.js');
 const usecaseDiagram = require('./usecase-diagram.js');
 const activityDiagram = require('./activity-diagram.js');
+const stateDiagram = require('./state-diagram.js');
 const Viz = require("viz.js");
 require('./svg-utils.js')();
 
@@ -36,26 +37,38 @@ module.exports = function()
         }
 
         var dot = null;
-        switch (options.type)
-        {
-            case "class":
-                dot = classDiagram(newlines, options);
-                break;
-            case "usecase":
-                dot = usecaseDiagram(newlines, options);
-                break;
-            case "activity":
-                dot = activityDiagram(newlines, options);
-                break;
+
+        try {
+            switch (options.type)
+            {
+                case "class":
+                    dot = classDiagram(newlines, options);
+                    break;
+                case "usecase":
+                    dot = usecaseDiagram(newlines, options);
+                    break;
+                case "activity":
+                    dot = activityDiagram(newlines, options);
+                    break;
+                case "state":
+                    dot = stateDiagram(newlines, options);
+                    break;
+            }
+        }
+        catch (e) {
+            return "Error parsing the yuml file";
         }
 
-        if (dot != null)
-        {
+        if (dot == null)
+            return null;
+
+        try {
             var svg = Viz(dot);
             return processEmbeddedImages(svg);
         }
-
-        return null;
+        catch (e) {
+            return "Error composing the diagram"
+        }
     }
 
     processDirectives = function(line, options)
@@ -75,15 +88,15 @@ module.exports = function()
             switch (key)
             {
                 case "type":
-                    if (value=="class" || value=="usecase" || value=="activity")
+                    if (/^(class|usecase|activity|state)$/.test(value))
                         options.type = value;
                     else {
-                        options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity.";
+                        options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity, state.";
                         return;
                     }
                     break;
                 case "direction":
-                    if (value=="leftToRight" || value=="rightToLeft" || value=="topDown")
+                    if (/^(leftToRight|rightToLeft|topDown)$/.test(value))
                         options.dir = directions[value];
                     else {
                         options.error = "Error: invalid value for 'direction'. Allowed values are: leftToRight, rightToLeft, topDown <i>(default)</i>.";
@@ -91,7 +104,7 @@ module.exports = function()
                     }
                     break;
                 case "generate":
-                    if (value=="true" || value=="false")
+                    if (/^(true|false)$/.test(value))
                         options.generate = (value === "true");
                     else {
                         options.error = "Error: invalid value for 'generate'. Allowed values are: true, false <i>(default)</i>.";
