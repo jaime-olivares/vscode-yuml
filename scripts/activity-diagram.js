@@ -98,40 +98,22 @@ module.exports = function(specLines, options)
                             margin: "0,0",
                             label: ""
                         }
-
-                        dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
-                        continue;
-                    }
-
-                    if (label.indexOf("|") >= 0)
-                    {
-                        label = label + '\\n';
-                        label = label.replace('|', '\\n|');
                     }
                     else
                     {
-                        var lines = label.split(";");
-                        for (var j=0; j<lines.length; j++)
-                            lines[j] = wordwrap(lines[j], 20, "\\n");
-                        label = lines.join("\\n");
-                    }
+                        var node = {
+                            shape: elem[k][0],
+                            height: 0.5,
+                            fontsize: 10,
+                            margin: "0.20,0.05",
+                            label: escape_label(label),
+                            style: "rounded"
+                        }
 
-                    label = escape_label(label);
-                    if (elem[k][0] == "record")
-                        label = "{" + label + "}";
-
-                    var node = {
-                        shape: elem[k][0],
-                        height: 0.5,
-                        fontsize: 10,
-                        margin: "0.20,0.05",
-                        label: label,
-                        style: "rounded"
-                    }
-
-                    if (elem[k][2]) {
-                        node.style = "filled";
-                        node.fillcolor = elem[k][2];
+                        if (elem[k][2]) {
+                            node.style = "filled";
+                            node.fillcolor = elem[k][2];
+                        }
                     }
 
                     dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
