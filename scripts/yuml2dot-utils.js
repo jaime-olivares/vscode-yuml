@@ -1,5 +1,5 @@
-module.exports = function() 
-{ 
+module.exports = function()
+{
     this.escape_label = function(label)
     {
         label = label.replace('{', '\\{').replace('}', '\\}');
@@ -8,40 +8,44 @@ module.exports = function()
         label = label.replace('<', '\\<').replace('>', '\\>');
         label = label.replace('\\n\\n', '\\n');
         return label;
-    }    
+    }
 
     this.splitYumlExpr = function(spec)
     {
         var word = "";
-        var depth = 0;
+        var lastChar = null;
         var parts = [];
 
         for (var i=0; i<spec.length; i++)
         {
             c = spec[i];
 
-            if (c == '[')
-                depth += 1
-            else if (c == ']')
-                depth -= 1
+            if ((c == '[' || c == '(') && lastChar === null)
+            {
+                if (word.length > 0) {
+                    parts.push(word.trim());
+                    word = "";
+                }
 
-            if (depth == 1 && c == '[') {
-                parts.push(word.trim());
+                lastChar = (c == '[') ? ']' : ')';
                 word = c;
-                continue;
             }
-
-            word += c;
-            if (depth == 0 && c == ']') {
-                parts.push(word.trim());
+            else if (c === lastChar)
+            {
+                lastChar =  null;
+                parts.push(word.trim() + c);
                 word = "";
+            }
+            else
+            {
+                word += c;
             }
         }
 
         if (word.length > 0)
             parts.push(word.trim());
 
-        return parts;        
+        return parts;
     }
 
     this.escape_token_escapes = function(spec)
@@ -53,19 +57,19 @@ module.exports = function()
     {
         return spec.replace('\\u005b', '[').replace('\\u005d', ']');
     }
-    
+
     this.recordName = function(label)
     {
         return label.split("|")[0].trim();
     }
 
-    this.wordwrap = function(str, width, newline) 
+    this.wordwrap = function(str, width, newline)
     {
-        if (!str) 
-            return str; 
-    
+        if (!str)
+            return str;
+
         var regex = '.{1,' + width + '}(\s|$)' + '|\S+?(\s|$)';
-    
+
         return str.match(RegExp(regex, 'g')).join(newline);
-    }    
+    }
 }

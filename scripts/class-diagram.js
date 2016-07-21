@@ -1,6 +1,8 @@
 require('./yuml2dot-utils.js')();
 
 /*
+Syntax as specified in yuml.me
+
 Class         [Customer]
 Directional   [Customer]->[Order]
 Bidirectional [Customer]<->[Order]
@@ -14,14 +16,6 @@ Notes         [Person]-[Address],[Address]-[note: Value Object]
 Full Class    [Customer|Forename;Surname;Email|Save()]
 Color splash  [Customer{bg:orange}]<>1->*[Order{bg:green}]
 Comment       // Comments
-
-[Foo|valueProp]
-[Foo]entityRef->[Bar]
-[Foo]entityComp++->ownedBy[Baz]
-[Foo]oneToMany->*[FooBar]
-[Bar|name]
-[FooBar|value]
-[FooBar]^[Bar]
 */
 
 module.exports = function(specLines, options)
@@ -37,14 +31,7 @@ module.exports = function(specLines, options)
             if (part.length == 0)
                 continue;
 
-            if (part=="^")
-            {
-                exprs.push(["edge", "empty", "", "none", "", "solid"]);
-            }
-            // [something like this]
-            // [something like this {bg:color}]
-            // [note: something like this {bg:color}]
-            else if (part.match(/^\[.*\]$/))
+            if (part.match(/^\[.*\]$/)) // class box
             {
                 part = part.substr(1, part.length-2);
 
@@ -63,7 +50,11 @@ module.exports = function(specLines, options)
                 else
                     exprs.push(["record", part, bg]);
             }
-            else if (part.indexOf("-") >= 0)
+            else if (part=="^")  // inheritance
+            {
+                exprs.push(["edge", "empty", "", "none", "", "solid"]);
+            }
+            else if (part.indexOf("-") >= 0)  // association
             {
                 var style;
                 var tokens;
@@ -128,6 +119,8 @@ module.exports = function(specLines, options)
 
                 exprs.push(['edge', lstyle, ltext, rstyle, rtext, style]);
             }
+            else
+                throw("Invalid expression");
         }
 
         return exprs;
@@ -136,15 +129,9 @@ module.exports = function(specLines, options)
     var uids = {};
     var len = 0;
 
-    if (specLines.length > 5)
-        options.rankdir = 'TD'
-    else
-        options.rankdir = 'LR'
-
-    var dot = "";
-    dot += 'digraph class_diagram {\r\n';
+    var dot = 'digraph class_diagram {\r\n';
     dot += '    ranksep = 1\r\n';
-    dot += '    rankdir = ' + options.rankdir + '\r\n';
+    dot += '    rankdir = ' + options.dir + '\r\n';
 
     for (var i=0; i<specLines.length; i++)
     {
@@ -161,13 +148,6 @@ module.exports = function(specLines, options)
                 var uid = 'A' + (len++).toString();
                 uids[recordName(label)] = uid;
 
-                dot += '    ' + uid + ' [ ';
-                dot += 'shape = "' + elem[k][0] + '", ';
-                dot += 'height = 0.50, ';
-                dot += 'fontsize = 10, ';
-                dot += 'margin = "0.20,0.05", ';
-
-                // Looks like table / class with attributes and methods
                 if (label.indexOf("|") >= 0)
                 {
                     label = label + '\\n';
@@ -185,6 +165,11 @@ module.exports = function(specLines, options)
                 if (elem[k][0] == "record")
                     label = "{" + label + "}";
 
+                dot += '    ' + uid + ' [ ';
+                dot += 'shape = "' + elem[k][0] + '", ';
+                dot += 'height = 0.50, ';
+                dot += 'fontsize = 10, ';
+                dot += 'margin = "0.20,0.05", ';
                 dot += 'label = "' + label + '"';
 
                 if (elem[k][2]) {

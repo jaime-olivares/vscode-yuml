@@ -1,7 +1,7 @@
 # yUML extension
 yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on the [yUML Syntax](http://yuml.me/).
 
-**CURRENTLY PRODUCED OFFLINE CLASS DIAGRAMS WITH SUCCESS !!!**
+**CURRENTLY PRODUCED OFFLINE CLASS AND USE-CASDE DIAGRAMS WITH SUCCESS !!!**
 
 ## Features
 * Syntax highlighting of *.yuml* files
@@ -29,10 +29,10 @@ This is the list of valid directives:
 
 + **direction**: Optional, specifies the drawing direction for certain diagram types.
   Valid values: *leftToRight, rightToLeft, topDown*
-  Default: `leftToRight`
+  Default: `topDown`
   Example: `// {direction:topDown}`
 
-+ **generate**: Optional, indicates if a *.png* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.
++ **generate**: Optional, indicates if a *.svg* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.
   Valid values: *true, false*
   Default: `false`
   Example: `// {generate:true}`
@@ -53,7 +53,7 @@ No other product or library is needed and thus the installation process is quiet
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
-* Completion of diagram types: use-case, activity, etc.
+* Completion of other diagram types: activity, sequence, etc.
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
@@ -62,6 +62,6 @@ If you have experience developing Visual Studio Code extensions, please propose 
 
 ## Credits
 * ~~The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther~~
-* ~~Examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)~~
+* Syntax and examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
 * This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
-* The yuml-to-dot translator is partially based on a Python project called [scruffy](https://github.com/aivarsk/scruffy) (class diagram)
+* The yuml-to-dot translator is loosy based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
