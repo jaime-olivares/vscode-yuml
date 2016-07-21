@@ -15,7 +15,7 @@ module.exports = function()
     this.createYumlElement = function(text, uri, filename)
     {
         var newlines = [];
-        var options = { dir: "TB", scale: "100", generate: false };
+        var options = { dir: "TB", generate: false };
 
         var lines = text.split(/\r|\n/);
 
@@ -65,14 +65,6 @@ module.exports = function()
 
     processDirectives = function(line, options)
     {
-        const sizes = {
-            huge: "140",
-            big: "120",
-            normal: "100",
-            small: "80",
-            tiny: "60"
-        };
-
         const directions = {
             leftToRight: "LR",
             rightToLeft: "RL",
@@ -92,14 +84,6 @@ module.exports = function()
                         options.type = value;
                     else {
                         options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity.";
-                        return;
-                    }
-                    break;
-                case "size":
-                    if (value=="huge" || value=="big" || value=="normal" || value=="small" || value=="tiny")
-                        options.scale = sizes[value];
-                    else {
-                        options.error = "Error: invalid value for 'size'. Allowed values are: huge, big, normal <i>(default)</i>, small, tiny.";
                         return;
                     }
                     break;

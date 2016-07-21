@@ -6,7 +6,7 @@ yUML extension for Visual Studio Code. Allows the creation of UML diagrams based
 ## Features
 * Syntax highlighting of *.yuml* files
 * Viewing of yUML diagrams after each file save
-* Additional directives for altering diagram type, size and orientation
+* Additional directives for altering diagram type and orientation
 * Embedded rendering engine. No need to call an external web service.
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
@@ -21,11 +21,6 @@ This is the list of valid directives:
 + **type**: <u>Mandatory</u>, specifies the diagram type.
   Valid values: *class, activity, usecase*
   Example: `// {type:class}`
-
-+ **size**: Optional, specifies the size of the diagram elements. Notice that the diagram viewer will scale the image to fit the window.
-  Valid values: *huge, big, normal, small, tiny*
-  Default: `normal`
-  Example: `// {size:big}`
 
 + **direction**: Optional, specifies the drawing direction for certain diagram types.
   Valid values: *leftToRight, rightToLeft, topDown*
