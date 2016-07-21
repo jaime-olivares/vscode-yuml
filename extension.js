@@ -3,9 +3,9 @@ const fs = require('fs');
 
 require('./scripts/yuml-utils.js')();
 
-exports.activate = function(context) 
+exports.activate = function(context)
 {
-    class yUMLDocumentContentProvider 
+    class yUMLDocumentContentProvider
     {
         constructor () {
             this._onDidChange = new vscode.EventEmitter();
@@ -22,7 +22,7 @@ exports.activate = function(context)
                 ${this.diagram}
             </body>`;
         }
-        
+
         get onDidChange () {
             return this._onDidChange.event;
         }
@@ -35,33 +35,33 @@ exports.activate = function(context)
             const text = editor.document.getText();
             const filename = editor.document.fileName;
 
-            this.diagram = createYumlElement(text, uri, filename); 
-            
-            this._onDidChange.fire(uri); 
+            this.diagram = processYumlDocument(text, uri, filename);
+
+            this._onDidChange.fire(uri);
         }
 
         update(uri) {
             const editor = vscode.window.activeTextEditor;
-            if (!editor || !editor.document)  
+            if (!editor || !editor.document)
                 return;
 
-            const text = editor.document.getText();            
+            const text = editor.document.getText();
             const filename = editor.document.fileName;
-            const diagram = createYumlElement(text, uri, filename);
-            
-            if (diagram == "") 
+            const diagram = processYumlDocument(text, uri, filename);
+
+            if (diagram == "")
                 this.diagram = "";
             else if (!diagram)
                 this.diagram = "Error composing the yuml invocation";
             else
                 this.diagram = diagram;
-            
+
             this._onDidChange.fire(uri);
         }
 
         imageFileIsDirty(filename)   // Not being used yet
         {
-            try 
+            try
             {
                 var imagename = filename.replace(/\.[^.$]+$/, '.png');
                 dateYuml = fs.statSync(filename).mtime.getTime();
@@ -75,10 +75,10 @@ exports.activate = function(context)
             }
         }
     }
-    
+
     const registerCommand = vscode.commands.registerCommand;
     const previewUri = vscode.Uri.parse('vscode-yuml://authority/vscode-yuml');
-    
+
     let provider = new yUMLDocumentContentProvider();
     let registration = vscode.workspace.registerTextDocumentContentProvider('vscode-yuml', provider);
 
@@ -86,7 +86,7 @@ exports.activate = function(context)
 
     let disposable = registerCommand('extension.viewYumlDiagram', () => {
         var disp = vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then(
-            (success) => { provider.update(previewUri); }, 
+            (success) => { provider.update(previewUri); },
             (reason) => { vscode.window.showErrorMessage(reason); });
         return disp;
     });
