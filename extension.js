@@ -62,7 +62,7 @@ exports.activate = function(context)
         {
             try
             {
-                var imagename = filename.replace(/\.[^.$]+$/, '.png');
+                var imagename = filename.replace(/\.[^.$]+$/, '.svg');
                 dateYuml = fs.statSync(filename).mtime.getTime();
                 datePng = fs.statSync(imagename).mtime.getTime();
 

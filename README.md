@@ -24,7 +24,7 @@ This is the list of valid directives:
 + **direction**: Optional, specifies the drawing direction for certain diagram types.  
   Valid values: *leftToRight, rightToLeft, topDown*  
   Default: `topDown`  
-  Example: `// {direction:topDown}`
+  Example: `// {direction:leftToRight}`
 
 + **generate**: Optional, indicates if a *.svg* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.  
   Valid values: *true, false*  

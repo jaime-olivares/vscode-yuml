@@ -1,3 +1,4 @@
+const fs = require('fs');
 const classDiagram = require('./class-diagram.js');
 const usecaseDiagram = require('./usecase-diagram.js');
 const activityDiagram = require('./activity-diagram.js');
@@ -56,14 +57,21 @@ module.exports = function()
             }
         }
         catch (e) {
-            return "Error parsing the yuml file";
+            return "Error parsing the yUML file";
         }
 
         if (dot == null)
-            return null;
+            return "Error: unable to parse the yUML file";
 
         try {
             var svg = Viz(dot);
+
+            if (options.generate)
+            {
+                var imagename = filename.replace(/\.[^.$]+$/, '.svg');
+                fs.writeFileSync(imagename, svg);
+            }
+                
             return processEmbeddedImages(svg);
         }
         catch (e) {

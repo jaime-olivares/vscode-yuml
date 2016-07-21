@@ -1,5 +1,6 @@
 // Example taken from wikipedia
 // {type:state}
+// {generate:true}
 (start)[Start]->(Simulator running)
 (Simulator running)[Pause]->(Simulator paused|do / wait)
 (Simulator running)[Stop]->(end)
