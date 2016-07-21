@@ -101,45 +101,50 @@ module.exports = function(specLines, options)
                     lines[j] = wordwrap(lines[j], 20, "\\n");
                 label = escape_label(lines.join("\\n"));
 
-                dot += '    ' + uid + ' [ ';
-                dot += 'fontsize = 10, ';
+                var node = {
+                    fontsize: 10
+                };
 
                 if (type == "actor")
                 {
-                    dot += 'margin = "0.05,0.05", ';
-                    dot += 'shape = "none", ';
-                    dot += 'label = "{img:actor} ' + label + '", ';
-                    dot += 'height = 1 ';
+                    node.margin = "0.05,0.05";
+                    node.shape = "none";
+                    node.label = "{img:actor} " + label;
+                    node.height = 1;
                 }
                 else {
-                    dot += 'margin = "0.20,0.05", ';
-                    dot += 'shape = "' + type + '", ';
-                    dot += 'label = "' + label + '", ';
-                    dot += 'height = 0.5 ';
+                    node.margin = "0.20,0.05";
+                    node.shape = type;
+                    node.label = label;
+                    node.height = 0.5;
+
                     if (elem[k][2]) {
-                        dot += ', style = "filled"';
-                        dot += ', fillcolor = "' + elem[k][2] + '"';
+                        node.style = "filled";
+                        node.fillcolor = elem[k][2];
                     }
                 }
-                dot += ' ]\r\n';
+
+                dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
             }
         }
 
         if (elem.length == 3 && elem[1][0] == 'edge')
         {
-            var edge = elem[1];
-            var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : edge[4];
+            var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][4];
 
-            dot += '    ' + uids[recordName(elem[0][1])] + ' -> ' + uids[recordName(elem[2][1])] + ' ';
-            dot += '[ shape = "' + edge[0] + '", ';
-            dot += 'dir = "both", ';
-            dot += 'style = "' + style + '", ';
-            dot += 'arrowtail = "' + edge[1] + '", ';
-            if (edge[2].len > 0)
-                dot += 'label = "' + edge[2] + '", ';
-            dot += 'arrowhead = "' + edge[3] + '", ';
-            dot += 'labeldistance = 2, ';
-            dot += 'fontsize = 10 ]\r\n';
+            var edge = {
+                shape: "edge",
+                dir: "both",
+                style: style,
+                arrowtail: elem[1][1],
+                arrowhead: elem[1][3],
+                labeldistance: 2,
+                fontsize: 10
+            }
+            if (elem[1][2].len > 0)
+                edge.label = elem[1][2];
+
+            dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
         }
     }
 

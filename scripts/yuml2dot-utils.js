@@ -72,4 +72,26 @@ module.exports = function()
 
         return str.match(RegExp(regex, 'g')).join(newline);
     }
+
+    this.serialize = function(obj)
+    {
+        var text = "";
+
+        for (key in obj)
+        {
+            if (text.length == 0)
+                text = "[ ";
+            else
+                text += ", ";
+
+            text += key + ' = ';
+            if (typeof obj[key] === "number")
+                text += obj[key];
+            else
+                text += '"' + obj[key] + '"';
+        }
+
+        text += " ]";
+        return text;
+    }
 }

@@ -165,36 +165,40 @@ module.exports = function(specLines, options)
                 if (elem[k][0] == "record")
                     label = "{" + label + "}";
 
-                dot += '    ' + uid + ' [ ';
-                dot += 'shape = "' + elem[k][0] + '", ';
-                dot += 'height = 0.50, ';
-                dot += 'fontsize = 10, ';
-                dot += 'margin = "0.20,0.05", ';
-                dot += 'label = "' + label + '"';
+                var node = {
+                    shape: elem[k][0],
+                    height: 0.5,
+                    fontsize: 10,
+                    margin: "0.20,0.05",
+                    label: label
+                }
 
                 if (elem[k][2]) {
-                    dot += ', style = "filled"';
-                    dot += ', fillcolor = "' + elem[k][2] + '"';
+                    node.style = "filled";
+                    node.fillcolor = elem[k][2];
                 }
-                dot += ' ]\r\n';
+
+                dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
             }
         }
 
         if (elem.length == 3 && elem[1][0] == 'edge')
         {
-            var edge = elem[1];
-            var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : edge[5];
+            var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][5];
 
-            dot += '    ' + uids[recordName(elem[0][1])] + ' -> ' + uids[recordName(elem[2][1])] + ' ';
-            dot += '[ shape = "' + edge[0] + '", ';
-            dot += 'dir = "both", ';
-            dot += 'style = "' + style + '", ';
-            dot += 'arrowtail = "' + edge[1] + '", ';
-            dot += 'taillabel = "' + edge[2] + '", ';
-            dot += 'arrowhead = "' + edge[3] + '", ';
-            dot += 'headlabel = "' + edge[4] + '", ';
-            dot += 'labeldistance = 2, ';
-            dot += 'fontsize = 10 ]\r\n';
+            var edge = {
+                shape: "edge",
+                dir: "both",
+                style: style,
+                arrowtail: elem[1][1],
+                taillabel: elem[1][2],
+                arrowhead: elem[1][3],
+                headlabel: elem[1][4],
+                labeldistance: 2,
+                fontsize: 10
+            }
+
+            dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
         }
     }
 
