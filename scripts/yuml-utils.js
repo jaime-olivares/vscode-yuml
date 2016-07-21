@@ -1,5 +1,6 @@
 const classDiagram = require('./class-diagram.js');
 const usecaseDiagram = require('./usecase-diagram.js');
+const activityDiagram = require('./activity-diagram.js');
 const Viz = require("viz.js");
 require('./svg-utils.js')();
 
@@ -44,6 +45,7 @@ module.exports = function()
                 dot = usecaseDiagram(newlines, options);
                 break;
             case "activity":
+                dot = activityDiagram(newlines, options);
                 break;
         }
 

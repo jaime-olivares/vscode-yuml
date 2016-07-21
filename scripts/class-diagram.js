@@ -23,7 +23,7 @@ module.exports = function(specLines, options)
     function parseYumlExpr(specLine)
     {
         var exprs = [];
-        var parts = this.splitYumlExpr(specLine);
+        var parts = this.splitYumlExpr(specLine, "[");
 
         for (var i=0; i<parts.length; i++)
         {
@@ -34,21 +34,15 @@ module.exports = function(specLines, options)
             if (part.match(/^\[.*\]$/)) // class box
             {
                 part = part.substr(1, part.length-2);
-
-                var bg = "";
-                var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
-                if (bgParts != null && bgParts.length == 3)
-                {
-                    part = bgParts[1];
-                    bg = bgParts[2];
-                }
+                var ret = extractBgColor(part);
+                part = ret.part;
 
                 if (part.startsWith("note:"))
                 {
-                    exprs.push(["note", part.substring(5).trim(), bg]);
+                    exprs.push(["note", part.substring(5).trim(), ret.bg]);
                 }
                 else
-                    exprs.push(["record", part, bg]);
+                    exprs.push(["record", part, ret.bg]);
             }
             else if (part=="^")  // inheritance
             {
@@ -132,7 +126,7 @@ module.exports = function(specLines, options)
         var len = 0;
 
         var dot = 'digraph class_diagram {\r\n';
-        dot += '    ranksep = 1\r\n';
+        dot += '    ranksep = 0.5\r\n';
         dot += '    rankdir = ' + options.dir + '\r\n';
 
         for (var i=0; i<specLines.length; i++)

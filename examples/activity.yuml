@@ -2,5 +2,5 @@
 // {type:activity}
 (start)-><a>[kettle empty]->(Fill Kettle)->|b|
 <a>[kettle full]->|b|->(Boil Kettle)->|c|
-|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)->(end)
+|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)
 (Pour Water)->(end)

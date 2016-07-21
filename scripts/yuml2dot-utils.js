@@ -10,24 +10,36 @@ module.exports = function()
         return label;
     }
 
-    this.splitYumlExpr = function(spec)
+    this.splitYumlExpr = function(line, separators)
     {
         var word = "";
         var lastChar = null;
         var parts = [];
 
-        for (var i=0; i<spec.length; i++)
+        for (var i=0; i<line.length; i++)
         {
-            c = spec[i];
+            c = line[i];
 
-            if ((c == '[' || c == '(') && lastChar === null)
+            if (separators.indexOf(c) >= 0 && lastChar === null)
             {
                 if (word.length > 0) {
                     parts.push(word.trim());
                     word = "";
                 }
 
-                lastChar = (c == '[') ? ']' : ')';
+                switch (c)
+                {
+                    case '[':
+                        lastChar = ']'; break;
+                    case '(':
+                        lastChar = ')'; break;
+                    case '<':
+                        lastChar = '>'; break;
+                    case '|':
+                        lastChar = '|'; break;
+                    default:
+                        lastChar = null; break;
+                }
                 word = c;
             }
             else if (c === lastChar)
@@ -46,6 +58,16 @@ module.exports = function()
             parts.push(word.trim());
 
         return parts;
+    }
+
+    this.extractBgColor = function(part)
+    {
+        var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
+        if (bgParts != null && bgParts.length == 3)
+        {
+            return { part: bgParts[1], bg: bgParts[2] }
+        }
+        return { part: part, bg: ""}
     }
 
     this.escape_token_escapes = function(spec)

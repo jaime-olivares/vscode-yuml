@@ -16,7 +16,7 @@ module.exports = function(specLines, options)
     function parseYumlExpr(specLine)
     {
         var exprs = [];
-        var parts = this.splitYumlExpr(specLine);
+        var parts = this.splitYumlExpr(specLine, "[(");
 
         for (var i=0; i<parts.length; i++)
         {
@@ -27,21 +27,15 @@ module.exports = function(specLines, options)
             if (part.match(/^\(.*\)$/))  // use-case
             {
                 part = part.substr(1, part.length-2);
-
-                var bg = "";
-                var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
-                if (bgParts != null && bgParts.length == 3)
-                {
-                    part = bgParts[1];
-                    bg = bgParts[2];
-                }
+                var ret = extractBgColor(part);
+                part = ret.part;
 
                 if (part.startsWith("note:"))
                 {
-                    exprs.push(["note", part.substring(5).trim(), bg]);
+                    exprs.push(["note", part.substring(5).trim(), ret.bg]);
                 }
                 else
-                    exprs.push(["ellipse", part, bg]);
+                    exprs.push(["ellipse", part, ret.bg]);
             }
             else if (part.match(/^\[.*\]$/))   // actor
             {
