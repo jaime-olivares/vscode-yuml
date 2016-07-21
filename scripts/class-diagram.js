@@ -126,82 +126,87 @@ module.exports = function(specLines, options)
         return exprs;
     }
 
-    var uids = {};
-    var len = 0;
-
-    var dot = 'digraph class_diagram {\r\n';
-    dot += '    ranksep = 1\r\n';
-    dot += '    rankdir = ' + options.dir + '\r\n';
-
-    for (var i=0; i<specLines.length; i++)
+    function composeDotExpr(specLines, options)
     {
-        var elem = parseYumlExpr(specLines[i]);
+        var uids = {};
+        var len = 0;
 
-        for (var k=0; k<elem.length; k++)
+        var dot = 'digraph class_diagram {\r\n';
+        dot += '    ranksep = 1\r\n';
+        dot += '    rankdir = ' + options.dir + '\r\n';
+
+        for (var i=0; i<specLines.length; i++)
         {
-            if (elem[k][0] == "note" || elem[k][0] == "record")
+            var elem = parseYumlExpr(specLines[i]);
+
+            for (var k=0; k<elem.length; k++)
             {
-                var label = elem[k][1];
-                if (uids.hasOwnProperty(recordName(label)))
-                    continue;
-
-                var uid = 'A' + (len++).toString();
-                uids[recordName(label)] = uid;
-
-                if (label.indexOf("|") >= 0)
+                if (elem[k][0] == "note" || elem[k][0] == "record")
                 {
-                    label = label + '\\n';
-                    label = label.replace('|', '\\n|');
+                    var label = elem[k][1];
+                    if (uids.hasOwnProperty(recordName(label)))
+                        continue;
+
+                    var uid = 'A' + (len++).toString();
+                    uids[recordName(label)] = uid;
+
+                    if (label.indexOf("|") >= 0)
+                    {
+                        label = label + '\\n';
+                        label = label.replace('|', '\\n|');
+                    }
+                    else
+                    {
+                        var lines = label.split(";");
+                        for (var j=0; j<lines.length; j++)
+                            lines[j] = wordwrap(lines[j], 20, "\\n");
+                        label = lines.join("\\n");
+                    }
+
+                    label = escape_label(label);
+                    if (elem[k][0] == "record")
+                        label = "{" + label + "}";
+
+                    var node = {
+                        shape: elem[k][0],
+                        height: 0.5,
+                        fontsize: 10,
+                        margin: "0.20,0.05",
+                        label: label
+                    }
+
+                    if (elem[k][2]) {
+                        node.style = "filled";
+                        node.fillcolor = elem[k][2];
+                    }
+
+                    dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
                 }
-                else
-                {
-                    var lines = label.split(";");
-                    for (var j=0; j<lines.length; j++)
-                        lines[j] = wordwrap(lines[j], 20, "\\n");
-                    label = lines.join("\\n");
+            }
+
+            if (elem.length == 3 && elem[1][0] == 'edge')
+            {
+                var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][5];
+
+                var edge = {
+                    shape: "edge",
+                    dir: "both",
+                    style: style,
+                    arrowtail: elem[1][1],
+                    taillabel: elem[1][2],
+                    arrowhead: elem[1][3],
+                    headlabel: elem[1][4],
+                    labeldistance: 2,
+                    fontsize: 10
                 }
 
-                label = escape_label(label);
-                if (elem[k][0] == "record")
-                    label = "{" + label + "}";
-
-                var node = {
-                    shape: elem[k][0],
-                    height: 0.5,
-                    fontsize: 10,
-                    margin: "0.20,0.05",
-                    label: label
-                }
-
-                if (elem[k][2]) {
-                    node.style = "filled";
-                    node.fillcolor = elem[k][2];
-                }
-
-                dot += '    ' + uid + ' ' + serialize(node) + "\r\n";
+                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
             }
         }
 
-        if (elem.length == 3 && elem[1][0] == 'edge')
-        {
-            var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][5];
-
-            var edge = {
-                shape: "edge",
-                dir: "both",
-                style: style,
-                arrowtail: elem[1][1],
-                taillabel: elem[1][2],
-                arrowhead: elem[1][3],
-                headlabel: elem[1][4],
-                labeldistance: 2,
-                fontsize: 10
-            }
-
-            dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serialize(edge) + "\r\n";
-        }
+        dot += '}\r\n';
+        return dot;
     }
 
-    dot += '}\r\n';
-    return dot;
+    return composeDotExpr(specLines, options);
 }
