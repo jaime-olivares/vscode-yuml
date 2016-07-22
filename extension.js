@@ -26,7 +26,7 @@ exports.activate = function(context)
             return this._onDidChange.event;
         }
 
-        load(uri) {
+        load(uri, isOpen) {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !editor.document)
                 return;
@@ -46,7 +46,7 @@ exports.activate = function(context)
 
             const text = editor.document.getText();
             const filename = editor.document.fileName;
-            const diagram = processYumlDocument(text, uri, filename);
+            const diagram = processYumlDocument(text, uri, filename, true);
 
             if (diagram == "")
                 this.diagram = "";
@@ -93,6 +93,8 @@ exports.activate = function(context)
     vscode.workspace.onDidSaveTextDocument((e) => { provider.update(previewUri); });
 
     vscode.workspace.onDidOpenTextDocument((e) => { provider.load(previewUri); });
+
+    vscode.window.onDidChangeActiveTextEditor((e) => { provider.load(previewUri); });
 
     context.subscriptions.push(disposable, registration);
 }

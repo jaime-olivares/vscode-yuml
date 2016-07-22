@@ -8,7 +8,7 @@ require('./svg-utils.js')();
 
 module.exports = function()
 {
-    this.processYumlDocument = function(text, uri, filename)
+    this.processYumlDocument = function(text, uri, filename, mayGenerate)
     {
         var newlines = [];
         var options = { dir: "TB", generate: false };
@@ -66,7 +66,7 @@ module.exports = function()
         try {
             var svg = Viz(dot);
 
-            if (options.generate)
+            if (options.generate===true && mayGenerate===true)
             {
                 var imagename = filename.replace(/\.[^.$]+$/, '.svg');
                 fs.writeFileSync(imagename, svg);
