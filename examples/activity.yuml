@@ -1,8 +1,6 @@
 // Example taken from: http://yuml.me/diagram/scruffy/activity/samples
-// {type:activity}
-// {style:plain} 
-// {size:normal}  
+// {type:activity}  
 (start)-><a>[kettle empty]->(Fill Kettle)->|b|
-<a>[kettle full]->|b|->(Boil Kettle)->|c| 
-|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)->(end)
-(Pour Water)->(end)
+<a>[kettle full]->|b|->(Boil Kettle)->|c|
+|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)
+(Pour Water)->(end)  
