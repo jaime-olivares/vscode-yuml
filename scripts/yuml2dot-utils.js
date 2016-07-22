@@ -12,7 +12,7 @@ module.exports = function()
             c = c.replace(';', '\\n');
             c = c.replace(' ', '\\ ');
             c = c.replace('<', '\\<').replace('>', '\\>');
-            c = c.replace('\\n\\n', '\\n');
+            // c = c.replace('\\n\\n', '\\n');
             return c;
         }
 
