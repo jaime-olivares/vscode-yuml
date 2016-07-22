@@ -12,7 +12,7 @@ yUML extension for Visual Studio Code. Allows the creation of UML diagrams based
   + Activity 
   + Use-case
   + State
-* Viewing of yUML diagrams after each file save
+* Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine. No need to call an external web service.
 
@@ -44,10 +44,9 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * Intellisense for language syntax
 * Intellisense for colors
 * Mimic the editor's dark or light theme
-* Wiki for the yUML syntax
 
 ## Credits
-* The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml) by Chet Luther
+* The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml)
 * Syntax and examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
 * This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
-* The yuml-to-dot translator is loosy based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
+* The yuml-to-dot translator is loosely based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
