@@ -113,12 +113,18 @@ module.exports = function()
 
     this.wordwrap = function(str, width, newline)
     {
-        if (!str)
+        if (!str || str.length<width)
             return str;
 
-        var regex = '.{1,' + width + '}(\s|$)' + '|\S+?(\s|$)';
+        var p;
+        for (p = width; p>0 && str[p]!=' '; p--) { }
+        if (p > 0) {
+            var left = str.substring(0, p);
+            var right = str.substring(p+1);
+            return left + newline + this.wordwrap(right, width, newline);
+        }
 
-        return str.match(RegExp(regex, 'g')).join(newline);
+        return str;
     }
 
     this.serializeDot = function(obj)

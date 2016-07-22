@@ -63,20 +63,25 @@ module.exports = function()
         if (dot == null)
             return "Error: unable to parse the yUML file";
 
+        var svg;
         try {
-            var svg = Viz(dot);
-
-            if (options.generate===true && mayGenerate===true)
-            {
-                var imagename = filename.replace(/\.[^.$]+$/, '.svg');
-                fs.writeFileSync(imagename, svg);
-            }
-                
-            return processEmbeddedImages(svg);
+            svg = Viz(dot);
+            svg = processEmbeddedImages(svg);
         }
         catch (e) {
             return "Error composing the diagram"
         }
+
+        try {
+            if (options.generate===true && mayGenerate===true)
+            {
+                var imagename = filename.replace(/\.[^.$]+$/, '.svg');
+                fs.writeFileSync(imagename, svg);
+            }                            
+        }
+        catch (e) { }
+
+        return svg;
     }
 
     processDirectives = function(line, options)
