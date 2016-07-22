@@ -14,26 +14,9 @@ yUML extension for Visual Studio Code. Allows the creation of UML diagrams based
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
-## Directives
-Directives are not part of the yUML syntax, but are required for modifying the rendering behavior.
-The directives shall be placed at the beginning of the file, before any yuml statement.
-The *type* directive is the unique mandatory one.
+## yUML syntax
 
-This is the list of valid directives:
-
-+ **type**: <u>Mandatory</u>, specifies the diagram type.    
-  Valid values: *class, activity, usecase, state*  
-  Example: `// {type:class}`
-
-+ **direction**: Optional, specifies the drawing direction for certain diagram types.  
-  Valid values: *leftToRight, rightToLeft, topDown*  
-  Default: `topDown`  
-  Example: `// {direction:leftToRight}`
-
-+ **generate**: Optional, indicates if a *.svg* file shall be generated on each save. The image file is saved in the same folder as the .yuml file.  
-  Valid values: *true, false*  
-  Default: `false`  
-  Example: `// {generate:true}`
+Please refer to the [wiki page](https://github.com/jaime-olivares/vscode-yuml/wiki)
 
 ## Invocation methods
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
