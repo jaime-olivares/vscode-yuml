@@ -1,8 +1,8 @@
 {
   "name": "yuml",
-  "displayName": "yUML extension for Visual Studio Code",
+  "displayName": "yUML",
   "description": "Integration tools for supporting yUML in VSCode",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "MIT",
