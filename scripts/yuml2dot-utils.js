@@ -2,12 +2,21 @@ module.exports = function()
 {
     this.escape_label = function(label)
     {
-        label = label.replace('{', '\\{').replace('}', '\\}');
-        label = label.replace(';', '\\n');
-        label = label.replace(' ', '\\ ');
-        label = label.replace('<', '\\<').replace('>', '\\>');
-        label = label.replace('\\n\\n', '\\n');
-        return label;
+        var newlabel = "";
+        for (var i=0; i<label.length; i++)
+            newlabel += replaceChar(label.charAt(i));
+
+        function replaceChar(c)
+        {
+            c = c.replace('{', '\\{').replace('}', '\\}');
+            c = c.replace(';', '\\n');
+            c = c.replace(' ', '\\ ');
+            c = c.replace('<', '\\<').replace('>', '\\>');
+            c = c.replace('\\n\\n', '\\n');
+            return c;
+        }
+
+        return newlabel;
     }
 
     this.splitYumlExpr = function(line, separators)
