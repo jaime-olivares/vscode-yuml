@@ -15,11 +15,19 @@ exports.activate = function(context)
             return `<!DOCTYPE html>
             <html>
             <head>
-                <script src='./scripts/graphviz.min.js'></script>
+                <script>
+                    function showDiagram() 
+                    {
+                        var isLight = document.body.classList.contains('vscode-light');
+                        var toHide = document.getElementById(isLight ? "dark" : "light");
+                        toHide.style.display = "none";  
+                    }
+                </script>                
             </head>
-            <body style="background:white;color:black;border:10px;">
+            <body style="margin:10px;" onload="showDiagram()">
                 ${this.diagram}
-            </body>`;
+            </body>
+            </html>`;
         }
 
         get onDidChange () {
@@ -56,22 +64,6 @@ exports.activate = function(context)
                 this.diagram = diagram;
 
             this._onDidChange.fire(uri);
-        }
-
-        imageFileIsDirty(filename)   // Not being used yet
-        {
-            try
-            {
-                var imagename = filename.replace(/\.[^.$]+$/, '.svg');
-                dateYuml = fs.statSync(filename).mtime.getTime();
-                datePng = fs.statSync(imagename).mtime.getTime();
-
-                return datePng < dateYuml;
-            }
-            catch (err)
-            {
-                return true;
-            }
         }
     }
 

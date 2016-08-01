@@ -8,7 +8,7 @@ require('./svg-utils.js')();
 
 module.exports = function()
 {
-    this.processYumlDocument = function(text, uri, filename, mayGenerate)
+    this.processYumlDocument = function(text, filename, mayGenerate) 
     {
         var newlines = [];
         var options = { dir: "TB", generate: false };
@@ -65,8 +65,11 @@ module.exports = function()
 
         var svg;
         try {
-            svg = Viz(dot);
-            svg = processEmbeddedImages(svg);
+            svgLight = Viz(buildDotHeader(false) + dot);
+            svgLight = processEmbeddedImages(svgLight);
+
+            svgDark = Viz(buildDotHeader(true) + dot);
+            svgDark = processEmbeddedImages(svgDark);
         }
         catch (e) {
             return "Error composing the diagram"
@@ -76,12 +79,12 @@ module.exports = function()
             if (options.generate===true && mayGenerate===true)
             {
                 var imagename = filename.replace(/\.[^.$]+$/, '.svg');
-                fs.writeFileSync(imagename, svg);
+                fs.writeFileSync(imagename, svgLight);
             }                            
         }
         catch (e) { }
 
-        return svg;
+        return "<div id='light'>\r\n" + svgLight + "\r\n</div><div id='dark'>\r\n" + svgDark + "\r\n</div>";
     }
 
     processDirectives = function(line, options)

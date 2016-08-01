@@ -1,5 +1,8 @@
 # Release notes
 
+## 2.2
+* Added theme-aware coloring
+
 ## 2.1
 * Solved bug: long labels are not properly split
 * Solved bug: some special characters in labels crash the diagram generator

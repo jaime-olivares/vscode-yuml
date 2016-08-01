@@ -62,10 +62,8 @@ module.exports = function(specLines, options)
     {
         var uids = {};
         var len = 0;
-
-        var dot = 'digraph activity_diagram {\r\n';
-        dot += '    ranksep = 0.5\r\n';
-        dot += '    rankdir = ' + options.dir + '\r\n';
+        var dot = "    ranksep = " + 0.5 + "\r\n";
+        dot += "    rankdir = " + options.dir + "\r\n";
 
         for (var i=0; i<specLines.length; i++)
         {
@@ -145,7 +143,6 @@ module.exports = function(specLines, options)
                         width:  options.dir == "TB" ? 0.5 : 0.05,
                         margin: "0,0",
                         style: "filled",
-                        fillcolor: "black",
                         label: ""
                     }
 
@@ -165,8 +162,8 @@ module.exports = function(specLines, options)
                         style: style,
                         arrowtail: elem[k][1],
                         arrowhead: elem[k][2],
-                        labeldistance: 2,
-                        fontsize: 10
+                        labeldistance: 1,
+                        fontsize: 10,
                     }
 
                     if (elem[k][3].length > 0)

@@ -50,10 +50,8 @@ module.exports = function(specLines, options)
     {
         var uids = {};
         var len = 0;
-
-        var dot = 'digraph state_diagram {\r\n';
-        dot += '    ranksep = 0.5\r\n';
-        dot += '    rankdir = ' + options.dir + '\r\n';
+        var dot = "    ranksep = " + 0.5 + "\r\n";
+        dot += "    rankdir = " + options.dir + "\r\n";
 
         for (var i=0; i<specLines.length; i++)
         {

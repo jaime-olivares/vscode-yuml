@@ -43,7 +43,6 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * Better syntax highlighting
 * Intellisense for language syntax
 * Intellisense for colors
-* Mimic the editor's dark or light theme
 
 ## Credits
 * The syntax highlighting has been taken from [sublime-yuml](https://github.com/cluther/sublime-yuml)

@@ -157,4 +157,17 @@ module.exports = function()
         text += " ]";
         return text;
     }
+
+    this.buildDotHeader = function(isDark)
+    {
+        var header = "digraph G {\r\n";
+
+        if (isDark)
+        {
+            header += "  graph [ bgcolor=transparent ]\r\n";
+            header += "  node [ color=white, fontcolor=white ]\r\n";
+            header += "  edge [ color=white, fontcolor=white ]\r\n";
+        }
+        return header;
+    }
 }

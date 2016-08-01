@@ -62,10 +62,8 @@ module.exports = function(specLines, options)
     {
         var uids = {};
         var len = 0;
-
-        var dot = 'digraph usecase_diagram {\r\n';
-        dot += '    ranksep = 1\r\n';
-        dot += '    rankdir = ' + options.dir + '\r\n';
+        var dot = "    ranksep = " + 0.7 + "\r\n";
+        dot += "    rankdir = " + options.dir + "\r\n";
 
         for (var i=0; i<specLines.length; i++)
         {
