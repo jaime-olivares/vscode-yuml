@@ -1,5 +1,9 @@
 # Release notes
 
+## 2.3
+* Better syntax highlight
+* Code snippets
+
 ## 2.2
 * Added theme-aware coloring
 

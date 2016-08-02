@@ -1,0 +1,71 @@
+{
+    // Example taken from: http://yuml.me/diagram/scruffy/activity/samples
+    "Activity": {
+        "description": "UML activity diagram",
+        "prefix": "activity",
+        "body": [
+            "// {type:activity}",  
+            "// {generate:true}",
+            "(start)-><a>[kettle empty]->(Fill Kettle)->|b|",
+            "<a>[kettle full]->|b|->(Boil Kettle)->|c|",
+            "|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)",
+            "(Pour Water)->(end)"
+        ]
+    },
+    // Example taken from: http://yuml.me/diagram/scruffy/class/samples
+    "Class": {
+        "description": "UML class diagram",
+        "prefix": "class",
+        "body": [
+            "// {type:class}",
+            "// {direction:topDown}",
+            "[note: You can stick notes on diagrams too!{bg:cornsilk}]",
+            "[Customer]<>1-orders 0..*>[Order]",
+            "[Order]++*-*>[LineItem]",
+            "[Order]-1>[DeliveryMethod]",
+            "[Order]*-*>[Product|EAN_Code|promo_price()]",
+            "[Category]<->[Product]",
+            "[DeliveryMethod]^[National]",
+            "[DeliveryMethod]^[International]"    
+        ]
+    },
+    // Diagram taken from wikipedia
+    "State": {
+        "description": "UML state diagram",
+        "prefix": "state",
+        "body": [
+            "// {type:state}",
+            "(start)[Start]->(Simulator running)",
+            "(Simulator running)[Pause]->(Simulator paused|do / wait)",
+            "(Simulator running)[Stop]->(end)",
+            "(Log retrieval)[Continue]->(Simulator running)",
+            "(Simulator paused)[Unpause]->(Simulator running)",
+            "(Simulator paused)[Data requested]->(Log retrieval|do / output log)",
+            "(Log retrieval)->(end)" 
+        ]
+    },
+    // Example taken from: http://yuml.me/diagram/scruffy/usecase/samples
+    "Use-Case": {
+        "description": "UML use-case diagram",
+        "prefix": "usecase",
+        "body": [
+            "// {type:usecase}",
+            "// {direction:leftToRight}",
+            "(note: figure 1.2{bg:beige})",
+            "[User]-(Login)",
+            "[Site Maintainer]-(Add User)",
+            "(Add User)<(Add Company)",
+            "[Site Maintainer]-(Upload Docs)",
+            "(Upload Docs)<(Manage Folders)",
+            "[User]-(Upload Docs)",
+            "[User]-(Full Text Search Docs)",
+            "(Full Text Search Docs)>(Preview Doc)",
+            "(Full Text Search Docs)>(Download Docs)",
+            "[User]-(Browse Docs)",
+            "(Browse Docs)>(Preview Doc)",
+            "(Download Docs)",
+            "[Site Maintainer]-(Post New Event to the Web Site)",
+            "[User]-(View Events)"
+        ]
+    }        
+}

@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "Integration tools for supporting yUML in VSCode",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "MIT",
@@ -15,17 +15,18 @@
     "email": "jaime_olivares@hotmail.com"
   },
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.3.0"
   },
   "categories": [
     "Languages",
+    "Snippets",
     "Other"
   ],
   "keywords": [
     "yuml",
     "diagrams",
     "uml",
-    "use-case",
+    "usecase",
     "activity"
   ],
   "contributes": {
@@ -42,27 +43,25 @@
         "configuration": "./yuml.configuration.json"
       }
     ],
-    "grammars": [
-      {
+    "grammars": [{
         "language": "yuml",
         "scopeName": "source.yuml",
         "path": "./syntaxes/yuml.tmLanguage"
-      }
-    ],
-    "commands": [
-      {
+    }],
+    "commands": [{
         "command": "extension.viewYumlDiagram",
         "title": "View yUML Diagram"
-      }
-    ],
+    }],
     "menus": {
-      "editor/title": [
-        {
+      "editor/title": [{
           "when": "resourceLangId == yuml",
           "command": "extension.viewYumlDiagram"
-        }
-      ]
-    }
+      }]
+    },
+    "snippets": [{
+        "language": "yuml",
+        "path": "./snippets/yuml.json"
+    }]  
   },
   "activationEvents": [
     "onCommand:extension.viewYumlDiagram"
