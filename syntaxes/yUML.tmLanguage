@@ -12,83 +12,27 @@
 	<array>
 		<dict>
 			<key>match</key>
+			<string>^(// *{ *\w+ *: *\w+ *} *$)</string>
+			<key>name</key>
+			<string>meta.preprocessor.numeric</string>
+		</dict>
+		<dict>
+			<key>match</key>
 			<string>^(//.*$)</string>
 			<key>name</key>
 			<string>comment.line</string>
 		</dict>
 		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.begin</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>entity.name.tag.css</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.section.property-list.css</string>
-				</dict>
-				<key>5</key>
-				<dict>
-					<key>name</key>
-					<string>meta.property-name.css</string>
-				</dict>
-				<key>6</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.separator.key-value.css</string>
-				</dict>
-				<key>7</key>
-				<dict>
-					<key>name</key>
-					<string>meta.property-value.css</string>
-				</dict>
-				<key>8</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.section.property-list.css</string>
-				</dict>
-				<key>9</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.end</string>
-				</dict>
-			</dict>
 			<key>match</key>
-			<string>(\[)([^\{\]]+)((\{)([^\:]+)(\:)([^\}]+)(\}))?(\])</string>
+			<string>\([^)]*\)</string>
+			<key>name</key>
+			<string>entity.name.tag.css</string>
 		</dict>
 		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>meta.association.yuml</string>
-				</dict>
-				<key>2</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.operator.class.yuml</string>
-				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.yuml</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.operator.class.yuml</string>
-				</dict>
-			</dict>
 			<key>match</key>
-			<string>(([&lt;&gt;\*+\^\d\.]*)([\.\-]+)([&lt;&gt;\*+\^\d\.]*))</string>
+			<string>\[[^]]*\]</string>
+			<key>name</key>
+			<string>meta.preprocessor.string</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
