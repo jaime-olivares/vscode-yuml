@@ -8,7 +8,7 @@ module.exports = function()
                 <line x1="0" y1="5" x2="15" y2="17" />`, 0, 25 ]
     }
 
-    this.processEmbeddedImages = function(svg)
+    this.processEmbeddedImages = function(svg, isDark)
     {
         var expr = /<text\s.*>{img:.*}.*<\/text>/g;
 
@@ -28,7 +28,8 @@ module.exports = function()
                 text = text.replace(' x="' + x + '"', ' x="' + (parseFloat(x)+img[1]) + '"');
                 text = text.replace(' y="' + y + '"', ' y="' + (parseFloat(y)+img[2]) + '"');
 
-                return '<g transform="translate(' + x + ',' + y + ')" style="fill:none;stroke:black;stroke-width:1px">' + img[0] + "</g>\r\n" + text;
+                return '<g transform="translate(' + x + ',' + y + ')" style="fill:none;stroke:'
+                    + (isDark?"white":"black") + ';stroke-width:1px">' + img[0] + "</g>\r\n" + text;
             }
             catch (e) {
                 return match;

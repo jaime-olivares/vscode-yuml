@@ -66,10 +66,10 @@ module.exports = function()
         var svg;
         try {
             svgLight = Viz(buildDotHeader(false) + dot);
-            svgLight = processEmbeddedImages(svgLight);
+            svgLight = processEmbeddedImages(svgLight, false);
 
             svgDark = Viz(buildDotHeader(true) + dot);
-            svgDark = processEmbeddedImages(svgDark);
+            svgDark = processEmbeddedImages(svgDark, true);
         }
         catch (e) {
             return "Error composing the diagram"
