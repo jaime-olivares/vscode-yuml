@@ -43,7 +43,7 @@ No other product or library is needed and thus the installation process is quiet
 ## Internals
 The following activity diagram depicts the principal steps to generate the UML diagram:
 
-![Activity diagram](docs/activity.svg)
+![Activity diagram](https://cdn.rawgit.com/jaime-olivares/vscode-yuml/master/docs/activity.svg)
 
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
