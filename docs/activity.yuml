@@ -1,0 +1,11 @@
+// Activity diagram for the main process of the yUML extension for VSCode
+// {type:activity}
+// {generate:true} 
+// {direction:leftToRight}
+(start)->(Parse .YUML\rfile)->(Create .DOT\rdocument)
+(Create .DOT\rdocument)->(Generate SVG)
+(Generate SVG)->(Output to\rPreviewer)
+(Output to\rPreviewer)->|e|
+(Generate SVG)-><g>[generate: false]->|e|
+<g>[generate: true]->(Output to\rFile)
+(Output to\rFile)->|e|->(end)

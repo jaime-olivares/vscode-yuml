@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "Integration tools for supporting yUML in VSCode",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "MIT",

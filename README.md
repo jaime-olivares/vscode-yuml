@@ -40,13 +40,17 @@ No settings yet.
 This extension only depends on [viz.js](https://github.com/mdaines/viz.js), which is installed automatically.
 No other product or library is needed and thus the installation process is quietly simple.
 
+## Internals
+The following activity diagram depicts the principal steps to generate the UML diagram:
+
+![Activity diagram](docs/activity.svg)
+
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
 
 ## Roadmap
 * Completion of other diagram types: sequence, components, deployment, etc.
 * Diagram nesting
-* Intellisense for language syntax
 * Intellisense for colors
 
 ## Credits

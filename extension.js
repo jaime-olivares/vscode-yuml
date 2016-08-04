@@ -42,7 +42,7 @@ exports.activate = function(context)
             const text = editor.document.getText();
             const filename = editor.document.fileName;
 
-            this.diagram = processYumlDocument(text, uri, filename);
+            this.diagram = processYumlDocument(text, filename, false);
 
             this._onDidChange.fire(uri);
         }
@@ -54,7 +54,7 @@ exports.activate = function(context)
 
             const text = editor.document.getText();
             const filename = editor.document.fileName;
-            const diagram = processYumlDocument(text, uri, filename, true);
+            const diagram = processYumlDocument(text, filename, true);
 
             if (diagram == "")
                 this.diagram = "";
