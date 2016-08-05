@@ -24,8 +24,11 @@ Please refer to the [wiki page](https://github.com/jaime-olivares/vscode-yuml/wi
 
 ## Invocation methods
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
-* By opening the command pallete and [partially] typing: `view yuml diagram`
-* By right clicking on the document's title tab and selecting the option: *View yUML Diagram*
+* By opening the command pallete and [partially] typing: `view yuml diagram` (see the screenshot above)
+* By clicking the preview icon in the editor title area (see below)
+* [Only for VSCode 1.3.x] By right clicking on the document's title tab and selecting the option: *View yUML Diagram*
+
+![title icon](images/title_icon.png)
 
 ## Snippets
 There is a snippet for each diagram type. Just start typing one of the available diagram types: `class`, `activity`, `usecase` or `state`

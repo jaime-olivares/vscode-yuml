@@ -2,10 +2,10 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "Integration tools for supporting yUML in VSCode",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/jaime-olivares/vscode-yuml"
@@ -14,6 +14,7 @@
     "url": "https://github.com/jaime-olivares/vscode-yuml/issues",
     "email": "jaime_olivares@hotmail.com"
   },
+  "homepage": "https://github.com/jaime-olivares/vscode-yuml/blob/master/README.md",
   "engines": {
     "vscode": "^1.3.0"
   },
@@ -50,12 +51,17 @@
     }],
     "commands": [{
         "command": "extension.viewYumlDiagram",
-        "title": "View yUML Diagram"
+        "title": "View yUML Diagram",
+        "icon": {
+          "light": "./images/preview.svg",
+          "dark": "./images/preview_inverse.svg"
+        }
     }],
     "menus": {
       "editor/title": [{
           "when": "resourceLangId == yuml",
-          "command": "extension.viewYumlDiagram"
+          "command": "extension.viewYumlDiagram",
+          "group": "navigation"
       }]
     },
     "snippets": [{
