@@ -77,7 +77,7 @@ module.exports = function()
     {
         var ret = { bg: "", isNote: false, luma: 128 };
 
-        var bgParts = /^(.*)\{bg:([a-zA-Z]+\d*|#[0-9a-fA-F]{6})\}$/.exec(part);
+        var bgParts = /^(.*)\{ *bg *: *([a-zA-Z]+\d*|#[0-9a-fA-F]{6}) *\}$/.exec(part);
         if (bgParts != null && bgParts.length == 3)
         {
             ret.part = bgParts[1].trim();
