@@ -174,9 +174,15 @@ module.exports = function()
 
         if (isDark)
         {
-            header += "  graph [ bgcolor=transparent ]\r\n";
-            header += "  node [ color=white, fontcolor=white ]\r\n";
-            header += "  edge [ color=white, fontcolor=white ]\r\n";
+            header += "  graph [ bgcolor=transparent, fontname=Helvetica ]\r\n";
+            header += "  node [ color=white, fontcolor=white, fontname=Helvetica ]\r\n";
+            header += "  edge [ color=white, fontcolor=white, fontname=Helvetica ]\r\n";
+        }
+        else 
+        {
+            header += "  graph [ fontname=Helvetica ]\r\n";
+            header += "  node [ fontname=Helvetica ]\r\n";
+            header += "  edge [ fontname=Helvetica ]\r\n";
         }
         return header;
     }
