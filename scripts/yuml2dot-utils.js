@@ -1,5 +1,9 @@
+const fs = require('fs');
+
 module.exports = function()
 {
+    var colorTable = null;
+
     this.escape_label = function(label)
     {
         var newlabel = "";
@@ -71,13 +75,19 @@ module.exports = function()
 
     this.extractBgAndNote = function(part, allowNote)
     {
-        var ret = { bg: "", isNote: false };
+        var ret = { bg: "", isNote: false, luma: 128 };
 
-        var bgParts = /^(.*)\{bg:([\w]*)\}$/.exec(part);
+        var bgParts = /^(.*)\{bg:([a-zA-Z]+\d*|#[0-9a-fA-F]{6})\}$/.exec(part);
         if (bgParts != null && bgParts.length == 3)
         {
             ret.part = bgParts[1].trim();
-            ret.bg = bgParts[2].trim();
+            ret.bg = bgParts[2].trim().toLowerCase();
+
+            var luma = getLuma(ret.bg);
+            if (luma < 64)
+                ret.fontcolor = "white";
+            else if (luma > 192)
+                ret.fontcolor = "black";
         }
         else
             ret.part = part.trim();
@@ -169,5 +179,38 @@ module.exports = function()
             header += "  edge [ color=white, fontcolor=white ]\r\n";
         }
         return header;
+    }
+
+    loadColors = function()
+    {
+        if (colorTable != null)
+            return;
+        else
+            colorTable = {};
+
+        var rgb = fs.readFileSync(__dirname + "/../data/rgb.txt", {encoding:"utf8", flag:"r"}).split('\n');
+        for (var i=0; i<rgb.length; i++)
+        {
+            var parts = /^(\d+) (\d+) (\d+) (.*)$/.exec(rgb[i]);
+
+            if (parts != null && parts.length == 5 && parts[4].indexOf(' ') < 0)
+            {
+                var luma = 0.2126 * parseFloat(parts[0]) + 0.7152 * parseFloat(parts[1]) + 0.0722 * parseFloat(parts[2]);
+                colorTable[parts[4].toLowerCase()] = luma;                
+            }
+        }
+    }
+
+    getLuma = function(color)
+    {
+        loadColors();
+        var luma = 128;
+
+        if (color.startsWith('#'))
+            luma = 0.2126 * parseInt(color.substr(1,2), 16) + 0.7152 * parseInt(color.substr(3,2), 16) + 0.0722 * parseInt(color.substr(5,2), 16);
+        else if (colorTable.hasOwnProperty(color))
+            luma = colorTable[color];
+
+        return luma;
     }
 }

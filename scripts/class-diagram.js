@@ -35,7 +35,7 @@ module.exports = function(specLines, options)
             {
                 part = part.substr(1, part.length-2);
                 var ret = extractBgAndNote(part, true);
-                exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg]);
+                exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
             }
             else if (part=="^")  // inheritance
             {
@@ -152,6 +152,9 @@ module.exports = function(specLines, options)
                         node.fillcolor = elem[k][2];
                     }
 
+                    if (elem[k][3])
+                        node.fontcolor = elem[k][3]; 
+                        
                     dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
