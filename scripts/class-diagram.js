@@ -137,7 +137,10 @@ module.exports = function(specLines, options)
 
                     label = formatLabel(label, 20, true);
                     if (elem[k][0] == "record")
-                        label = "{" + label + "}";
+                    {
+                        if (options.dir == "TB")
+                            label = "{" + label + "}";
+                    }
 
                     var node = {
                         shape: elem[k][0],
