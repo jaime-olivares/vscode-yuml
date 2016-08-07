@@ -12,7 +12,7 @@ exports.activate = function(context)
         }
 
         provideTextDocumentContent (uri, token) {
-            return `<!DOCTYPE html>
+            var doc = `<!DOCTYPE html>
             <html>
             <head>
                 <script>
@@ -28,9 +28,15 @@ exports.activate = function(context)
                 ${this.diagram}
             </body>
             </html>`;
+
+            var editor = vscode.window.activeTextEditor;
+            if (editor)
+                editor.show();
+
+            return doc;
         }
 
-        get onDidChange () {
+        get onDidChange () {            
             return this._onDidChange.event;
         }
 
@@ -75,7 +81,7 @@ exports.activate = function(context)
 
     console.log('The extension "vscode-yuml" is now active.');
 
-    let disposable = registerCommand('extension.viewYumlDiagram', () => {
+    let command = registerCommand('extension.viewYumlDiagram', () => {
         var disp = vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then(
             (success) => { provider.update(previewUri); },
             (reason) => { vscode.window.showErrorMessage(reason); });
@@ -88,7 +94,7 @@ exports.activate = function(context)
 
     vscode.window.onDidChangeActiveTextEditor((e) => { provider.load(previewUri); });
 
-    context.subscriptions.push(disposable, registration);
+    context.subscriptions.push(command, registration);
 }
 
 exports.deactivate = function() {};
