@@ -1,5 +1,12 @@
 # Release notes
 
+## 2.5
+* Association classes
+* Smart text coloring
+* Improved focusing of the editor window
+* Solved bug: Class diagram with details not properly rendered with LR direction
+* Solved bug: {bg} color names not rendered correctly
+
 ## 2.4
 * Adjustments for VSCode 1.4
 
