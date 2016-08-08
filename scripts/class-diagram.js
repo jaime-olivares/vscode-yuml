@@ -164,7 +164,8 @@ module.exports = function(specLines, options)
 
             if (elem.length == 3 && elem[1][0] == 'edge')
             {
-                var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][5];
+                var hasNote = (elem[0][0] == 'note' || elem[2][0] == 'note');
+                var style = hasNote ? "dashed" : elem[1][5];
 
                 var edge = {
                     shape: "edge",
@@ -178,7 +179,55 @@ module.exports = function(specLines, options)
                     fontsize: 10
                 }
 
-                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + "\r\n";
+                if (hasNote)
+                    dot += '    { rank=same; ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + ";}\r\n";
+                else
+                    dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + "\r\n";
+            }
+            else if (elem.length == 4 && [elem[0][0], elem[1][0], elem[2][0], elem[3][0]].join() == "record,edge,record,record")  // intermediate association class
+            {
+                var junction = {
+                    shape: "point",
+                    style: "invis",
+                    label: "",
+                    height: 0.01,
+                    width: 0.01
+                }
+                var uid = uids[recordName(elem[0][1])] + "J" + uids[recordName(elem[2][1])];
+                dot += '    ' + uid + ' ' + serializeDot(junction) + "\r\n";
+
+                var edge1 = {
+                    shape: "edge",
+                    dir: "both",
+                    style: style,
+                    arrowtail: elem[1][1],
+                    taillabel: elem[1][2],
+                    arrowhead: "none",
+                    labeldistance: 2,
+                    fontsize: 10
+                }
+                var edge2 = {
+                    shape: "edge",
+                    dir: "both",
+                    style: style,
+                    arrowtail: "none",
+                    arrowhead: elem[1][3],
+                    headlabel: elem[1][4],
+                    labeldistance: 2,
+                    fontsize: 10
+                }
+                var edge3 = {
+                    shape: "edge",
+                    dir: "both",
+                    style: "dashed",
+                    arrowtail: "none",
+                    arrowhead: "vee",
+                    labeldistance: 2
+                }
+                dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uid + ' ' + serializeDot(edge1) + "\r\n";
+                dot += '    ' + uid + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge2) + "\r\n";
+                dot += '    { rank=same; ' + uids[recordName(elem[3][1])] + " -> " + uid + ' ' + serializeDot(edge3) + ";}\r\n"; 
+                //dot += '    ' + uids[recordName(elem[0][1])] + " -> "  + uids[recordName(elem[2][1])] + " [color=red]\r\n";              
             }
         }
 
