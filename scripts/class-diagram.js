@@ -186,6 +186,8 @@ module.exports = function(specLines, options)
             }
             else if (elem.length == 4 && [elem[0][0], elem[1][0], elem[2][0], elem[3][0]].join() == "record,edge,record,record")  // intermediate association class
             {
+                var style = elem[1][5];
+                
                 var junction = {
                     shape: "point",
                     style: "invis",
