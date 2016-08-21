@@ -32,12 +32,12 @@ module.exports = function(specLines, options)
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
             }
-            else if (part.match(/^<.*>$/))
+            else if (part.match(/^<.*>$/)) // decision
             {
                 part = part.substr(1, part.length-2);
                 exprs.push(["diamond", part]);
             }
-            else if (part.match(/^\|.*\|$/))
+            else if (part.match(/^\|.*\|$/)) // bar
             {
                 part = part.substr(1, part.length-2);
                 exprs.push(["mrecord", part]);
@@ -147,7 +147,8 @@ module.exports = function(specLines, options)
                         margin: "0,0",
                         style: "filled",
                         label: "",
-                        fontsize: 1
+                        fontsize: 1,
+                        penwidth: 4
                     }
 
                     elements.push([uid, node]);
@@ -167,7 +168,7 @@ module.exports = function(specLines, options)
                         arrowtail: elem[k][1],
                         arrowhead: elem[k][2],
                         labeldistance: 1,
-                        fontsize: 10,
+                        fontsize: 10
                     }
 
                     if (elem[k][3].length > 0)
