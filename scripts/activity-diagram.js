@@ -40,7 +40,7 @@ module.exports = function(specLines, options)
             else if (part.match(/^\|.*\|$/))
             {
                 part = part.substr(1, part.length-2);
-                exprs.push(["rectangle", part]);
+                exprs.push(["mrecord", part]);
             }
             else if (part.match(/->$/))  // arrow
             {
@@ -62,8 +62,8 @@ module.exports = function(specLines, options)
     {
         var uids = {};
         var len = 0;
-        var dot = "    ranksep = " + 0.5 + "\r\n";
-        dot += "    rankdir = " + options.dir + "\r\n";
+        var elements = [];
+        var headports = { LR: "w", RL: "e", TB: "n" };
 
         for (var i=0; i<specLines.length; i++)
         {
@@ -110,7 +110,7 @@ module.exports = function(specLines, options)
                             node.fontcolor = elem[k][3];                        
                     }
 
-                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
+                    elements.push([uid, node]);
                 }
                 else if (elem[k][0] == "diamond")
                 {
@@ -129,9 +129,9 @@ module.exports = function(specLines, options)
                         label: ""
                     }
 
-                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
+                    elements.push([uid, node]);
                 }
-                else if (elem[k][0] == "rectangle")
+                else if (elem[k][0] == "mrecord")
                 {
                     var label = elem[k][1];
                     if (uids.hasOwnProperty(recordName(label)))
@@ -141,15 +141,16 @@ module.exports = function(specLines, options)
                     uids[recordName(label)] = uid;
 
                     var node = {
-                        shape: "rectangle",
+                        shape: "record",
                         height: options.dir == "TB" ? 0.05 : 0.5,
                         width:  options.dir == "TB" ? 0.5 : 0.05,
                         margin: "0,0",
                         style: "filled",
-                        label: ""
+                        label: "",
+                        fontsize: 1
                     }
 
-                    dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
+                    elements.push([uid, node]);
                 }
             }
 
@@ -172,13 +173,49 @@ module.exports = function(specLines, options)
                     if (elem[k][3].length > 0)
                         edge.label = elem[k][3];
 
-                    dot += '    ' + uids[recordName(elem[k-1][1])] + " -> " + uids[recordName(elem[k+1][1])] + ' ' + serializeDot(edge) + "\r\n";
+                    var uid1 = uids[recordName(elem[k-1][1])];
+                    var uid2 = uids[recordName(elem[k+1][1])];
+
+                    if (elem[k+1][0] == "mrecord")
+                    {
+                        var facet = addBarFacet(elements, uid2);
+                        uid2 += ":" + facet + ":" + headports[options.dir];
+                    }
+
+                    elements.push([uid1, uid2, edge]);
                 }
             }
         }
 
+        var dot = "    ranksep = " + 0.5 + "\r\n";
+        dot += "    rankdir = " + options.dir + "\r\n";        
+        dot += serializeDotElements(elements);
         dot += '}\r\n';
         return dot;
+    }
+
+    function addBarFacet(elements, name)
+    {
+        for (var i=0; i<elements.length; i++)
+        {
+            if (elements[i].length == 2 && elements[i][0] == name)
+            {
+                var node = elements[i][1];
+                var facetNum = 1;
+
+                if (node.label.length > 0)
+                {                
+                    facetNum = node.label.split("|").length + 1;
+                    node.label += "|<f" + facetNum + ">";
+                }
+                else
+                    node.label = "<f1>";
+
+                return "f" + facetNum;
+            }
+        }
+
+        return null;
     }
 
     return composeDotExpr(specLines, options);

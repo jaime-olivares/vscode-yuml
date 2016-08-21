@@ -168,6 +168,23 @@ module.exports = function()
         return text;
     }
 
+    this.serializeDotElements = function(arr)
+    {
+        var dot = "";
+
+        for (var i=0; i<arr.length; i++)
+        {
+            var record = arr[i];
+
+            if (record.length == 2)
+                dot += '    ' + record[0] + ' ' + serializeDot(record[1]) + "\r\n";
+            else if (record.length == 3)
+                dot += '    ' + record[0] + " -> " + record[1] + ' ' + serializeDot(record[2]) + "\r\n";
+        }
+
+        return dot;
+    }
+
     this.buildDotHeader = function(isDark)
     {
         var header = "digraph G {\r\n";

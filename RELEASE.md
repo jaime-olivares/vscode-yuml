@@ -1,5 +1,8 @@
 # Release notes
 
+## 2.6
+* Improvements in the rendering of activity diagrams
+
 ## 2.5
 * Association classes
 * Smart text coloring
