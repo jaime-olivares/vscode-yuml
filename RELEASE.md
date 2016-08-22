@@ -2,6 +2,7 @@
 
 ## 2.6
 * Improvements in the rendering of activity diagrams
+* Added a top bar with useful links
 
 ## 2.5
 * Association classes

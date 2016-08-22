@@ -20,11 +20,43 @@ exports.activate = function(context)
                     {
                         var isLight = document.body.classList.contains('vscode-light');
                         var toHide = document.getElementById(isLight ? "dark" : "light");
-                        toHide.style.display = "none";  
+                        toHide.style.display = "none";
+
+                        var styleSheet = document.getElementById('themed');
+                        var color = isLight ? "#404040" : "#C0C0C0";
+                        styleSheet.innerHtml = "#topbar { color:" + color + "; }";
                     }
-                </script>                
+                </script>
+                <style>
+                    #topbar {
+                        background-color:rgba(255,102,0,0.1);
+                        height:24px;
+                        line-height:24px;
+                        margin:0 0 15px 0;
+                        padding-left: 10px;
+                    } 
+                    .links {
+                        display: none;                        
+                    }
+                    #topbar:hover {
+                        background-color: rgba(255,102,0,0.5);
+                    }
+                    #topbar:hover .links {
+                        display: inline-block;
+                    }
+                    a {
+                        margin-left: 15px;
+                    }
+                </style>
+                <style id="themed">
+                </style>                    
             </head>
             <body style="margin:10px;" onload="showDiagram()">
+                <div id="topbar">&#9654; yUML extension <div class="links">
+                    <a href="https://github.com/jaime-olivares/vscode-yuml/wiki">Wiki</a>
+                    <a href="https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml#review-details">Write a review</a>
+                    <a href="https://github.com/jaime-olivares/vscode-yuml/issues">Bug reports and feature requests</a>
+                </div></div>
                 ${this.diagram}
             </body>
             </html>`;
