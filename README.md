@@ -36,6 +36,12 @@ and a full example will be pasted into the yuml file.
 
 ![yUML snippet screenshot](images/snippet.png)
 
+## Top bar
+A newly added topbar (see below) will show some useful links when hovered,
+for accessing the wiki page, writing a review, reporting bugs and requesting new features.
+
+![yUML snippet screenshot](images/top_bar.png)
+
 ## Extension Settings
 No settings yet.
 
