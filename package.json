@@ -1,8 +1,8 @@
 {
   "name": "yuml",
   "displayName": "yUML",
-  "description": "Integration tools for supporting yUML in VSCode",
-  "version": "2.6.2",
+  "description": "UML diagramming tool based on the yUML syntax",
+  "version": "2.6.3",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "SEE LICENSE IN LICENSE.md",

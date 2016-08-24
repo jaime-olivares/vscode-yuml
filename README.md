@@ -14,7 +14,7 @@ yUML extension for Visual Studio Code. Allows the creation of UML diagrams based
   + State
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
-* Embedded rendering engine: No need to call an external web service
+* Embedded rendering engine: **No need to call an external web service**
 * Code snippets with samples of each diagram
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
@@ -55,7 +55,7 @@ The following activity diagram depicts the principal steps to generate the UML d
 ![Activity diagram](https://cdn.rawgit.com/jaime-olivares/vscode-yuml/master/docs/activity.svg)
 
 ## Issue reporting
-If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue.
+If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
 
 ## Roadmap
 * Completion of other diagram types: sequence, components, deployment, etc.
