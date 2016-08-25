@@ -32,8 +32,9 @@ exports.activate = function(context)
                         background-color:rgba(255,102,0,0.1);
                         height:24px;
                         line-height:24px;
-                        margin:0 0 15px 0;
+                        margin:0 -5px 15px -5px;
                         padding-left: 10px;
+                        white-space: nowrap;
                     } 
                     .links {
                         display: none;                        
@@ -52,10 +53,10 @@ exports.activate = function(context)
                 </style>                    
             </head>
             <body style="margin:10px;" onload="showDiagram()">
-                <div id="topbar">&#9654; yUML extension <div class="links">
+                <div id="topbar">&#9654; yUML <div class="links">
                     <a href="https://github.com/jaime-olivares/vscode-yuml/wiki">Wiki</a>
                     <a href="https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml#review-details">Write a review</a>
-                    <a href="https://github.com/jaime-olivares/vscode-yuml/issues">Bug reports and feature requests</a>
+                    <a href="https://github.com/jaime-olivares/vscode-yuml/issues">Bug reports &amp; feature requests</a>
                 </div></div>
                 ${this.diagram}
             </body>
