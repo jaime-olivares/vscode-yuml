@@ -1,5 +1,5 @@
 # yUML extension
-yUML extension for Visual Studio Code. Allows the creation of UML diagrams based on the [yUML Syntax](http://yuml.me/).
+yUML extension for Visual Studio Code. Allows the creation of offline UML diagrams based on the [yUML Syntax](http://yuml.me/).
 
 [![](https://vsmarketplacebadge.apphb.com/version/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/installs/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
@@ -46,8 +46,8 @@ for accessing the wiki page, writing a review, reporting bugs and requesting new
 No settings yet.
 
 ## Dependencies
-This extension only depends on [viz.js](https://github.com/mdaines/viz.js), which is installed automatically.
-No other product or library is needed and thus the installation process is quietly simple.
+This extension only depends internally on [viz.js](https://github.com/mdaines/viz.js), which is installed automatically.
+No other product or library is needed and thus the installation process is quietly simple across platforms.
 
 ## Internals
 The following activity diagram depicts the principal steps to generate the UML diagram:
