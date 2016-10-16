@@ -12,6 +12,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + Activity 
   + Use-case
   + State
+  + Deployment
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
@@ -31,7 +32,8 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 ![title icon](images/title_icon.png)
 
 ## Snippets
-There is a snippet for each diagram type. Just start typing one of the available diagram types: `class`, `activity`, `usecase` or `state`
+There is a snippet for each diagram type. Just start typing one of the available diagram types: 
+`class`, `activity`, `usecase`, `state` or `deployment`, 
 and a full example will be pasted into the yuml file.
 
 ![yUML snippet screenshot](images/snippet.png)

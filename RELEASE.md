@@ -1,11 +1,14 @@
 # Release notes
 
+## 2.7
+* Added Deployment diagrams
+
 ## 2.6
 * Improvements in the rendering of activity diagrams
 * Added a top bar with useful links
 
 ## 2.5
-* Association classes
+* Association classes for the class diagram
 * Smart text coloring
 * Improved focusing of the editor window
 * Solved bug: Class diagram with details not properly rendered with LR direction
@@ -29,5 +32,5 @@
 ## 2.0
 * Removed the dependency on http://yuml.me
 * Implemented a local svg renderer
-* Added support for State diagram
+* Added support for State diagrams
 * Wiki page for the yUML syntax
