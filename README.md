@@ -60,7 +60,7 @@ The following activity diagram depicts the principal steps to generate the UML d
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
 
 ## Roadmap
-* Completion of other diagram types: sequence, components, deployment, etc.
+* Completion of other diagram types: sequence, components, etc.
 * Diagram nesting
 * Intellisense for colors
 
