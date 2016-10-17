@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "UML diagramming tool based on the yUML syntax",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -25,10 +25,8 @@
   ],
   "keywords": [
     "yuml",
-    "diagrams",
     "uml",
-    "usecase",
-    "activity"
+    "diagrams"
   ],
   "contributes": {
     "languages": [

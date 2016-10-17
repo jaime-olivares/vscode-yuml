@@ -10,7 +10,8 @@ Flow	           (start)->(Find Products)
 Multiple Assoc.    (start)->(Find Products)->(end)
 Decisions          (start)-><d1>
 Decisions w/Label  (start)-><d1>logged in->(Show Dashboard), <d1>not logged in->(Show Login Page)
-Parallel	       (Action 1)->|a|,(Action 2)->|a|
+Parallel	       (Action1)->|a|,(Action 2)->|a|
+Note               (Action1)-(note: A note message here)
 */
 
 module.exports = function(specLines, options)

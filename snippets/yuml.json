@@ -61,6 +61,25 @@
             "[Policy Server]-[Underwriting & Rating Server]"
         ]
     },
+    // Simplified diagram taken from wikipedia
+    "Package": {
+        "description": "UML package diagram",
+        "prefix": "package",
+        "body": [
+            "// {type:package}",
+            "[Elegibility & Benefits]->[Elegibility Search]",
+            "[Remittances]->[Remittance Search]",
+            "[Notifications]->[Notification Search]",
+            "[Check Claim Status]->[Claim Search]",
+            "[Submit a Claim Online]->[Patient Search]",
+            "[Physician/Provider Directory]",
+            "[Eligibility Search]->[Search]",
+            "[Remittance Search]->[Search]",
+            "[Notification Search]->[Search]",
+            "[Claim Search]->[Search]",
+            "[Patient Search]->[Search]"
+        ]
+    },
     // Example taken from: http://yuml.me/diagram/scruffy/usecase/samples
     "Use-Case": {
         "description": "UML use-case diagram",

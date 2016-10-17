@@ -1,5 +1,8 @@
 # Release notes
 
+## 2.8
+* Added Package diagrams
+
 ## 2.7
 * Added Deployment diagrams
 

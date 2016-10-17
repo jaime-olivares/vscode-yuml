@@ -4,6 +4,7 @@ const usecaseDiagram = require('./usecase-diagram.js');
 const activityDiagram = require('./activity-diagram.js');
 const stateDiagram = require('./state-diagram.js');
 const deploymentDiagram = require('./deployment-diagram.js');
+const packageDiagram = require('./package-diagram.js')
 const Viz = require("viz.js");
 require('./svg-utils.js')();
 
@@ -58,6 +59,9 @@ module.exports = function()
                 case "deployment":
                     dot = deploymentDiagram(newlines, options);
                     break;
+                case "package":
+                    dot = packageDiagram(newlines, options);
+                    break;
             }
         }
         catch (e) {
@@ -108,10 +112,10 @@ module.exports = function()
             switch (key)
             {
                 case "type":
-                    if (/^(class|usecase|activity|state|deployment)$/.test(value))
+                    if (/^(class|usecase|activity|state|deployment|package)$/.test(value))
                         options.type = value;
                     else {
-                        options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity, state, deployment.";
+                        options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity, state, deployment, package.";
                         return;
                     }
                     break;
