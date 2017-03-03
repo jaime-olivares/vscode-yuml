@@ -23,7 +23,7 @@ module.exports = function(specLines, options)
     function parseYumlExpr(specLine)
     {
         var exprs = [];
-        var parts = this.splitYumlExpr(specLine, "[");
+        var parts = this.splitYumlExpr(specLine, "[", "\\");
 
         for (var i=0; i<parts.length; i++)
         {
