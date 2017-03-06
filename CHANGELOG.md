@@ -1,4 +1,8 @@
-# Release notes
+# Change Log
+
+## 2.9
+* Solved bug: Use-case inheritance triangle was inverted when comparaed with YUML
+* Upgraded to viz.js 1.7.1
 
 ## 2.8
 * Added Package diagrams

@@ -48,7 +48,7 @@ module.exports = function(specLines, options)
                     exprs.push(["edge", "none", "", "none", "solid"]);
                     break;
                 case "^":
-                    exprs.push(["edge", "empty", "", "none", "solid"]);
+                    exprs.push(["edge", "none", "", "empty", "solid"]);
                     break;
                 default:
                     throw("Invalid expression");
