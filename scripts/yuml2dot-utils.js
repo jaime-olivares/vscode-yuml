@@ -23,7 +23,7 @@ module.exports = function()
         return newlabel;
     }
 
-    this.splitYumlExpr = function(line, separators)
+    this.splitYumlExpr = function(line, separators, escape = "\\")
     {
         var word = "";
         var lastChar = null;
@@ -33,7 +33,12 @@ module.exports = function()
         {
             c = line[i];
 
-            if (separators.indexOf(c) >= 0 && lastChar === null)
+            if (c === escape && i + 1 < line.length)
+            {
+                word += c;
+                word += line[++i];
+            }
+            else if (separators.indexOf(c) >= 0 && lastChar === null)
             {
                 if (word.length > 0) {
                     parts.push(word.trim());
