@@ -103,7 +103,7 @@ module.exports = function(specLines, options)
                         }
 
                         if (elem[k][2]) {
-                            node.style = "filled";
+                            node.style += ",filled";
                             node.fillcolor = elem[k][2];
                         }
 
