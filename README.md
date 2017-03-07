@@ -4,6 +4,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
 [![](https://vsmarketplacebadge.apphb.com/version/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/installs/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/rating/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
+![](https://circleci.com/gh/jaime-olivares/vscode-yuml.svg?style=shield)
 
 ## Features
 * Syntax highlighting of *.yuml* files
