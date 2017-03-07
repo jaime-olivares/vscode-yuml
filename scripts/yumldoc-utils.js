@@ -71,7 +71,7 @@ module.exports = function()
         if (dot == null)
             return "Error: unable to parse the yUML file";
 
-        var svg;
+        var svgLight, svgDark;
         try {
             svgLight = Viz(buildDotHeader(false) + dot);
             svgLight = processEmbeddedImages(svgLight, false);
