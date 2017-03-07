@@ -1,7 +1,12 @@
 # Change Log
 
+## 2.10
+* Solved bug #20: Activity Diagram: {bg:xxx} Attribute Overrides Style 
+* Added feature #15: Allow Escaping "Split" Tokens
+* Added testing and continuous integration settings
+
 ## 2.9
-* Solved bug: Use-case inheritance triangle was inverted when comparaed with YUML
+* Solved bug #17: Use-case inheritance triangle was inverted when comparaed with YUML
 * Upgraded to viz.js 1.7.1
 
 ## 2.8
