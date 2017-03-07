@@ -72,7 +72,8 @@
   ],
   "main": "./extension.js",
   "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
   },
   "dependencies": {
     "viz.js": "^1.7.1"
