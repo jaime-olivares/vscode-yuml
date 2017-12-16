@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.11
+* Solved bug #23: Problem with Notes
+
 ## 2.10
 * Solved bug #20: Activity Diagram: {bg:xxx} Attribute Overrides Style 
 * Added feature #15: Allow Escaping "Split" Tokens

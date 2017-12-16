@@ -1,6 +1,6 @@
 {
-    // Example taken from: http://yuml.me/diagram/scruffy/activity/samples
     "Activity": {
+        "comment": "Example taken from: http://yuml.me/diagram/scruffy/activity/samples",
         "description": "UML activity diagram",
         "prefix": "activity",
         "body": [
@@ -12,8 +12,8 @@
             "(Pour Water)->(end)"
         ]
     },
-    // Example taken from: http://yuml.me/diagram/scruffy/class/samples
     "Class": {
+        "comment": "Example taken from: http://yuml.me/diagram/scruffy/class/samples",
         "description": "UML class diagram",
         "prefix": "class",
         "body": [
@@ -29,8 +29,8 @@
             "[DeliveryMethod]^[International]"    
         ]
     },
-    // Diagram taken from wikipedia
     "State": {
+        "comment": "Diagram taken from wikipedia",
         "description": "UML state diagram",
         "prefix": "state",
         "body": [
@@ -44,8 +44,8 @@
             "(Log retrieval)->(end)" 
         ]
     },
-    // Simplified diagram taken from wikipedia
     "Deployment": {
+        "comment": "Simplified diagram taken from wikipedia",
         "description": "UML deployment diagram",
         "prefix": "deployment",
         "body": [
@@ -61,8 +61,8 @@
             "[Policy Server]-[Underwriting & Rating Server]"
         ]
     },
-    // Simplified diagram taken from wikipedia
     "Package": {
+        "comment": "Simplified diagram taken from wikipedia",
         "description": "UML package diagram",
         "prefix": "package",
         "body": [
@@ -80,8 +80,8 @@
             "[Patient Search]->[Search]"
         ]
     },
-    // Example taken from: http://yuml.me/diagram/scruffy/usecase/samples
     "Use-Case": {
+        "comment": "Example taken from: http://yuml.me/diagram/scruffy/usecase/samples",
         "description": "UML use-case diagram",
         "prefix": "usecase",
         "body": [
