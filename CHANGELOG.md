@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.12
+* Fixed issues related to restrictions for publishing in the Marketplace
+
 ## 2.11
 * Solved bug #23: Problem with Notes
 

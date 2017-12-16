@@ -4,7 +4,6 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
 [![](https://vsmarketplacebadge.apphb.com/version/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/installs/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
 [![](https://vsmarketplacebadge.apphb.com/rating/JaimeOlivares.yuml.svg)](https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml)
-![](https://circleci.com/gh/jaime-olivares/vscode-yuml.svg?style=shield)
 
 ## Features
 * Syntax highlighting of *.yuml* files
@@ -53,11 +52,6 @@ No settings yet.
 This extension has not dependencies.
 It contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused issue #23.
 No other product or library is needed and thus the installation process is quietly simple across platforms.
-
-## Internals
-The following activity diagram depicts the principal steps to generate the UML diagram:
-
-![Activity diagram](https://cdn.rawgit.com/jaime-olivares/vscode-yuml/master/docs/yuml_activity.svg)
 
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
