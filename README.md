@@ -50,7 +50,7 @@ No settings yet.
 
 ## Dependencies
 This extension has not dependencies.
-It contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused issue #23.
+It contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused [issue #23](https://github.com/jaime-olivares/vscode-yuml/issues/23).
 No other product or library is needed and thus the installation process is quietly simple across platforms.
 
 ## Issue reporting
