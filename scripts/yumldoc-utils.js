@@ -5,7 +5,7 @@ const activityDiagram = require('./activity-diagram.js');
 const stateDiagram = require('./state-diagram.js');
 const deploymentDiagram = require('./deployment-diagram.js');
 const packageDiagram = require('./package-diagram.js')
-const Viz = require("./viz-lite-1.5.js");
+const Viz = require("viz.js");
 require('./svg-utils.js')();
 
 module.exports = function()
