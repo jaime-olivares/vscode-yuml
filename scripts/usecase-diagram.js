@@ -8,7 +8,7 @@ Actor	            [Customer]
 <<Extend>>	        (Login)<(Forgot Password)
 <<Include>>	        (Register)>(Confirm Email)
 Actor Inheritance	[Admin]^[User]
-Notes	            [Admin]^[User],[Admin]-(note: Most privilidged user)
+Notes	            [Admin]^[User],[Admin]-(note: Most privileged user)
 */
 
 module.exports = function(specLines, options)
@@ -126,7 +126,7 @@ module.exports = function(specLines, options)
                     labeldistance: 2,
                     fontsize: 10
                 }
-                if (elem[1][2].len > 0)
+                if (elem[1][2].length > 0)
                     edge.label = elem[1][2];
 
                 dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge) + "\r\n";
