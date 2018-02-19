@@ -3,19 +3,19 @@ require('./yuml2dot-utils.js')();
 /*
 Syntax as specified in yuml.me
 
-Class         [Customer]
-Directional   [Customer]->[Order]
-Bidirectional [Customer]<->[Order]
-Aggregation   [Customer]+-[Order] or [Customer]<>-[Order]
-Composition   [Customer]++-[Order]
-Inheritance   [Customer]^[Cool Customer], [Customer]^[Uncool Customer]
-Dependencies  [Customer]uses-.->[PaymentStrategy]
-Cardinality   [Customer]<1-1..2>[Address]
-Labels        [Person]customer-billingAddress[Address]
-Notes         [Person]-[Address],[Address]-[note: Value Object]
-Full Class    [Customer|Forename;Surname;Email|Save()]
-Color splash  [Customer{bg:orange}]<>1->*[Order{bg:green}]
-Comment       // Comments
+Class           [Customer]
+Directional     [Customer]->[Order]
+Bidirectional   [Customer]<->[Order]
+Aggregation     [Customer]+-[Order] or [Customer]<>-[Order]
+Composition     [Customer]++-[Order]
+Inheritance     [Customer]^[Cool Customer], [Customer]^[Uncool Customer]
+Dependencies    [Customer]uses-.->[PaymentStrategy]
+Cardinality     [Customer]<1-1..2>[Address]
+Labels          [Person]customer-billingAddress[Address]
+Notes           [Person]-[Address],[Address]-[note: Value Object]
+Full Class      [Customer|Forename;Surname;Email|Save()]
+Color splash    [Customer{bg:orange}]<>1->*[Order{bg:green}]
+Comment         // Comments
 */
 
 module.exports = function(specLines, options)

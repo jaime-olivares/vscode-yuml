@@ -4,7 +4,8 @@ const usecaseDiagram = require('./usecase-diagram.js');
 const activityDiagram = require('./activity-diagram.js');
 const stateDiagram = require('./state-diagram.js');
 const deploymentDiagram = require('./deployment-diagram.js');
-const packageDiagram = require('./package-diagram.js')
+const packageDiagram = require('./package-diagram.js');
+const sequenceDiagram = require('./sequence-diagram.js');
 const Viz = require("./viz-lite-1.5.js");
 require('./svg-utils.js')();
 
@@ -40,6 +41,7 @@ module.exports = function()
         }
 
         var dot = null;
+        var svg = null;
 
         try {
             switch (options.type)
@@ -62,25 +64,37 @@ module.exports = function()
                 case "package":
                     dot = packageDiagram(newlines, options);
                     break;
+                case "sequence":
+                    svgs = sequenceDiagram(newlines, options);
+                    break;
             }
         }
         catch (e) {
             return "Error parsing the yUML file";
         }
 
-        if (dot == null)
+        if (dot == null && svgs == null)
             return "Error: unable to parse the yUML file";
 
         var svgLight, svgDark;
-        try {
-            svgLight = Viz(buildDotHeader(false) + dot);
-            svgLight = processEmbeddedImages(svgLight, false);
 
-            svgDark = Viz(buildDotHeader(true) + dot);
-            svgDark = processEmbeddedImages(svgDark, true);
+        if (dot != null)
+        {
+            try {
+                svgLight = Viz(buildDotHeader(false) + dot);
+                svgLight = processEmbeddedImages(svgLight, false);
+
+                svgDark = Viz(buildDotHeader(true) + dot);
+                svgDark = processEmbeddedImages(svgDark, true);
+            }
+            catch (e) {
+                return "Error composing the diagram"
+            }
         }
-        catch (e) {
-            return "Error composing the diagram"
+        else 
+        {
+            svgLight = svgs[0];
+            svgDark  = svgs[1];
         }
 
         try {
@@ -112,7 +126,7 @@ module.exports = function()
             switch (key)
             {
                 case "type":
-                    if (/^(class|usecase|activity|state|deployment|package)$/.test(value))
+                    if (/^(class|usecase|activity|state|deployment|package|sequence)$/.test(value))
                         options.type = value;
                     else {
                         options.error = "Error: invalid value for 'type'. Allowed values are: class, usecase, activity, state, deployment, package.";

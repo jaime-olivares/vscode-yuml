@@ -12,6 +12,7 @@ Decisions          (start)-><d1>
 Decisions w/Label  (start)-><d1>logged in->(Show Dashboard), <d1>not logged in->(Show Login Page)
 Parallel	       (Action1)->|a|,(Action 2)->|a|
 Note               (Action1)-(note: A note message here)
+Comment            // Comments
 */
 
 module.exports = function(specLines, options)

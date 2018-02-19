@@ -1,0 +1,6 @@
+// Activity diagram for the main process of the yUML extension for VSCode
+// {type:sequence}
+[A]>[B]
+[A]message>[B]
+[B]message.>[A]
+[A]message>>[B]

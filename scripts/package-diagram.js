@@ -7,6 +7,7 @@ Package        [package1]
 Association    [package1]->[package2]
 Labeled assoc  [package1]label->[package2]
 Note           [package1]-[note: a note here]
+Comment        // Comments
 */
 
 module.exports = function(specLines, options)

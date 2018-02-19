@@ -3,10 +3,11 @@ require('./yuml2dot-utils.js')();
 /*
 Unofficial syntax, based on the activity diagram syntax specified in yuml.me
 
-Node         [node1]
-Association  [node1]-[node2]
+Node           [node1]
+Association    [node1]-[node2]
 Labeled assoc  [node1]label-[node2]
-Note         [node1]-[note: a note here]
+Note           [node1]-[note: a note here]
+Comment        // Comments
 */
 
 module.exports = function(specLines, options)
