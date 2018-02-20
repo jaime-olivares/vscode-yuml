@@ -3,7 +3,6 @@ const renderer = require('./sequence-renderer.js');
 
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
-https://github.com/sharvil/node-sequence-diagram
 
 Object     [Patron]
 Message    [Patron]order food>[Waiter]
@@ -111,46 +110,50 @@ module.exports = function(specLines, options)
                 if (elem[k][0] == "object")
                 {
                     var label = elem[k][1];
-                    if (uids.hasOwnProperty(recordName(label)))
+                    var rn = recordName(label);
+                    if (uids.hasOwnProperty(rn))
                         continue;
 
-                    var uid = 'A' + (uids.length+1).toString();
-                    var rn = recordName(label);
-                    uids[rn] = uid;
-
+                    //var uid = 'A' + (uids.length+1).toString();
                     label = formatLabel(label, 20, true);
+                    var actor = newActor(rn, label);
+                    uids[rn] = actor;
 
-                    actors.push(newActor(rn, label));
+                    actors.push(actor);
                 }
             }
 
             if (elem.length == 3 && elem[1][0] == 'message')  // what if self or cancel?
             {
+                var message = elem[1][2];
                 var style = elem[1][3];
+                var actorA = uids[recordName(elem[0][1])];
+                var actorB = uids[recordName(elem[2][1])];
 
-                // create the visual here
+                switch (style)
+                {
+                    case "dashed":
+                        signals.push(newSignal(actorA, "dashed", "arrow-filled", actorB, message));                    
+                        break;
+                    case "solid":
+                        signals.push(newSignal(actorA, "solid", "arrow-filled", actorB, message));                    
+                        break;
+                    case "async":
+                        signals.push(newSignal(actorA, "solid", "arrow-open", actorB, message));                                    
+                        break;
+                }
             }            
         }
 
-        var r = new renderer(actors, signals, null);
-        r.draw();         
+        var r = new renderer(actors, signals, true);
+        var svg = r.svg_.serialize();
+        var svgDark = r.svg_.rectifySvg(svg, r.width, r.height);
 
-        var svg = r.svg_.dom.serialize();
-        svg = rectifySvg(svg);
+        r = new renderer(actors, signals, false);
+        svg = r.svg_.serialize();
+        var svgLight = r.svg_.rectifySvg(svg, r.width, r.height);        
 
-        return [svg, svg];
-    }
-
-    // This is temporary, until the malformed svg string issue is solved
-    function rectifySvg(svg)
-    {
-        var index = svg.indexOf("<svg");
-        svg = svg.substr(index);
-        svg = svg.replace("</svg>", "");
-        svg = svg.replace("</body>", "</svg>");
-        svg = svg.replace("</html>", "");
-
-        return svg;
+        return [svgLight, svgDark];
     }
 
     return composeSvg(specLines, options);

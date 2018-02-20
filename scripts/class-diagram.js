@@ -229,7 +229,6 @@ module.exports = function(specLines, options)
                 dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uid + ' ' + serializeDot(edge1) + "\r\n";
                 dot += '    ' + uid + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge2) + "\r\n";
                 dot += '    { rank=same; ' + uids[recordName(elem[3][1])] + " -> " + uid + ' ' + serializeDot(edge3) + ";}\r\n"; 
-                //dot += '    ' + uids[recordName(elem[0][1])] + " -> "  + uids[recordName(elem[2][1])] + " [color=red]\r\n";              
             }
         }
 
