@@ -14,6 +14,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + State
   + Deployment
   + Package
+  + Sequence (new!)
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
@@ -34,7 +35,7 @@ Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 
 ## Snippets
 There is a snippet for each diagram type. Just start typing one of the available diagram types: 
-`class`, `activity`, `usecase`, `state` or `deployment`, `package` 
+`class`, `activity`, `usecase`, `state` or `deployment`, `package`, `sequence` 
 and a full example will be pasted into the yuml file.
 
 ![yUML snippet screenshot](images/snippet.png)
@@ -65,3 +66,4 @@ If you have experience developing Visual Studio Code extensions, please propose 
 * Syntax and some examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
 * This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
 * The yuml-to-dot translator is loosely based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
+* The new sequence diagram is based on [this github fork](https://github.com/sharvil/node-sequence-diagram)

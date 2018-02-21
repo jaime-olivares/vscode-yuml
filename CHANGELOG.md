@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.13 (in progress)
+* Added Sequence diagrams
+
 ## 2.12
 * Fixed issues related to restrictions for publishing in the Marketplace
 

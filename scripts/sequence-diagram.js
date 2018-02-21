@@ -23,21 +23,6 @@ module.exports = function(specLines, options)
     var actors  = [];
     var signals = [];
 
-    function newActor(name, label) 
-    {
-        return { name: name, label: label, index: actors.length };
-    }
-
-    function newSignal(actorA, linetype, arrowtype, actorB, message) 
-    {
-        return { type: "Signal", actorA: actorA, actorB: actorB, linetype: linetype, arrowtype: arrowtype, message: message }
-    }
-      
-    function newNote(actor, placement, message) 
-    {
-        return { type: "Note", actor: actor, placement: placement, message: message }
-    }
-
     function parseYumlExpr(specLine)
     {
         var exprs = [];
@@ -52,9 +37,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\[.*\]$/)) // object
             {
                 part = part.substr(1, part.length-2);
-                //var ret = extractBgAndNote(part, true);
-                //exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
-                exprs.push(["object", part]);
+                var ret = extractBgAndNote(part, true);
+                exprs.push([ret.isNote ? "note" : "object", ret.part, ret.bg, ret.fontcolor]);
             }
             else if (part.indexOf(">") >= 0)  // message
             {
@@ -87,7 +71,7 @@ module.exports = function(specLines, options)
                     part = part.substr(0, part.length - 1);
                 }
 
-                exprs.push(["message", prefix, message, style, suffix]);
+                exprs.push(["signal", prefix, message, style, suffix]);
             }
             else
                 throw("Invalid expression");
@@ -107,49 +91,63 @@ module.exports = function(specLines, options)
 
             for (var k=0; k<elem.length; k++)
             {
-                if (elem[k][0] == "object")
+                var type = elem[k][0];
+
+                if (type == "object" )
                 {
                     var label = elem[k][1];
                     var rn = recordName(label);
                     if (uids.hasOwnProperty(rn))
                         continue;
 
-                    //var uid = 'A' + (uids.length+1).toString();
                     label = formatLabel(label, 20, true);
-                    var actor = newActor(rn, label);
+                    var actor = { type: elem[k][0], name: rn, label: label, index: actors.length };
                     uids[rn] = actor;
 
                     actors.push(actor);
                 }
             }
 
-            if (elem.length == 3 && elem[1][0] == 'message')  // what if self or cancel?
+            if (elem.length == 3 && elem[0][0] == 'object' && elem[1][0] == 'signal' && elem[2][0] == 'object')
             {
                 var message = elem[1][2];
                 var style = elem[1][3];
                 var actorA = uids[recordName(elem[0][1])];
                 var actorB = uids[recordName(elem[2][1])];
+                var signal = null;
 
                 switch (style)
                 {
                     case "dashed":
-                        signals.push(newSignal(actorA, "dashed", "arrow-filled", actorB, message));                    
+                        signal = { type: "signal", actorA: actorA, actorB: actorB, linetype: "dashed", arrowtype: "arrow-filled", message: message }
                         break;
                     case "solid":
-                        signals.push(newSignal(actorA, "solid", "arrow-filled", actorB, message));                    
+                        signal = { type: "signal", actorA: actorA, actorB: actorB, linetype: "solid", arrowtype: "arrow-filled", message: message }
                         break;
                     case "async":
-                        signals.push(newSignal(actorA, "solid", "arrow-open", actorB, message));                                    
+                        signal = { type: "signal", actorA: actorA, actorB: actorB, linetype: "solid", arrowtype: "arrow-open", message: message }
                         break;
                 }
+
+                if (signal != null)
+                    signals.push(signal);
+            }
+            else if (elem.length == 3 && elem[0][0] == 'object' && elem[1][0] == 'signal' && elem[2][0] == 'note')
+            {
+                var actorA = uids[recordName(elem[0][1])];
+                var label = elem[2][1];
+                label = formatLabel(label, 20, true);
+                var note = { type: "note", message: label, actor: actorA };
+
+                signals.push(note);
             }            
         }
 
-        var r = new renderer(actors, signals, true);
+        var r = new renderer(actors, signals, uids, true);
         var svg = r.svg_.serialize();
         var svgDark = r.svg_.rectifySvg(svg, r.width, r.height);
 
-        r = new renderer(actors, signals, false);
+        r = new renderer(actors, signals, uids, false);
         svg = r.svg_.serialize();
         var svgLight = r.svg_.rectifySvg(svg, r.width, r.height);        
 

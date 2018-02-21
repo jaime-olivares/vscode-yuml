@@ -1,11 +1,11 @@
 var svg_builder = require('./svg-builder.js');
 
 /*
-Rendering algorithms taken from
+Rendering algorithms based on:
 https://github.com/sharvil/node-sequence-diagram
 */
 
-module.exports = function(actors, signals, isDark) 
+module.exports = function(actors, signals, uids, isDark) 
 {
     var DIAGRAM_MARGIN = 10;
     var ACTOR_MARGIN   = 10; // Margin around a actor
@@ -22,13 +22,10 @@ module.exports = function(actors, signals, isDark)
 
     this.actors = actors;
     this.signals = signals;
+    this.uids = uids;
 
     this.width = 0;
     this.height = 0;
-
-    /*
-    this.LINE_CLASS_  = [ 'signal-solid', 'signal-dotted' ];
-    */
 
     this.draw = function(container) 
     {
@@ -41,6 +38,11 @@ module.exports = function(actors, signals, isDark)
       this.draw_signals(y + this._actors_height);
     };
 
+    function reformatText(text)
+    {
+      return text.replace(/\\ /g, " ").replace(/\\n/g, "\n");
+    }    
+    
     this.layout = function() 
     {
       this.width = 0;  // min width
@@ -48,8 +50,8 @@ module.exports = function(actors, signals, isDark)
 
       this.actors.forEach(function(a) 
       {
-        var textNode = this.svg_.createText(a.name);
-        var bb = this.svg_.getElementSize(textNode);
+        var text = reformatText(a.label);
+        var bb = this.svg_.getTextSize(text);
         a.text_bb = bb;
 
         a.x = 0; a.y = 0;
@@ -82,8 +84,8 @@ module.exports = function(actors, signals, isDark)
       signals.forEach(function(s) {
         var a, b; // Indexes of the left and right actors involved
 
-        var textNode = this.svg_.createText(s.message);
-        var bb = this.svg_.getElementSize(textNode);
+        var text = reformatText(s.message);
+        var bb = this.svg_.getTextSize(text);
 
         s.text_bb = bb;
         s.width   = bb.width;
@@ -91,7 +93,7 @@ module.exports = function(actors, signals, isDark)
 
         var extra_width = 0;
 
-        if (s.type == "Signal") 
+        if (s.type == "signal") 
         {
           s.width  += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2;
           s.height += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2;
@@ -105,7 +107,7 @@ module.exports = function(actors, signals, isDark)
             b = Math.max(s.actorA.index, s.actorB.index);
           }
         } 
-        else if (s.type == "Note") 
+        else if (s.type == "note") 
         {
           s.width  += (NOTE_MARGIN + NOTE_PADDING) * 2;
           s.height += (NOTE_MARGIN + NOTE_PADDING) * 2;
@@ -115,8 +117,6 @@ module.exports = function(actors, signals, isDark)
           a = s.actor.index;
           b = a + 1;
         } 
-        else 
-          throw new Error("Unhandled signal type:" + s.type);
 
         actor_ensure_distance(a, b, s.width + extra_width);
         this._signals_height += s.height;
@@ -168,21 +168,21 @@ module.exports = function(actors, signals, isDark)
     {
       actor.y      = offsetY;
       actor.height = height;
-      this.draw_text_box(actor, actor.name, ACTOR_MARGIN, ACTOR_PADDING);
+      this.draw_text_box(actor, actor.label, ACTOR_MARGIN, ACTOR_PADDING);
     };
 
     this.draw_signals = function (offsetY) 
     {
       var y = offsetY;
       this.signals.forEach(function(s) {
-        if (s.type == "Signal") 
+        if (s.type == "signal") 
         {
           if (s.actorA == s.actorB) 
             this.draw_self_signal(s, y);
           else 
             this.draw_signal(s, y);
         } 
-        else if (s.type == "Note") 
+        else if (s.type == "note") 
           this.draw_note(s, y);
 
         y += s.height;
@@ -197,7 +197,7 @@ module.exports = function(actors, signals, isDark)
       var x = aX + SELF_SIGNAL_WIDTH + SIGNAL_PADDING + text_bb.width / 2;
       var y = offsetY + signal.height / 2;
 
-      this.draw_text(x, y, signal.message, false);
+      this.draw_text(x, y, signal.message, true);
 
       var line = this.svg_.createPath("M{0},{1} C{2},{1} {2},{3} {0},{3}", signal.linetype,
           aX, 
@@ -232,8 +232,7 @@ module.exports = function(actors, signals, isDark)
     this.draw_note = function (note, offsetY) 
     {
       note.y = offsetY;
-      var actorA = note.hasManyActors() ? note.actor[0] : note.actor;
-      var aX = getCenterX( actorA );
+      var aX = getCenterX( note.actor );
 
       note.x = aX + ACTOR_MARGIN;
 
@@ -242,20 +241,17 @@ module.exports = function(actors, signals, isDark)
 
     this.draw_text = function (x, y, text, dontDrawBox) 
     {
-      var t = this.svg_.createText(text);
-      t.setAttribute('x', x);
-      t.setAttribute('y', y);
-      t.style.textAnchor = 'middle';
-      t.style.alignmentBaseline = 'central';
+      var text = reformatText(text);
+      var t = this.svg_.createText(text, x, y);
 
       if (!dontDrawBox) 
       {
-        var bb = this.svg_.getElementSize(t);
-        var r = this.svg_.createRect(bb.width, bb.height);
-        r.setAttribute('x', bb.x);
-        r.setAttribute('y', bb.y);
+        var size = this.svg_.getTextSize(text);
+        var rect = this.svg_.createRect(size.width, size.height);
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
 
-        this.svg_.getDocument().appendChild(r);
+        this.svg_.getDocument().appendChild(rect);
       }
 
       this.svg_.getDocument().appendChild(t);

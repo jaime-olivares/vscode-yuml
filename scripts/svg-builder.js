@@ -18,11 +18,6 @@ module.exports = function(isDark)
         this.root_.setAttribute('height', height);
     };
 
-    this.getElementSize = function(element) 
-    {
-        return { x: 0, y: 0, width: 9 * element.innerHTML.length, height: 18 };
-    };
-
     this.createRect = function(width, height) 
     {
         var rect = document.createElementNS(NS, 'rect');
@@ -33,13 +28,43 @@ module.exports = function(isDark)
         return rect;
     };
 
-    this.createText = function(message) 
+    this.createText = function(message, x, y) 
     {
-        var text = document.createElementNS(NS, 'text');
-        text.textContent = message;
-        text.setAttribute('fill', isDark ? 'white' : 'black');
+        var g = document.createElementNS(NS, 'g');
+        var lines = message.split('\n');
 
-        return text;
+        y -= (lines.length - 1) / 2 * 18;
+
+        for (var i=0; i<lines.length; i++)
+        {
+            var text = document.createElementNS(NS, 'text');
+            text.textContent = lines[i];
+            text.setAttribute('fill', isDark ? 'white' : 'black');
+
+            text.setAttribute('x', x);
+            text.setAttribute('y', y);
+            text.style.textAnchor = 'middle';
+            text.style.alignmentBaseline = 'central';
+                  
+            y += 18;
+
+            g.appendChild(text);
+        }
+
+        return g;
+    };
+
+    this.getTextSize = function(text) 
+    {
+        var width = 0;
+        var lines = text.split('\n');
+
+        for (var i=0; i<lines.length; i++)
+        {
+            width = Math.max(width, 8.5 * lines[i].length);
+        }
+
+        return { x: 0, y: 0, width: width, height: 18 * lines.length };
     };
 
     this.createPath = function(format, linetype) 
