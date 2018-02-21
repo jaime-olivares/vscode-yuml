@@ -14,7 +14,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + State
   + Deployment
   + Package
-  + Sequence (new!)
+  + `[new]` Sequence (experimental)
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
@@ -29,7 +29,6 @@ Please refer to the [wiki page](https://github.com/jaime-olivares/vscode-yuml/wi
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
 * By opening the command pallete and [partially] typing: `view yuml diagram` (see the screenshot above)
 * By clicking the preview icon in the editor title area (see below)
-* [Only for VSCode 1.3.x] By right clicking on the document's title tab and selecting the option: *View yUML Diagram*
 
 ![title icon](images/title_icon.png)
 
@@ -56,11 +55,6 @@ No other product or library is needed and thus the installation process is quiet
 
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
-
-## Roadmap
-* Completion of other diagram types: sequence, components, etc.
-* Diagram nesting
-* Intellisense for colors
 
 ## Credits
 * Syntax and some examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)

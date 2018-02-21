@@ -166,27 +166,28 @@ module.exports = function(actors, signals, uids, isDark)
 
     this.draw_actor = function (actor, offsetY, height) 
     {
-      actor.y      = offsetY;
-      actor.height = height;
-      this.draw_text_box(actor, actor.label, ACTOR_MARGIN, ACTOR_PADDING);
+        actor.y      = offsetY;
+        actor.height = height;
+        this.draw_text_box(actor, actor.label, ACTOR_MARGIN, ACTOR_PADDING);
     };
 
     this.draw_signals = function (offsetY) 
     {
-      var y = offsetY;
-      this.signals.forEach(function(s) {
-        if (s.type == "signal") 
+        var y = offsetY;
+        this.signals.forEach(function(s) 
         {
-          if (s.actorA == s.actorB) 
-            this.draw_self_signal(s, y);
-          else 
-            this.draw_signal(s, y);
-        } 
-        else if (s.type == "note") 
-          this.draw_note(s, y);
+            if (s.type == "signal") 
+            {
+              if (s.actorA == s.actorB) 
+                this.draw_self_signal(s, y);
+              else 
+                this.draw_signal(s, y);
+            } 
+            else if (s.type == "note") 
+              this.draw_note(s, y);
 
-        y += s.height;
-      }, this);
+            y += s.height;
+        }, this);
     };
 
     this.draw_self_signal = function(signal, offsetY) 
@@ -211,80 +212,96 @@ module.exports = function(actors, signals, uids, isDark)
 
     this.draw_signal = function (signal, offsetY) 
     {
-      var aX = getCenterX( signal.actorA );
-      var bX = getCenterX( signal.actorB );
+        var aX = getCenterX( signal.actorA );
+        var bX = getCenterX( signal.actorB );
 
-      // Mid point between actors
-      var x = (bX - aX) / 2 + aX;
-      var y = offsetY + SIGNAL_MARGIN + 2*SIGNAL_PADDING;
+        // Mid point between actors
+        var x = (bX - aX) / 2 + aX;
+        var y = offsetY + SIGNAL_MARGIN + 2*SIGNAL_PADDING;
 
-      // Draw the text in the middle of the signal
-      this.draw_text(x, y, signal.message, true);
+        // Draw the text in the middle of the signal
+        this.draw_text(x, y, signal.message, true);
 
-      // Draw the line along the bottom of the signal
-      y = offsetY + signal.height - SIGNAL_MARGIN - SIGNAL_PADDING;
-      var line = this.svg_.createPath('M{0},{1} h{2}', signal.linetype, aX, y, (bX - aX));
-      line.setAttribute("marker-end", "url(#" + signal.arrowtype + ")");
+        // Draw the line along the bottom of the signal
+        y = offsetY + signal.height - SIGNAL_MARGIN - SIGNAL_PADDING;
+        var line = this.svg_.createPath('M{0},{1} h{2}', signal.linetype, aX, y, (bX - aX));
+        line.setAttribute("marker-end", "url(#" + signal.arrowtype + ")");
 
-      this.svg_.getDocument().appendChild(line);
+        this.svg_.getDocument().appendChild(line);
     };
 
     this.draw_note = function (note, offsetY) 
     {
-      note.y = offsetY;
-      var aX = getCenterX( note.actor );
+        var aX = getCenterX( note.actor );
+        var margin = NOTE_MARGIN;
 
-      note.x = aX + ACTOR_MARGIN;
+        note.x = aX + ACTOR_MARGIN;
+        note.y = offsetY;
 
-      this.draw_text_box(note, note.message, NOTE_MARGIN, NOTE_PADDING);
+        var noteShape = this.svg_.createPath("M{0},{1} L{0},{2} L{3},{2} L{0},{1} L{4},{1} L{4},{5} L{3},{5} L{3},{2} Z",
+            "solid", 
+            note.x - margin + note.width - 7, 
+            note.y + margin,
+            note.y + margin + 7,
+            note.x - margin + note.width,
+            note.x + margin,
+            note.y - margin + note.height);
+
+        this.svg_.getDocument().appendChild(noteShape);
+
+        // Draw text (in the center)
+        x = getCenterX(note);
+        y = getCenterY(note);
+        this.draw_text(x, y, note.message, true);      
     };
 
     this.draw_text = function (x, y, text, dontDrawBox) 
     {
-      var text = reformatText(text);
-      var t = this.svg_.createText(text, x, y);
+        var text = reformatText(text);
+        var t = this.svg_.createText(text, x, y);
 
-      if (!dontDrawBox) 
-      {
-        var size = this.svg_.getTextSize(text);
-        var rect = this.svg_.createRect(size.width, size.height);
+        if (!dontDrawBox) 
+        {
+            var size = this.svg_.getTextSize(text);
+            var rect = this.svg_.createRect(size.width, size.height);
+            rect.setAttribute('x', x);
+            rect.setAttribute('y', y);
+
+            this.svg_.getDocument().appendChild(rect);
+        }
+
+        this.svg_.getDocument().appendChild(t);
+    };
+
+    this.draw_text_box = function (box, text, margin) 
+    {
+        var x = box.x + margin;
+        var y = box.y + margin;
+        var w = box.width  - 2 * margin;
+        var h = box.height - 2 * margin;
+
+        // Draw inner box
+        var rect = this.svg_.createRect(w, h);
         rect.setAttribute('x', x);
         rect.setAttribute('y', y);
 
+        //rect.classList.add(Renderer.RECT_CLASS_);
         this.svg_.getDocument().appendChild(rect);
-      }
 
-      this.svg_.getDocument().appendChild(t);
+        // Draw text (in the center)
+        x = getCenterX(box);
+        y = getCenterY(box);
+
+        this.draw_text(x, y, text, true);
     };
 
-    this.draw_text_box = function (box, text, margin, padding) 
+    function getCenterX(box) 
     {
-      var x = box.x + margin;
-      var y = box.y + margin;
-      var w = box.width  - 2 * margin;
-      var h = box.height - 2 * margin;
-
-      // Draw inner box
-      var rect = this.svg_.createRect(w, h);
-      rect.setAttribute('x', x);
-      rect.setAttribute('y', y);
-
-      //rect.classList.add(Renderer.RECT_CLASS_);
-      this.svg_.getDocument().appendChild(rect);
-
-      // Draw text (in the center)
-      x = getCenterX(box);
-      y = getCenterY(box);
-
-      this.draw_text(x, y, text, true);
-    };
-
-    function getCenterX(box) {
-      return box.x + box.width / 2;
+        return box.x + box.width / 2;
     }
     
     function getCenterY(box) {
-      return box.y + box.height / 2;
+        return box.y + box.height / 2;
     }
     
     this.draw();
