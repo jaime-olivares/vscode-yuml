@@ -247,18 +247,25 @@ module.exports = function(actors, signals, uids, isDark)
             note.x + margin,
             note.y - margin + note.height);
 
+        if (note.hasOwnProperty("bgcolor"))
+            noteShape.setAttribute("style", noteShape.getAttribute("style").replace("fill: none", "fill: " + note.bgcolor));
+
         this.svg_.getDocument().appendChild(noteShape);
 
         // Draw text (in the center)
         x = getCenterX(note);
         y = getCenterY(note);
-        this.draw_text(x, y, note.message, true);      
+
+        if (note.hasOwnProperty("fontcolor"))        
+          this.draw_text(x, y, note.message, true, note.fontcolor);      
+        else
+          this.draw_text(x, y, note.message, true);
     };
 
-    this.draw_text = function (x, y, text, dontDrawBox) 
+    this.draw_text = function (x, y, text, dontDrawBox, color) 
     {
         var text = reformatText(text);
-        var t = this.svg_.createText(text, x, y);
+        var t = this.svg_.createText(text, x, y, color);
 
         if (!dontDrawBox) 
         {

@@ -139,6 +139,11 @@ module.exports = function(specLines, options)
                 label = formatLabel(label, 20, true);
                 var note = { type: "note", message: label, actor: actorA };
 
+                if (elem[2][2])  // background color
+                    note.bgcolor = elem[2][2];
+                if (elem[2][3])  // font color
+                    note.fontcolor = elem[2][3];
+
                 signals.push(note);
             }            
         }

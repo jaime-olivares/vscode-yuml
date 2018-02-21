@@ -28,7 +28,7 @@ module.exports = function(isDark)
         return rect;
     };
 
-    this.createText = function(message, x, y) 
+    this.createText = function(message, x, y, color) 
     {
         var g = document.createElementNS(NS, 'g');
         var lines = message.split('\n');
@@ -39,7 +39,7 @@ module.exports = function(isDark)
         {
             var text = document.createElementNS(NS, 'text');
             text.textContent = lines[i];
-            text.setAttribute('fill', isDark ? 'white' : 'black');
+            text.setAttribute('fill', color ? color : (isDark ? 'white' : 'black'));
 
             text.setAttribute('x', x);
             text.setAttribute('y', y);
