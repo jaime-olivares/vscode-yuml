@@ -1,4 +1,4 @@
-require('./scripts/yumldoc-utils.js')();
+require('./yumldoc-utils.js')();
 
 module.exports = function(md, options) 
 {

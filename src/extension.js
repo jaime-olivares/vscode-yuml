@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const path = require('path')
-require('./scripts/yumldoc-utils.js')();
+require('./yumldoc-utils.js')();
 
 exports.activate = function(context)
 {
