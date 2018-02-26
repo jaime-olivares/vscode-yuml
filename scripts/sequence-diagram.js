@@ -80,7 +80,7 @@ module.exports = function(specLines, options)
         return exprs;
     }
 
-    function composeSvg(specLines, options)
+    function composeSVG(specLines, options)
     {
         var uids = {};
         var index = 0;
@@ -149,15 +149,13 @@ module.exports = function(specLines, options)
         }
 
         var r = new renderer(actors, signals, uids, true);
-        var svg = r.svg_.serialize();
-        var svgDark = r.svg_.rectifySvg(svg, r.width, r.height);
+        var svgDark = r.svg_.serialize();
 
         r = new renderer(actors, signals, uids, false);
-        svg = r.svg_.serialize();
-        var svgLight = r.svg_.rectifySvg(svg, r.width, r.height);        
+        var svgLight = r.svg_.serialize();
 
         return [svgLight, svgDark];
     }
 
-    return composeSvg(specLines, options);
+    return composeSVG(specLines, options);
 }

@@ -5,7 +5,6 @@
         "prefix": "activity",
         "body": [
             "// {type:activity}",  
-            "// {generate:true}",
             "(start)-><a>[kettle empty]->(Fill Kettle)->|b|",
             "<a>[kettle full]->|b|->(Boil Kettle)->|c|",
             "|b|->(Add Tea Bag)->(Add Milk)->|c|->(Pour Water)",
@@ -103,5 +102,18 @@
             "[Site Maintainer]-(Post New Event to the Web Site)",
             "[User]-(View Events)"
         ]
-    }        
+    },
+    "Sequence": {
+        "comment": "Example taken from wikipedia",
+        "description": "UML sequence diagram",
+        "prefix": "sequence",
+        "body": [
+            "// {type:sequence}",
+            "[:Computer]sendUnsentEmal>[:Server]",
+            "[:Computer]newEmail>[:Server]",
+            "[:Server]reponse.>[:Computer]",
+            "[:Computer]downloadEmail>[:Server]",
+            "[:Computer]deleteOldEmail>[:Server]"            
+        ]
+    }
 }

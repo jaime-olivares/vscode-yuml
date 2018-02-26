@@ -7,6 +7,7 @@ const deploymentDiagram = require('./deployment-diagram.js');
 const packageDiagram = require('./package-diagram.js');
 const sequenceDiagram = require('./sequence-diagram.js');
 const Viz = require("./viz-lite-1.5.js");
+const vscode = require('vscode');
 require('./svg-utils.js')();
 
 module.exports = function()
@@ -98,7 +99,7 @@ module.exports = function()
         }
 
         try {
-            if (options.generate===true && mayGenerate===true)
+            if (filename && options.generate===true && mayGenerate===true)
             {
                 var imagename = filename.replace(/\.[^.$]+$/, '.svg');
                 fs.writeFileSync(imagename, svgLight);
@@ -106,7 +107,27 @@ module.exports = function()
         }
         catch (e) { }
 
-        return "<div id='light'>\r\n" + svgLight + "\r\n</div><div id='dark'>\r\n" + svgDark + "\r\n</div>";
+        var div = `<div>
+    <style>
+        .vscode-high-contrast .yuml-light {
+            display: none;
+        }
+        .vscode-dark .yuml-light {
+            display: none;
+        }
+        .vscode-light .yuml-dark {
+            display: none;
+        }
+    </style>
+    <div class='yuml-light'>
+        ${svgLight}
+    </div>
+    <div class='yuml-dark'>
+        ${svgDark}
+    </div>
+</div>`;
+
+        return div;
     }
 
     processDirectives = function(line, options)

@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const path = require('path')
 require('./scripts/yumldoc-utils.js')();
 
 exports.activate = function(context)
@@ -10,18 +11,25 @@ exports.activate = function(context)
             this.diagram = "";
         }
 
-        provideTextDocumentContent (uri, token) {
-            var doc = `<!DOCTYPE html>
+        provideTextDocumentContent (uri, token) 
+        {
+            var editor = vscode.window.activeTextEditor;
+			if (!(editor.document.languageId === 'yuml')) {
+				return "<body>Active editor doesn't show a yUML document<body>";
+			}
+			return this.createHTML();
+        }
+
+        createHTML()
+        {
+            return `<!DOCTYPE html>
             <html>
             <head>
                 <script>
-                    function showDiagram() 
+                    function showTopbar() 
                     {
                         var isLight = document.body.classList.contains('vscode-light');
-                        var toHide = document.getElementById(isLight ? "dark" : "light");
-                        toHide.style.display = "none";
-
-                        var styleSheet = document.getElementById('themed');
+                        var styleSheet = document.getElementById('topbar-themed');
                         var color = isLight ? "#404040" : "#C0C0C0";
                         styleSheet.innerHtml = "#topbar { color:" + color + "; }";
                     }
@@ -48,10 +56,10 @@ exports.activate = function(context)
                         margin-left: 15px;
                     }
                 </style>
-                <style id="themed">
+                <style id="topbar-themed">
                 </style>                    
             </head>
-            <body style="margin:10px;" onload="showDiagram()">
+            <body style="margin:10px;" onload="showTopbar()">
                 <div id="topbar">&#9654; yUML <div class="links">
                     <a href="https://github.com/jaime-olivares/vscode-yuml/wiki">Wiki</a>
                     <a href="https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml#review-details">Write a review</a>
@@ -60,19 +68,15 @@ exports.activate = function(context)
                 ${this.diagram}
             </body>
             </html>`;
-
-            var editor = vscode.window.activeTextEditor;
-            if (editor)
-                editor.show();
-
-            return doc;
         }
 
-        get onDidChange () {            
+        get onDidChange () 
+        {            
             return this._onDidChange.event;
         }
 
-        load(uri, isOpen) {
+        load(uri, isOpen) 
+        {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !editor.document)
                 return;
@@ -85,7 +89,8 @@ exports.activate = function(context)
             this._onDidChange.fire(uri);
         }
 
-        update(uri) {
+        update(uri) 
+        {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !editor.document)
                 return;
@@ -97,7 +102,7 @@ exports.activate = function(context)
             if (diagram == "")
                 this.diagram = "";
             else if (!diagram)
-                this.diagram = "Error composing the yuml invocation";
+                this.diagram = "Error composing the yUML invocation";
             else
                 this.diagram = diagram;
 
@@ -110,8 +115,6 @@ exports.activate = function(context)
 
     let provider = new yUMLDocumentContentProvider();
     let registration = vscode.workspace.registerTextDocumentContentProvider('vscode-yuml', provider);
-
-    console.log('The extension "vscode-yuml" is now active.');
 
     let command = registerCommand('extension.viewYumlDiagram', () => {
         var disp = vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then(
@@ -127,6 +130,18 @@ exports.activate = function(context)
     vscode.window.onDidChangeActiveTextEditor((e) => { provider.load(previewUri); });
 
     context.subscriptions.push(command, registration);
+
+    return {
+        extendMarkdownIt(md) 
+        {
+            return md.use(require('./markdown-it-yuml.js'));
+        }
+    }
 }
 
 exports.deactivate = function() {};
+
+
+
+
+

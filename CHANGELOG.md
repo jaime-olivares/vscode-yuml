@@ -1,7 +1,13 @@
 # Change Log
 
-## 2.13 (in progress)
+## 2.14
+* Added Markdown support
+* Improved the generation of SVG artifacts
+* Improved rendering for dark and light themes
+
+## 2.13
 * Added Sequence diagrams
+* Solved issue #31
 
 ## 2.12
 * Fixed issues related to restrictions for publishing in the Marketplace

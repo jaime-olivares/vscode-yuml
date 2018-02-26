@@ -1,5 +1,6 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+require('./svg-utils.js')();
 
 module.exports = function(isDark)
 {
@@ -9,13 +10,14 @@ module.exports = function(isDark)
 
     this.getDocument = function() 
     {
-        return this.root_;
+        return this.root_.firstChild;
     };
 
     this.setDocumentSize = function(width, height) 
     {
-        this.root_.setAttribute('width', width);
-        this.root_.setAttribute('height', height);
+        var svg = this.root_.firstChild;
+        svg.setAttribute('width', width);
+        svg.setAttribute('height', height);
     };
 
     this.createRect = function(width, height) 
@@ -89,7 +91,7 @@ module.exports = function(isDark)
         if (typeof document === 'undefined')
             return null;
 
-        this.root_ = document.body; 
+        this.root_ = document.body;
 
         var filledArrow = document.createElementNS(NS, 'marker');
         var filledArrowPath = this.createPath('M0,0 6,3 0,6z', "solid");
@@ -121,25 +123,20 @@ module.exports = function(isDark)
 
         openArrowPath.setAttribute('style', 'stroke-width: 1; stroke: ' + (isDark ? 'white;' : 'black;'));
 
-        this.root_.appendChild(defs);
+        var svg = this.root_.firstChild; 
+        svg.appendChild(defs);
     }
 
     this.serialize = function()
     {
-        return dom.serialize();
+        return extractSVG(dom.serialize());
     }
 
-    // This is temporary, until the malformed svg string issue is solved
-    this.rectifySvg = function(svg, width, height)
+    function extractSVG(html)
     {
-        var index = svg.indexOf("<svg ");
-
-        svg = svg.replace("<svg ", "<svg width=\"" + width + "\" height=\"" + height + "\" ");
-        svg = svg.substr(index);
-        svg = svg.replace("</svg>", "");
-        svg = svg.replace("</body>", "</svg>");
-        svg = svg.replace("</html>", "");
-
+        var svg = html.replace("<html><head></head><body>", "");
+        svg = svg.replace("</body></html>", "");
+        
         return svg;
     }
     

@@ -14,12 +14,13 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + State
   + Deployment
   + Package
-  + `[new]` Sequence (experimental)
+  + `[new]` Sequence
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
 * Automatic sensing of light and dark themes
 * Code snippets with samples of each diagram
+* `[new]` Markdown support
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
@@ -39,6 +40,17 @@ There is a snippet for each diagram type. Just start typing one of the available
 and a full example will be pasted into the yuml file.
 
 ![yUML snippet screenshot](images/snippet.png)
+
+## Markdown support
+yUML code can now be embedded into markdown documents by using the fencing syntax, as shown:
+
+    This is a simple example of a **yUML** sequence diagram: 
+    
+    ```yuml
+    {type: sequence}
+    [A]>[B]
+    ```
+The yUML diagram will be directly rendered in the markdown preview window.
 
 ## Top bar
 A topbar will show some useful links when hovered (see below),

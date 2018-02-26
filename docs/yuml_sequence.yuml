@@ -1,9 +1,0 @@
-// Activity diagram for the main process of the yUML extension for VSCode
-// {type:sequence}
-[A]>[B]
-[A]a message>[B]
-[B]second message.>[A]
-[B]another actor>[new;actor]
-[B]>[note: You can stick notes on diagrams too!{bg:darkgoldenrod}]
-[A]3rd message>>[B]
-[A]self>[A]
