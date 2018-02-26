@@ -18,6 +18,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
+* Automatic sensing of light and dark themes
 * Code snippets with samples of each diagram
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
@@ -40,7 +41,7 @@ and a full example will be pasted into the yuml file.
 ![yUML snippet screenshot](images/snippet.png)
 
 ## Top bar
-A newly added topbar (see below) will show some useful links when hovered,
+A topbar will show some useful links when hovered (see below),
 for accessing the wiki page, writing a review, reporting bugs and requesting new features.
 
 ![yUML snippet screenshot](images/top_bar.png)
@@ -49,9 +50,10 @@ for accessing the wiki page, writing a review, reporting bugs and requesting new
 No settings yet.
 
 ## Dependencies
-This extension has not dependencies.
-It contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused [issue #23](https://github.com/jaime-olivares/vscode-yuml/issues/23).
-No other product or library is needed and thus the installation process is quietly simple across platforms.
+This extension depends only on the [jsdom npm package](https://www.npmjs.com/package/jsdom), which is cross-platform and is installed automatically.
+
+Also, it contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused [issue #23](https://github.com/jaime-olivares/vscode-yuml/issues/23).
+No other product or library is needed and thus the installation process is quite simple across platforms.
 
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
