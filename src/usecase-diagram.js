@@ -1,5 +1,7 @@
 require('./yuml2dot-utils.js')();
 
+var dict = require('./dict');
+
 /*
 Syntax as specified in yuml.me
 
@@ -10,34 +12,34 @@ Actor	            [Customer]
 Actor Inheritance	[Admin]^[User]
 Notes	            [Admin]^[User],[Admin]-(note: Most privileged user)
 */
-
-module.exports = function(specLines, options)
-{
-    function parseYumlExpr(specLine)
-    {
+module.exports = function (specLines, options) {
+    function parseYumlExpr(specLine) {
         var exprs = [];
         var parts = this.splitYumlExpr(specLine, "[(");
 
-        for (var i=0; i<parts.length; i++)
-        {
+        for (var i = 0; i < parts.length; i++) {
             var part = parts[i].trim();
             if (part.length == 0)
                 continue;
 
             if (part.match(/^\(.*\)$/))  // use-case
             {
-                part = part.substr(1, part.length-2);
+                part = part.substr(1, part.length - 2);
+                // modify by zhfjyq,using dict for sample input
+                part = dict(part);
+
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
             }
             else if (part.match(/^\[.*\]$/))   // actor
             {
-                part = part.substr(1, part.length-2);
+                part = part.substr(1, part.length - 2);
+                // modify by zhfjyq,using dict for sample input
+                part = dict(part);
 
                 exprs.push(["actor", part]);
             }
-            else switch (part)
-            {
+            else switch (part) {
                 case "<":
                     exprs.push(["edge", "vee", "<<extend>>", "none", "dashed"]);
                     break;
@@ -51,30 +53,26 @@ module.exports = function(specLines, options)
                     exprs.push(["edge", "none", "", "empty", "solid"]);
                     break;
                 default:
-                    throw("Invalid expression");
+                    throw ("Invalid expression");
             }
         }
 
         return exprs;
     }
 
-    function composeDotExpr(specLines, options)
-    {
+    function composeDotExpr(specLines, options) {
         var uids = {};
         var len = 0;
         var dot = "    ranksep = " + 0.7 + "\r\n";
         dot += "    rankdir = " + options.dir + "\r\n";
 
-        for (var i=0; i<specLines.length; i++)
-        {
+        for (var i = 0; i < specLines.length; i++) {
             var elem = parseYumlExpr(specLines[i]);
 
-            for (var k=0; k<elem.length; k++)
-            {
+            for (var k = 0; k < elem.length; k++) {
                 var type = elem[k][0];
 
-                if (type == "note" || type == "record" || type == "actor")
-                {
+                if (type == "note" || type == "record" || type == "actor") {
                     var label = elem[k][1];
                     if (uids.hasOwnProperty(recordName(label)))
                         continue;
@@ -106,15 +104,14 @@ module.exports = function(specLines, options)
                         }
 
                         if (elem[k][3])
-                            node.fontcolor = elem[k][3];                     
+                            node.fontcolor = elem[k][3];
                     }
 
                     dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
 
-            if (elem.length == 3 && elem[1][0] == 'edge')
-            {
+            if (elem.length == 3 && elem[1][0] == 'edge') {
                 var style = (elem[0][0] == 'note' || elem[2][0] == 'note') ? "dashed" : elem[1][4];
 
                 var edge = {
