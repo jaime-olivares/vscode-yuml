@@ -47,7 +47,7 @@ yUML code can now be embedded into markdown documents by using the fencing synta
     This is a simple example of a **yUML** sequence diagram: 
     
     ```yuml
-    {type: sequence}
+    // {type: sequence}
     [A]>[B]
     ```
 The yUML diagram will be directly rendered in the markdown preview window.
