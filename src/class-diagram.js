@@ -18,26 +18,26 @@ Color splash    [Customer{bg:orange}]<>1->*[Order{bg:green}]
 Comment         // Comments
 */
 
-module.exports = function(specLines, options)
-{
-    function parseYumlExpr(specLine)
-    {
+module.exports = function (specLines, options) {
+    function parseYumlExpr(specLine) {
         var exprs = [];
         var parts = this.splitYumlExpr(specLine, "[");
 
-        for (var i=0; i<parts.length; i++)
-        {
+        for (var i = 0; i < parts.length; i++) {
             var part = parts[i].trim();
             if (part.length == 0)
                 continue;
 
             if (part.match(/^\[.*\]$/)) // class box
             {
-                part = part.substr(1, part.length-2);
+                part = part.substr(1, part.length - 2);
+                // modify by zhfjyq,using dict for sample input
+                part = dict(part);
+
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
             }
-            else if (part=="^")  // inheritance
+            else if (part == "^")  // inheritance
             {
                 exprs.push(["edge", "empty", "", "none", "", "solid"]);
             }
@@ -46,57 +46,53 @@ module.exports = function(specLines, options)
                 var style;
                 var tokens;
 
-                if (part.indexOf("-.-") >= 0)
-                {
+                if (part.indexOf("-.-") >= 0) {
                     style = "dashed";
                     tokens = part.split("-.-");
                 }
-                else
-                {
+                else {
                     style = "solid";
                     tokens = part.split("-");
                 }
 
                 if (tokens.length != 2)
-                    throw("Invalid expression");
+                    throw ("Invalid expression");
 
                 var left = tokens[0];
                 var right = tokens[1];
                 var lstyle, ltext, rstyle, rtext;
 
-                var processLeft = function(left)
-                {
+                var processLeft = function (left) {
                     if (left.startsWith("<>"))
-                        return [ "odiamond", left.substring(2)];
+                        return ["odiamond", left.substring(2)];
                     else if (left.startsWith("++"))
-                        return [ "diamond", left.substring(2)];
+                        return ["diamond", left.substring(2)];
                     else if (left.startsWith("+"))
-                        return [ "odiamond", left.substring(1)];
+                        return ["odiamond", left.substring(1)];
                     else if (left.startsWith("<") || left.endsWith(">"))
-                        return [ "vee", left.substring(1)];
+                        return ["vee", left.substring(1)];
                     else if (left.startsWith("^"))
-                        return [ "empty", left.substring(1)];
+                        return ["empty", left.substring(1)];
                     else
-                        return [ "none", left ];
+                        return ["none", left];
                 }
                 tokens = processLeft(left);
                 lstyle = tokens[0];
                 ltext = tokens[1];
 
-                var processRight = function(right)
-                {
+                var processRight = function (right) {
                     var len = right.length;
 
                     if (right.endsWith("<>"))
-                        return [ "odiamond", right.substring(0, len-2)];
+                        return ["odiamond", right.substring(0, len - 2)];
                     else if (right.endsWith("++"))
-                        return [ "diamond", right.substring(0, len-2)];
+                        return ["diamond", right.substring(0, len - 2)];
                     else if (right.endsWith("+"))
-                        return [ "odiamond", right.substring(0, len-1)];
+                        return ["odiamond", right.substring(0, len - 1)];
                     else if (right.endsWith(">"))
-                        return [ "vee", right.substring(0, len-1)];
+                        return ["vee", right.substring(0, len - 1)];
                     else if (right.endsWith("^"))
-                        return [ "empty", right.substring(0, len-1)];
+                        return ["empty", right.substring(0, len - 1)];
                     else
                         return processLeft(right);
                 }
@@ -107,27 +103,23 @@ module.exports = function(specLines, options)
                 exprs.push(['edge', lstyle, ltext, rstyle, rtext, style]);
             }
             else
-                throw("Invalid expression");
+                throw ("Invalid expression");
         }
 
         return exprs;
     }
 
-    function composeDotExpr(specLines, options)
-    {
+    function composeDotExpr(specLines, options) {
         var uids = {};
         var len = 0;
         var dot = "    ranksep = " + 0.7 + "\r\n";
         dot += "    rankdir = " + options.dir + "\r\n";
 
-        for (var i=0; i<specLines.length; i++)
-        {
+        for (var i = 0; i < specLines.length; i++) {
             var elem = parseYumlExpr(specLines[i]);
 
-            for (var k=0; k<elem.length; k++)
-            {
-                if (elem[k][0] == "note" || elem[k][0] == "record")
-                {
+            for (var k = 0; k < elem.length; k++) {
+                if (elem[k][0] == "note" || elem[k][0] == "record") {
                     var label = elem[k][1];
                     if (uids.hasOwnProperty(recordName(label)))
                         continue;
@@ -136,8 +128,7 @@ module.exports = function(specLines, options)
                     uids[recordName(label)] = uid;
 
                     label = formatLabel(label, 20, true);
-                    if (elem[k][0] == "record")
-                    {
+                    if (elem[k][0] == "record") {
                         if (options.dir == "TB")
                             label = "{" + label + "}";
                     }
@@ -156,14 +147,13 @@ module.exports = function(specLines, options)
                     }
 
                     if (elem[k][3])
-                        node.fontcolor = elem[k][3]; 
-                        
+                        node.fontcolor = elem[k][3];
+
                     dot += '    ' + uid + ' ' + serializeDot(node) + "\r\n";
                 }
             }
 
-            if (elem.length == 3 && elem[1][0] == 'edge')
-            {
+            if (elem.length == 3 && elem[1][0] == 'edge') {
                 var hasNote = (elem[0][0] == 'note' || elem[2][0] == 'note');
                 var style = hasNote ? "dashed" : elem[1][5];
 
@@ -187,7 +177,7 @@ module.exports = function(specLines, options)
             else if (elem.length == 4 && [elem[0][0], elem[1][0], elem[2][0], elem[3][0]].join() == "record,edge,record,record")  // intermediate association class
             {
                 var style = elem[1][5];
-                
+
                 var junction = {
                     shape: "point",
                     style: "invis",
@@ -228,7 +218,7 @@ module.exports = function(specLines, options)
                 }
                 dot += '    ' + uids[recordName(elem[0][1])] + " -> " + uid + ' ' + serializeDot(edge1) + "\r\n";
                 dot += '    ' + uid + " -> " + uids[recordName(elem[2][1])] + ' ' + serializeDot(edge2) + "\r\n";
-                dot += '    { rank=same; ' + uids[recordName(elem[3][1])] + " -> " + uid + ' ' + serializeDot(edge3) + ";}\r\n"; 
+                dot += '    { rank=same; ' + uids[recordName(elem[3][1])] + " -> " + uid + ' ' + serializeDot(edge3) + ";}\r\n";
             }
         }
 
