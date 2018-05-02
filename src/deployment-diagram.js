@@ -26,6 +26,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\[.*\]$/)) // node
             {
                 part = part.substr(1, part.length-2);
+                part = dict(part);
+
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "box3d", ret.part, ret.bg, ret.fontcolor]);
             }

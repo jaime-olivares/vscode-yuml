@@ -1,5 +1,6 @@
 require('./yuml2dot-utils.js')();
 const renderer = require('./sequence-renderer.js');
+const dict = require('./dict');
 
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
@@ -37,6 +38,7 @@ module.exports = function(specLines, options)
             if (part.match(/^\[.*\]$/)) // object
             {
                 part = part.substr(1, part.length-2);
+                part = dict(part);
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "object", ret.part, ret.bg, ret.fontcolor]);
             }
