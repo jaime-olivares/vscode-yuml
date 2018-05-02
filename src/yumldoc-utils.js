@@ -6,22 +6,19 @@ const stateDiagram = require('./state-diagram.js');
 const deploymentDiagram = require('./deployment-diagram.js');
 const packageDiagram = require('./package-diagram.js');
 const sequenceDiagram = require('./sequence-diagram.js');
-const Viz = require("./viz-lite-1.5.js");
+const Viz = require("./viz-lite-1.8.1.js");
 const vscode = require('vscode');
 require('./svg-utils.js')();
 
-module.exports = function()
-{
-    this.processYumlDocument = function(text, filename, mayGenerate) 
-    {
+module.exports = function () {
+    this.processYumlDocument = function (text, filename, mayGenerate) {
         var newlines = [];
         var options = { dir: "TB", generate: false };
 
         var lines = text.split(/\r|\n/);
 
-        for (var i=0; i<lines.length; i++)
-        {
-            var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].replace(/^\s+|\s+$/g, '');  // Removes leading and trailing spaces
             if (line.startsWith("//"))
                 processDirectives(line, options);
             else if (line.length > 0)
@@ -31,13 +28,11 @@ module.exports = function()
         if (newlines.length == 0)
             return "";
 
-        if (!options.hasOwnProperty("type"))
-        {
+        if (!options.hasOwnProperty("type")) {
             options.error = "Error: Missing mandatory 'type' directive";
         }
 
-        if (options.hasOwnProperty("error"))
-        {
+        if (options.hasOwnProperty("error")) {
             return options.error;
         }
 
@@ -45,8 +40,7 @@ module.exports = function()
         var svg = null;
 
         try {
-            switch (options.type)
-            {
+            switch (options.type) {
                 case "class":
                     dot = classDiagram(newlines, options);
                     break;
@@ -79,8 +73,7 @@ module.exports = function()
 
         var svgLight, svgDark;
 
-        if (dot != null)
-        {
+        if (dot != null) {
             try {
                 svgLight = Viz(buildDotHeader(false) + dot);
                 svgLight = processEmbeddedImages(svgLight, false);
@@ -92,18 +85,16 @@ module.exports = function()
                 return "Error composing the diagram"
             }
         }
-        else 
-        {
+        else {
             svgLight = svgs[0];
-            svgDark  = svgs[1];
+            svgDark = svgs[1];
         }
 
         try {
-            if (filename && options.generate===true && mayGenerate===true)
-            {
+            if (filename && options.generate === true && mayGenerate === true) {
                 var imagename = filename.replace(/\.[^.$]+$/, '.svg');
                 fs.writeFileSync(imagename, svgLight);
-            }                            
+            }
         }
         catch (e) { }
 
@@ -130,8 +121,7 @@ module.exports = function()
         return div;
     }
 
-    processDirectives = function(line, options)
-    {
+    processDirectives = function (line, options) {
         const directions = {
             leftToRight: "LR",
             rightToLeft: "RL",
@@ -139,13 +129,11 @@ module.exports = function()
         };
 
         var keyvalue = /^\/\/\s+\{\s*([\w]+)\s*:\s*([\w]+)\s*\}$/.exec(line);  // extracts directives as:  // {key:value}
-        if (keyvalue != null && keyvalue.length == 3)
-        {
+        if (keyvalue != null && keyvalue.length == 3) {
             var key = keyvalue[1];
             var value = keyvalue[2];
 
-            switch (key)
-            {
+            switch (key) {
                 case "type":
                     if (/^(class|usecase|activity|state|deployment|package|sequence)$/.test(value))
                         options.type = value;
