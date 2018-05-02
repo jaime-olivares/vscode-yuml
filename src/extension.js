@@ -1,6 +1,6 @@
 const vscode = require('vscode');
-const path = require('path')
-require('./yumldoc-utils.js')();
+const fs = require("fs");
+const yuml2svg = require("yuml2svg");
 
 exports.activate = function(context)
 {
@@ -11,30 +11,25 @@ exports.activate = function(context)
             this.diagram = "";
         }
 
-        provideTextDocumentContent (uri, token) 
-        {
+        provideTextDocumentContent (uri, token) {
             var editor = vscode.window.activeTextEditor;
-			if (!(editor.document.languageId === 'yuml')) {
+			if (editor.document.languageId !== 'yuml') {
 				return "<body>Active editor doesn't show a yUML document<body>";
 			}
 			return this.createHTML();
         }
 
-        createHTML()
-        {
+        createHTML() {
             return `<!DOCTYPE html>
             <html>
             <head>
-                <script>
-                    function showTopbar() 
-                    {
-                        var isLight = document.body.classList.contains('vscode-light');
-                        var styleSheet = document.getElementById('topbar-themed');
-                        var color = isLight ? "#404040" : "#C0C0C0";
-                        styleSheet.innerHtml = "#topbar { color:" + color + "; }";
-                    }
-                </script>
                 <style>
+                    .links,
+                    .vscode-light .yuml-dark,
+                    .vscode-high-contrast .yuml-light,
+                    .vscode-dark .yuml-light {
+                        display: none;
+                    }
                     #topbar {
                         background-color:rgba(255,102,0,0.1);
                         height:24px;
@@ -42,9 +37,10 @@ exports.activate = function(context)
                         margin:0 -5px 15px -5px;
                         padding-left: 10px;
                         white-space: nowrap;
-                    } 
-                    .links {
-                        display: none;                        
+                        color: #C0C0C0;
+                    }
+                    .vscode-light #topbar {
+                        color: #404040;
                     }
                     #topbar:hover {
                         background-color: rgba(255,102,0,0.5);
@@ -56,8 +52,6 @@ exports.activate = function(context)
                         margin-left: 15px;
                     }
                 </style>
-                <style id="topbar-themed">
-                </style>                    
             </head>
             <body style="margin:10px;" onload="showTopbar()">
                 <div id="topbar">&#9654; yUML <div class="links">
@@ -70,41 +64,63 @@ exports.activate = function(context)
             </html>`;
         }
 
-        get onDidChange () 
-        {            
+        get onDidChange() {
             return this._onDidChange.event;
         }
 
-        load(uri, isOpen) 
-        {
+        async load(uri, isOpen) {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !editor.document)
                 return;
 
             const text = editor.document.getText();
-            const filename = editor.document.fileName;
 
-            this.diagram = processYumlDocument(text, filename, false);
+            try {
+                this.diagram = `<div class='yuml-light'>
+                        ${(await Promise.all([
+                            yuml2svg(text, { isDark: false }),
+                            yuml2svg(text, { isDark: true }),
+                        ])).join("</div><div class='yuml-dark'>")}
+                    </div>`;
+            } catch (e) {
+                this.diagram = e.message;
+            }
 
-            this._onDidChange.fire(uri);
+          this._onDidChange.fire(uri);
         }
 
-        update(uri) 
-        {
+        async update(uri) {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !editor.document)
                 return;
 
             const text = editor.document.getText();
             const filename = editor.document.fileName;
-            const diagram = processYumlDocument(text, filename, true);
 
-            if (diagram == "")
-                this.diagram = "";
-            else if (!diagram)
-                this.diagram = "Error composing the yUML invocation";
-            else
-                this.diagram = diagram;
+            try {
+                const options = {};
+                const diagram = await yuml2svg(text, options);
+
+                if (options.generate) {
+                    fs.writeFile(filename.replace(/\.[^.$]+$/, ".svg"), (err) => {
+                        if (err) vscode.window.showInformationMessage(err);
+                    });
+                }
+
+                if (diagram == "")
+                    this.diagram = "";
+                else if (!diagram)
+                    this.diagram = "Error composing the yUML invocation";
+                else
+                    this.diagram = `<div class='yuml-light'>
+                            ${diagram}
+                        </div>
+                        <div class='yuml-dark'>
+                            ${await yuml2svg(text, { isDark: true })}
+                        </div>`;
+            } catch (e) {
+                this.diagram = e.message;
+            }
 
             this._onDidChange.fire(uri);
         }
@@ -132,16 +148,10 @@ exports.activate = function(context)
     context.subscriptions.push(command, registration);
 
     return {
-        extendMarkdownIt(md) 
-        {
+        extendMarkdownIt(md) {
             return md.use(require('./markdown-it-yuml.js'));
         }
     }
 }
 
 exports.deactivate = function() {};
-
-
-
-
-

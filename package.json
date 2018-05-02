@@ -78,7 +78,7 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
-    "jsdom": "^11.6.2"
+    "yuml2svg": "4.0.0-beta6"
   },
   "devDependencies": {
     "vscode": "^1.0.0",
