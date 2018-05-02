@@ -3,6 +3,7 @@
  * and next using (a1) to set quick and ease modify define
  */
 var dict = {};
+
 module.exports = function (part) {
     var m = part.match(/^(.+):.+$/);
     if (m) { //save dict
