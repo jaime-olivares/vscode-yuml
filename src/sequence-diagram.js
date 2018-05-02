@@ -1,6 +1,8 @@
 require('./yuml2dot-utils.js')();
 const renderer = require('./sequence-renderer.js');
 
+var dict = require('./dict');
+
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
 
