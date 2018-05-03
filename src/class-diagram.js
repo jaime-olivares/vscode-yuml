@@ -1,4 +1,5 @@
 require('./yuml2dot-utils.js')();
+var dict = require('./dict');
 
 /*
 Syntax as specified in yuml.me
