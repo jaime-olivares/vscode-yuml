@@ -70,6 +70,9 @@ No other product or library is needed and thus the installation process is quite
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
 
+## Contributing
+For pull requests, please read [CONTRIBUTING.md](https://github.com/jaime-olivares/vscode-yuml/blob/master/CONTRIBUTING.md)
+
 ## Credits
 * Syntax and some examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
 * This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
