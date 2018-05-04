@@ -1,4 +1,5 @@
 require('./yuml2dot-utils.js')();
+var dict = require('./dict');
 
 /*
 Syntax as specified in yuml.me
@@ -31,6 +32,8 @@ module.exports = function(specLines, options)
             if (part.match(/^\(.*\)$/)) // activity
             {
                 part = part.substr(1, part.length-2);
+                part = dict(part);
+
                 var ret = extractBgAndNote(part, true);
                 exprs.push([ret.isNote ? "note" : "record", ret.part, ret.bg, ret.fontcolor]);
             }
