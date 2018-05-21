@@ -15,7 +15,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + Deployment
   + Package
   + Sequence  
-  See the corresponding [github project](https://github.com/jaime-olivares/yuml) for the updated features
+  See the corresponding [github project](https://github.com/jaime-olivares/yuml-diagram) for the updated features
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
@@ -26,7 +26,7 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
 ## yUML syntax
-Please refer to the [wiki page](https://github.com/jaime-olivares/yuml/wiki)
+Please refer to the [wiki page](https://github.com/jaime-olivares/yuml-diagram/wiki)
 
 ## Invocation methods
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
@@ -65,7 +65,7 @@ No settings yet.
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
 
-For issues related to the yUML syntax, please post your issue in the corresponding [github project](https://github.com/jaime-olivares/yuml/issues)
+For issues related to the yUML syntax, please post your issue in the corresponding [github project](https://github.com/jaime-olivares/yuml-diagram/issues)
 
 ## Contributing
 For pull requests, please read [CONTRIBUTING.md](https://github.com/jaime-olivares/vscode-yuml/blob/master/CONTRIBUTING.md)
