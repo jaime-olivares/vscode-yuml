@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0
+* Major refactoring: separated the diagram generator in an NPM package
+
 ## 2.14
 * Added Markdown support
 * Improved the generation of SVG artifacts

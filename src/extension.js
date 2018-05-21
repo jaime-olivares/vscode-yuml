@@ -1,5 +1,4 @@
 const vscode = require('vscode');
-const path = require('path')
 require('./yumldoc-utils.js')();
 
 exports.activate = function(context)
@@ -84,7 +83,7 @@ exports.activate = function(context)
             const text = editor.document.getText();
             const filename = editor.document.fileName;
 
-            this.diagram = processYumlDocument(text, filename, false);
+            this.diagram = processYumlDocumentForVSCode(text, filename, false);
 
             this._onDidChange.fire(uri);
         }
@@ -97,7 +96,7 @@ exports.activate = function(context)
 
             const text = editor.document.getText();
             const filename = editor.document.fileName;
-            const diagram = processYumlDocument(text, filename, true);
+            const diagram = processYumlDocumentForVSCode(text, filename, true);
 
             if (diagram == "")
                 this.diagram = "";
