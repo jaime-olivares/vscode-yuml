@@ -14,18 +14,19 @@ yUML extension for Visual Studio Code. Allows the creation of offline UML diagra
   + State
   + Deployment
   + Package
-  + `[new]` Sequence
+  + Sequence  
+  See the corresponding [github project](https://github.com/jaime-olivares/yuml) for the updated features
 * Update of yUML diagrams after each file save
 * Additional directives for altering diagram type and orientation
 * Embedded rendering engine: **No need to call an external web service**
 * Automatic sensing of light and dark themes
 * Code snippets with samples of each diagram
-* `[new]` Markdown support
+* Integrated Markdown support
 
 ![yUML extension screenshots](images/vscode-yuml.gif)
 
 ## yUML syntax
-Please refer to the [wiki page](https://github.com/jaime-olivares/vscode-yuml/wiki)
+Please refer to the [wiki page](https://github.com/jaime-olivares/yuml/wiki)
 
 ## Invocation methods
 Once a *.yuml* file is open, the viewer window can be invoked in two ways:
@@ -61,20 +62,10 @@ for accessing the wiki page, writing a review, reporting bugs and requesting new
 ## Extension Settings
 No settings yet.
 
-## Dependencies
-This extension depends only on the [jsdom npm package](https://www.npmjs.com/package/jsdom), which is cross-platform and is installed automatically.
-
-Also, it contains a frozen version of viz-lite.js (see [viz.js](https://github.com/mdaines/viz.js)). Newest versions have a bug that caused [issue #23](https://github.com/jaime-olivares/vscode-yuml/issues/23).
-No other product or library is needed and thus the installation process is quite simple across platforms.
-
 ## Issue reporting
 If you have experience developing Visual Studio Code extensions, please propose a detailed solution for any reported issue or feature request.
 
+For issues related to the yUML syntax, please post your issue in the corresponding [github project](https://github.com/jaime-olivares/yuml/issues)
+
 ## Contributing
 For pull requests, please read [CONTRIBUTING.md](https://github.com/jaime-olivares/vscode-yuml/blob/master/CONTRIBUTING.md)
-
-## Credits
-* Syntax and some examples taken from [yuml.me](http://yuml.me/diagram/scruffy/class/samples)
-* This extension uses a Javascript port of [Dot/Graphviz](http://www.graphviz.org/) called [viz.js](https://github.com/mdaines/viz.js)
-* The yuml-to-dot translator is loosely based on a Python project called [scruffy](https://github.com/aivarsk/scruffy)
-* The new sequence diagram is based on [this github fork](https://github.com/sharvil/node-sequence-diagram)
