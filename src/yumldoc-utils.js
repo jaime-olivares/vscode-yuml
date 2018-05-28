@@ -1,15 +1,16 @@
 const fs = require('fs');
-require('yuml-diagram')();
+const yuml_diagram = require('yuml-diagram');
 
 module.exports = function()
 {
     this.processYumlDocumentForVSCode = function(text, filename, mayGenerate) 
     {
         var options = {};
-        getOptions(text, options);
+        // getOptions(text, options);
 
-        var svgLight = processYumlDocument(text, filename, false);
-        var svgDark = processYumlDocument(text, filename, true);
+        var yuml = new yuml_diagram();
+        var svgLight = yuml.processYumlDocument(text, false);
+        var svgDark = yuml.processYumlDocument(text, true);
 
         try {
             if (filename && options.generate===true && mayGenerate===true)
@@ -51,7 +52,7 @@ module.exports = function()
         {
             var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
             if (line.startsWith("//"))
-                processDirectives(line, options);
+                yuml.processDirectives(line, options);
         }
     }
 }

@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "UML diagramming tool based on the yUML syntax",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -87,7 +87,7 @@
   },
   "dependencies": {
     "jsdom": "^11.11.0",
-    "yuml-diagram": "^1.0.4"
+    "yuml-diagram": "^1.0.6"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
