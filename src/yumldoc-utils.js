@@ -6,9 +6,9 @@ module.exports = function()
     this.processYumlDocumentForVSCode = function(text, filename, mayGenerate) 
     {
         var options = {};
-        // getOptions(text, options);
-
         var yuml = new yuml_diagram();
+        getOptions(yuml, text, options);
+
         var svgLight = yuml.processYumlDocument(text, false);
         var svgDark = yuml.processYumlDocument(text, true);
 
@@ -44,13 +44,14 @@ module.exports = function()
         return div;
     }
 
-    function getOptions(text, options)
+    function getOptions(yuml, text, options)
     {
         var lines = text.split(/\r|\n/);
 
         for (var i=0; i<lines.length; i++)
         {
             var line = lines[i].replace(/^\s+|\s+$/g,'');  // Removes leading and trailing spaces
+            
             if (line.startsWith("//"))
                 yuml.processDirectives(line, options);
         }

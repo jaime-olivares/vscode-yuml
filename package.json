@@ -2,7 +2,7 @@
   "name": "yuml",
   "displayName": "yUML",
   "description": "UML diagramming tool based on the yUML syntax",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "icon": "images/yUML.png",
   "publisher": "JaimeOlivares",
   "license": "SEE LICENSE IN LICENSE.md",

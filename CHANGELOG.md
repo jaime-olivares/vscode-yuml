@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.1
+* Solved bug #42
+
 ## 3.0
 * Major refactoring: separated the diagram generator in an NPM package
 
