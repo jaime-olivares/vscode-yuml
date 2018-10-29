@@ -23,22 +23,14 @@ module.exports = function()
 
         var div = `<div>
     <style>
-        .vscode-high-contrast .yuml-light {
-            display: none;
-        }
-        .vscode-dark .yuml-light {
-            display: none;
-        }
+        .vscode-high-contrast .yuml-light,
+        .vscode-dark .yuml-light,
         .vscode-light .yuml-dark {
             display: none;
         }
     </style>
-    <div class='yuml-light'>
-        ${svgLight}
-    </div>
-    <div class='yuml-dark'>
-        ${svgDark}
-    </div>
+    <img class='yuml-light' src='data:image/svg+xml;base64,${Buffer.from(svgLight).toString('base64')}'>
+    <img class='yuml-dark' src='data:image/svg+xml;base64,${Buffer.from(svgDark).toString('base64')}'>
 </div>`;
 
         return div;
