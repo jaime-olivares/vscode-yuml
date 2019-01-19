@@ -109,7 +109,7 @@
         "prefix": "sequence",
         "body": [
             "// {type:sequence}",
-            "[:Computer]sendUnsentEmal>[:Server]",
+            "[:Computer]sendUnsentEmail>[:Server]",
             "[:Computer]newEmail>[:Server]",
             "[:Server]reponse.>[:Computer]",
             "[:Computer]downloadEmail>[:Server]",
