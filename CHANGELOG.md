@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.2
+* Major revision of the editor presentation logic
+* Solved bugs #46 and #53
+
 ## 3.1
 * Solved bug #42
 

@@ -5,18 +5,22 @@ exports.activate = function(context)
 {
     class yUMLDocumentContentProvider
     {
-        constructor () {
-            this._onDidChange = new vscode.EventEmitter();
+        constructor () 
+        {
             this.diagram = "";
         }
 
-        provideTextDocumentContent (uri, token) 
+        provideWebContent() 
         {
             var editor = vscode.window.activeTextEditor;
-			if (!(editor.document.languageId === 'yuml')) {
+
+            if (!editor || !editor.document)
+                return "<body>No active editor<body>";           
+
+			if (!(editor.document.languageId === 'yuml'))
 				return "<body>Active editor doesn't show a yUML document<body>";
-			}
-			return this.createHTML();
+
+            return this.createHTML();
         }
 
         createHTML()
@@ -60,7 +64,7 @@ exports.activate = function(context)
             </head>
             <body style="margin:10px;" onload="showTopbar()">
                 <div id="topbar">&#9654; yUML <div class="links">
-                    <a href="https://github.com/jaime-olivares/vscode-yuml/wiki">Wiki</a>
+                    <a href="https://github.com/jaime-olivares/yuml-diagram/wiki">Wiki</a>
                     <a href="https://marketplace.visualstudio.com/items?itemName=JaimeOlivares.yuml#review-details">Write a review</a>
                     <a href="https://github.com/jaime-olivares/vscode-yuml/issues">Bug reports &amp; feature requests</a>
                 </div></div>
@@ -68,65 +72,80 @@ exports.activate = function(context)
             </body>
             </html>`;
         }
+    }
 
-        get onDidChange () 
-        {            
-            return this._onDidChange.event;
-        }
+    let currentPanel = undefined;
+    const provider = new yUMLDocumentContentProvider();
+ 
+    // const previewUri = vscode.Uri.parse('vscode-yuml://authority/vscode-yuml');
+    let registration = vscode.workspace.registerTextDocumentContentProvider('vscode-yuml', provider);
 
-        load(uri, isOpen) 
+    function showDiagram(reveal)
+    {
+        const editor = vscode.window.activeTextEditor;
+
+        if (!editor || !editor.document)
+            return;
+
+        if (!(editor.document.languageId === 'yuml'))
+            return;
+
+        const columnToShowIn = editor ? (editor.viewColumn == 1 ? 2 : 1) : undefined;
+                
+        const text = editor.document.getText();
+        const filename = editor.document.fileName;
+        const diag = processYumlDocumentForVSCode(text, filename, true);
+
+        if (diag == "")
+            provider.diagram = "";
+        else if (!diag)
+            provider.diagram = "Error composing the yUML invocation";
+        else
+            provider.diagram = diag;
+
+        if (currentPanel) 
         {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor || !editor.document)
-                return;
+            currentPanel.webview.html = provider.provideWebContent();
 
-            const text = editor.document.getText();
-            const filename = editor.document.fileName;
-
-            this.diagram = processYumlDocumentForVSCode(text, filename, false);
-
-            this._onDidChange.fire(uri);
+            if (reveal)
+                currentPanel.reveal(columnToShowIn)
         }
-
-        update(uri) 
+        else 
         {
-            const editor = vscode.window.activeTextEditor;
-            if (!editor || !editor.document)
-                return;
+            // Create and show a new webview
+            currentPanel = vscode.window.createWebviewPanel(
+                'yuml', // Identifies the type of the webview. Used internally
+                'Yuml Diagram', // Title of the panel displayed to the user
+                columnToShowIn, // Editor column to show the new webview panel in.
+                {
+					enableScripts: true
+                }
+            );
+            currentPanel.webview.html = provider.provideWebContent();
 
-            const text = editor.document.getText();
-            const filename = editor.document.fileName;
-            const diagram = processYumlDocumentForVSCode(text, filename, true);
-
-            if (diagram == "")
-                this.diagram = "";
-            else if (!diagram)
-                this.diagram = "Error composing the yUML invocation";
-            else
-                this.diagram = diagram;
-
-            this._onDidChange.fire(uri);
+            currentPanel.onDidDispose(
+                () => { currentPanel = undefined; },
+                null,
+                context.subscriptions
+            );
         }
     }
 
-    const registerCommand = vscode.commands.registerCommand;
-    const previewUri = vscode.Uri.parse('vscode-yuml://authority/vscode-yuml');
-
-    let provider = new yUMLDocumentContentProvider();
-    let registration = vscode.workspace.registerTextDocumentContentProvider('vscode-yuml', provider);
-
-    let command = registerCommand('extension.viewYumlDiagram', () => {
-        var disp = vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then(
-            (success) => { provider.update(previewUri); },
-            (reason) => { vscode.window.showErrorMessage(reason); });
-        return disp;
+    let command = vscode.commands.registerCommand('extension.viewYumlDiagram', () => 
+    {
+        showDiagram();
     });
 
-    vscode.workspace.onDidSaveTextDocument((e) => { provider.update(previewUri); });
-
-    vscode.workspace.onDidOpenTextDocument((e) => { provider.load(previewUri); });
-
-    vscode.window.onDidChangeActiveTextEditor((e) => { provider.load(previewUri); });
+    vscode.workspace.onDidSaveTextDocument((e) => 
+    { 
+        showDiagram(); 
+    });
+    vscode.workspace.onDidOpenTextDocument((e) => 
+    { 
+        showDiagram(); 
+    });
+    //vscode.window.onDidChangeActiveTextEditor((e) => { provider.loadOrUpdate(); });
+    //provider.onDidChange((e) => { vscode.commands.executeCommand("extension.viewYumlDiagram"); })
 
     context.subscriptions.push(command, registration);
 
@@ -139,8 +158,3 @@ exports.activate = function(context)
 }
 
 exports.deactivate = function() {};
-
-
-
-
-
