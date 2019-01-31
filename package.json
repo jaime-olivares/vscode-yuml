@@ -49,6 +49,16 @@
         "language": "yuml",
         "scopeName": "source.yuml",
         "path": "./syntaxes/yuml.tmLanguage"
+      },
+      {
+        "scopeName": "markdown.yuml.codeblock",
+        "path": "./syntaxes/codeblock.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.yuml": "javascript"
+        }
       }
     ],
     "commands": [

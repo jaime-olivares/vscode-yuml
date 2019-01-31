@@ -1,0 +1,28 @@
+{
+    "fileTypes": [],
+    "injectionSelector": "L:markup.fenced_code.block.markdown",
+    "patterns": [
+        {
+            "include": "#yuml-code-block"
+        }
+    ],
+    "repository": {
+        "yuml-code-block": {
+            "begin": "yuml(\\s+[^`~]*)?$",
+            "end": "(^|\\G)(?=\\s*[`~]{3,}\\s*$)",
+            "patterns": [
+                {
+                    "begin": "(^|\\G)(\\s*)(.*)",
+                    "while": "(^|\\G)(?!\\s*([`~]{3,})\\s*$)",
+                    "contentName": "meta.embedded.block.yuml",
+                    "patterns": [
+                        {
+                            "include": "source.yuml"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "scopeName": "markdown.yuml.codeblock"
+}
