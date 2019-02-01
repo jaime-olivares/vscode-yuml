@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.3
+* Improved syntax highlighting inside markdown
+
 ## 3.2
 * Major revision of the editor presentation logic
 * Solved bugs #46 and #53

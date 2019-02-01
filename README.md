@@ -40,24 +40,20 @@ There is a snippet for each diagram type. Just start typing one of the available
 `class`, `activity`, `usecase`, `state` or `deployment`, `package`, `sequence` 
 and a full example will be pasted into the yuml file.
 
-![yUML snippet screenshot](images/snippet.png)
+![yuml snippet screenshot](images/snippet.png)
 
 ## Markdown support
 yUML code can now be embedded into markdown documents by using the fencing syntax, as shown:
 
-    This is a simple example of a **yUML** sequence diagram: 
-    
-    ```yuml
-    // {type: sequence}
-    [A]>[B]
-    ```
+![yuml markdown screenshot](images/markdown.png)
+
 The yUML diagram will be directly rendered in the markdown preview window.
 
 ## Top bar
 A topbar will show some useful links when hovered (see below),
 for accessing the wiki page, writing a review, reporting bugs and requesting new features.
 
-![yUML snippet screenshot](images/top_bar.png)
+![topbar screenshot](images/top_bar.png)
 
 ## Extension Settings
 No settings yet.
