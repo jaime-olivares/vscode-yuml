@@ -29,9 +29,17 @@ module.exports = function()
             display: none;
         }
     </style>
-    <img class='yuml-light' src='data:image/svg+xml;base64,${Buffer.from(svgLight).toString('base64')}'>
-    <img class='yuml-dark' src='data:image/svg+xml;base64,${Buffer.from(svgDark).toString('base64')}'>
-</div>`;
+`;
+
+        if (svgLight.indexOf('<svg') > 0)
+            div += `    <img class='yuml-light' src='data:image/svg+xml;base64,${Buffer.from(svgLight).toString('base64')}'>`;
+        else
+            div += svgLight;
+
+        if (svgDark.indexOf('<svg') > 0)
+            div += `    <img class='yuml-dark' src='data:image/svg+xml;base64,${Buffer.from(svgDark).toString('base64')}'>`;
+
+        div += `</div>`;
 
         return div;
     }

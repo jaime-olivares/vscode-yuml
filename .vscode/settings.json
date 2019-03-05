@@ -4,7 +4,8 @@
         "**/.git": true,
         "**/.svn": true,
         "**/.DS_Store": true,
-        "node_modules": true
+        "node_modules": true,
+        "package-lock.json": true
     },
     "files.trimTrailingWhitespace": false
 }

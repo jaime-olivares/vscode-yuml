@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.4
+* Solved issue #56
+
 ## 3.3
 * Improved syntax highlighting inside markdown
 
