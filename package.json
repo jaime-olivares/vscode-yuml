@@ -64,7 +64,7 @@
     "commands": [
       {
         "command": "extension.viewYumlDiagram",
-        "title": "View yUML Diagram",
+        "title": "Preview yUML Diagram",
         "icon": {
           "light": "./images/preview.svg",
           "dark": "./images/preview_inverse.svg"
