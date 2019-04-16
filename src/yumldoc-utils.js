@@ -31,13 +31,17 @@ module.exports = function()
     </style>
 `;
 
-        if (svgLight.indexOf('<svg') > 0)
+// font-family="Helvetica,sans-Serif"
+
+        if (svgLight.indexOf('<svg') >= 0)
             div += `    <img class='yuml-light' src='data:image/svg+xml;base64,${Buffer.from(svgLight).toString('base64')}'>`;
         else
             div += svgLight;
 
-        if (svgDark.indexOf('<svg') > 0)
+        if (svgDark.indexOf('<svg') >= 0)
             div += `    <img class='yuml-dark' src='data:image/svg+xml;base64,${Buffer.from(svgDark).toString('base64')}'>`;
+        else
+            div += svgDark;
 
         div += `</div>`;
 
