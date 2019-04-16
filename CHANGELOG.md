@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.5
+* Solved issue #59
+
 ## 3.4
 * Solved issue #56
 
